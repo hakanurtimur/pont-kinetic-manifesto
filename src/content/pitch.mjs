@@ -1,3 +1,14 @@
+export const ROBOT_TECHNOLOGIES = Object.freeze([
+  'AI',
+  'VISION',
+  'EMBEDDED',
+  'ELECTRONICS',
+  'MOTORS',
+  'SENSORS',
+  'BATTERIES',
+  'MANUFACTURING',
+]);
+
 export const SCENES = Object.freeze([
   {
     id: 'physical-era',
@@ -28,6 +39,17 @@ export const SCENES = Object.freeze([
       'LIFE SCIENCES',
       'TWO WORLDS. ONE PHYSICAL FUTURE.',
     ],
+  },
+  {
+    id: 'robot-ecosystem',
+    index: '04',
+    eyebrow: 'ONE ROBOT IS AN ECOSYSTEM',
+    statements: [
+      'ONE ROBOT.',
+      'HUNDREDS OF TECHNOLOGIES.',
+      'NO SINGLE COMPANY BUILDS THE PHYSICAL AI FUTURE ALONE.',
+    ],
+    technologies: ROBOT_TECHNOLOGIES,
   },
 ]);
 

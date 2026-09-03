@@ -3,10 +3,10 @@ import assert from 'node:assert/strict';
 
 import { SCENES } from '../src/content/pitch.mjs';
 
-test('prototype contains exactly the approved first three scenes', () => {
+test('prototype contains the approved scenes through the robot ecosystem', () => {
   assert.deepEqual(
     SCENES.map(({ id }) => id),
-    ['physical-era', 'european-paradox', 'two-worlds'],
+    ['physical-era', 'european-paradox', 'two-worlds', 'robot-ecosystem'],
   );
 });
 
@@ -22,4 +22,19 @@ test('manifesto statements stay verbatim', () => {
     'BUILD SOMETHING WORTH STAYING FOR.',
   ]);
   assert.equal(SCENES[2].statements.at(-1), 'TWO WORLDS. ONE PHYSICAL FUTURE.');
+  assert.deepEqual(SCENES[3].statements, [
+    'ONE ROBOT.',
+    'HUNDREDS OF TECHNOLOGIES.',
+    'NO SINGLE COMPANY BUILDS THE PHYSICAL AI FUTURE ALONE.',
+  ]);
+  assert.deepEqual(SCENES[3].technologies, [
+    'AI',
+    'VISION',
+    'EMBEDDED',
+    'ELECTRONICS',
+    'MOTORS',
+    'SENSORS',
+    'BATTERIES',
+    'MANUFACTURING',
+  ]);
 });

@@ -8,6 +8,8 @@ export const BEATS = Object.freeze([
   'domains',
   'convergence',
   'future',
+  'robot-core',
+  'robot-ecosystem',
 ]);
 
 export function clampProgress(value) {

@@ -10,7 +10,7 @@ import {
   timelineValueForProgress,
   viewportMode,
 } from '@/src/lib/experience.mjs';
-import { SCENES } from '@/src/content/pitch.mjs';
+import { ROBOT_TECHNOLOGIES, SCENES } from '@/src/content/pitch.mjs';
 import { PontMark } from './PontMark';
 
 const LANDSCAPE_STAGE = { width: 1133, height: 744 };
@@ -159,7 +159,19 @@ export function PitchStage() {
         .to($('.world-axis'), { scaleX: 0, duration: 0.42 }, '<0.04')
         .to($('.convergence-orb'), { scale: isPortrait ? 7.8 : 6.4, autoAlpha: 0.08, duration: 0.7 }, '<')
         .fromTo($('.future-line .line-inner'), { yPercent: 120 }, { yPercent: 0, duration: 0.62, stagger: 0.06, ease: 'power2.out' }, '<0.12')
-        .addLabel('future');
+        .addLabel('future')
+        .to($('.scene-worlds'), { scale: 0.92, autoAlpha: 0, duration: 0.58 })
+        .set($('.scene-robot'), { autoAlpha: 1 }, '<0.18')
+        .fromTo($('.robot-heading .line-inner'), { yPercent: 120 }, { yPercent: 0, duration: 0.58, ease: 'power2.out' }, '<0.08')
+        .fromTo($('.robot-core'), { scale: 0.24, rotate: -45, autoAlpha: 0 }, { scale: 1, rotate: 0, autoAlpha: 1, duration: 0.66, ease: 'power3.out' }, '<0.02')
+        .fromTo($('.robot-orbit'), { scale: 0.5, rotate: -90, autoAlpha: 0 }, { scale: 1, rotate: 0, autoAlpha: 1, duration: 0.66 }, '<')
+        .set($('.scene-worlds'), { autoAlpha: 0 }, '>')
+        .addLabel('robot-core')
+        .fromTo($('.robot-link'), { scaleX: 0 }, { scaleX: 1, duration: 0.5, stagger: 0.025, ease: 'power2.out' })
+        .fromTo($('.robot-node'), { scale: 0.72, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.5, stagger: 0.045, ease: 'back.out(1.35)' }, '<0.08')
+        .fromTo($('.robot-result .line-inner'), { yPercent: 120 }, { yPercent: 0, duration: 0.58, stagger: 0.06, ease: 'power2.out' }, '<0.12')
+        .fromTo($('.robot-principle'), { y: 18, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.46 }, '<0.16')
+        .addLabel('robot-ecosystem');
 
       const initialBeat = Math.min(BEATS.length - 1, Math.max(0, beatRef.current));
       beatRef.current = initialBeat;
@@ -367,6 +379,32 @@ export function PitchStage() {
               <span className="mask-line"><span className="line-inner">TWO WORLDS.</span></span>
               <span className="mask-line"><span className="line-inner">ONE PHYSICAL <em>FUTURE.</em></span></span>
             </div>
+          </section>
+
+          <section className="scene scene-robot" aria-label={SCENES[3].eyebrow}>
+            <h2 className="robot-heading display-heading display-heading--medium">
+              <span className="mask-line"><span className="line-inner">ONE <em>ROBOT.</em></span></span>
+            </h2>
+
+            <div className="robot-network" aria-label="Technologies inside a modern robot">
+              <span className="robot-orbit" aria-hidden="true" />
+              {ROBOT_TECHNOLOGIES.map((technology, index) => (
+                <span className={`robot-link robot-link--${index + 1}`} aria-hidden="true" key={`link-${technology}`} />
+              ))}
+              <div className="robot-core">
+                <strong>01</strong>
+                <span>ROBOT</span>
+              </div>
+              {ROBOT_TECHNOLOGIES.map((technology, index) => (
+                <span className={`robot-node robot-node--${index + 1}`} key={technology}>{technology}</span>
+              ))}
+            </div>
+
+            <div className="robot-result display-heading display-heading--medium">
+              <span className="mask-line"><span className="line-inner">HUNDREDS OF</span></span>
+              <span className="mask-line"><span className="line-inner accent">TECHNOLOGIES.</span></span>
+            </div>
+            <p className="robot-principle">NO SINGLE COMPANY BUILDS THE PHYSICAL AI FUTURE ALONE.</p>
           </section>
 
           <section className="reduced-summary" aria-label="PONT manifesto summary">
