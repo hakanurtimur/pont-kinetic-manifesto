@@ -7,6 +7,7 @@ import { BEATS } from '@/src/lib/progress.mjs';
 import {
   pageIndexForProgress,
   resolveTheme,
+  snapTargetForScroll,
   timelineValueForProgress,
   viewportMode,
 } from '@/src/lib/experience.mjs';
@@ -80,18 +81,14 @@ export function PitchStage() {
   const shellRef = useRef<HTMLElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const beatRef = useRef(0);
+  const settleToBeatRef = useRef<(index: number) => void>(() => undefined);
   const [activeBeat, setActiveBeat] = useState(0);
   const geometry = useStageGeometry();
   const { theme, toggle: toggleTheme } = useTheme();
 
   const goToBeat = useCallback((index: number) => {
     const safeIndex = Math.min(BEATS.length - 1, Math.max(0, index));
-    const shell = shellRef.current;
-    if (!shell) return;
-    shell.scrollTo({
-      top: safeIndex * shell.clientHeight,
-      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
-    });
+    settleToBeatRef.current(safeIndex);
   }, []);
 
   useLayoutEffect(() => {
@@ -101,6 +98,10 @@ export function PitchStage() {
 
     const isPortrait = geometry.mode === 'portrait';
     let animationFrame = 0;
+    let settleTimer = 0;
+    let settleTween: gsap.core.Tween | null = null;
+    let isPointerActive = false;
+    let isSettling = false;
     let timelineInstance: gsap.core.Timeline | null = null;
 
     const context = gsap.context(() => {
@@ -176,18 +177,87 @@ export function PitchStage() {
       }
     };
 
+    const cancelSettle = () => {
+      window.clearTimeout(settleTimer);
+      settleTween?.kill();
+      settleTween = null;
+      isSettling = false;
+    };
+
+    const settleToBeat = (index: number) => {
+      const safeIndex = Math.min(BEATS.length - 1, Math.max(0, index));
+      const targetTop = safeIndex * shell.clientHeight;
+      const distance = Math.abs(targetTop - shell.scrollTop);
+
+      cancelSettle();
+
+      if (distance < 0.5) {
+        shell.scrollTop = targetTop;
+        return;
+      }
+
+      isSettling = true;
+      settleTween = gsap.to(shell, {
+        scrollTop: targetTop,
+        duration: gsap.utils.clamp(0.22, 0.46, (distance / shell.clientHeight) * 0.38),
+        ease: 'power3.out',
+        overwrite: 'auto',
+        onComplete: () => {
+          settleTween = null;
+          isSettling = false;
+        },
+      });
+    };
+
+    settleToBeatRef.current = settleToBeat;
+
+    const scheduleSettle = () => {
+      window.clearTimeout(settleTimer);
+      if (isPointerActive || isSettling) return;
+
+      settleTimer = window.setTimeout(() => {
+        const target = snapTargetForScroll(shell.scrollTop, shell.clientHeight, BEATS.length);
+        settleToBeat(target.index);
+      }, 140);
+    };
+
     const onScroll = () => {
       cancelAnimationFrame(animationFrame);
       animationFrame = requestAnimationFrame(updateFromScroll);
+      scheduleSettle();
+    };
+
+    const onInteractionStart = () => {
+      isPointerActive = true;
+      cancelSettle();
+    };
+
+    const onInteractionEnd = () => {
+      isPointerActive = false;
+      scheduleSettle();
+    };
+
+    const onWheel = () => {
+      cancelSettle();
     };
 
     shell.addEventListener('scroll', onScroll, { passive: true });
+    shell.addEventListener('pointerdown', onInteractionStart, { passive: true });
+    shell.addEventListener('pointerup', onInteractionEnd, { passive: true });
+    shell.addEventListener('pointercancel', onInteractionEnd, { passive: true });
+    shell.addEventListener('wheel', onWheel, { passive: true });
     shell.scrollTop = beatRef.current * shell.clientHeight;
     updateFromScroll();
 
     return () => {
       cancelAnimationFrame(animationFrame);
+      cancelSettle();
       shell.removeEventListener('scroll', onScroll);
+      shell.removeEventListener('pointerdown', onInteractionStart);
+      shell.removeEventListener('pointerup', onInteractionEnd);
+      shell.removeEventListener('pointercancel', onInteractionEnd);
+      shell.removeEventListener('wheel', onWheel);
+      settleToBeatRef.current = () => undefined;
       context.revert();
     };
   }, [geometry.mode]);

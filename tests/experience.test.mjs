@@ -4,6 +4,7 @@ import assert from 'node:assert/strict';
 import {
   pageIndexForProgress,
   resolveTheme,
+  snapTargetForScroll,
   timelineValueForProgress,
   viewportMode,
 } from '../src/lib/experience.mjs';
@@ -35,4 +36,12 @@ test('timelineValueForProgress scrubs continuously and lands exactly on scene la
   assert.equal(timelineValueForProgress(0.5, labels), 2);
   assert.equal(timelineValueForProgress(0.75, labels), 3.5);
   assert.equal(timelineValueForProgress(1, labels), 5);
+});
+
+test('snapTargetForScroll settles to the nearest page after free scrolling', () => {
+  assert.deepEqual(snapTargetForScroll(220, 744, 9), { index: 0, top: 0 });
+  assert.deepEqual(snapTargetForScroll(500, 744, 9), { index: 1, top: 744 });
+  assert.deepEqual(snapTargetForScroll(1320, 744, 9), { index: 2, top: 1488 });
+  assert.deepEqual(snapTargetForScroll(-40, 744, 9), { index: 0, top: 0 });
+  assert.deepEqual(snapTargetForScroll(99999, 744, 9), { index: 8, top: 5952 });
 });
