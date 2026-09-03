@@ -165,8 +165,8 @@ button {
   position: absolute;
   inset: 0;
   background: var(--logo-coral);
-  mask: url('/pont-logo.png') center / 100% 100% no-repeat;
-  -webkit-mask: url('/pont-logo.png') center / 100% 100% no-repeat;
+  mask: url('/pont-logo.svg') center / 100% 100% no-repeat;
+  -webkit-mask: url('/pont-logo.svg') center / 100% 100% no-repeat;
 }
 
 .pont-mark__contrast {
