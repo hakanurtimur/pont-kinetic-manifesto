@@ -1,6 +1,6 @@
-# PONT — Kinetic Manifesto
+# PONT — Building Europe’s Physical Future
 
-Scroll-driven presentation website for PONT Amsterdam. The experience uses discrete full-viewport chapters, GSAP transitions, responsive landscape and portrait compositions, and persistent light/dark themes.
+Interactive presentation for PONT Amsterdam, built from the complete PONT narrative: Physical AI, Life Sciences, infrastructure, capital, community and education. The experience uses continuous scroll-driven animation, smooth full-viewport snapping, responsive landscape and portrait compositions, and persistent light/dark themes.
 
 ## Run locally
 

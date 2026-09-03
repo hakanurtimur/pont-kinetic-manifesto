@@ -1,5 +1,5 @@
 {
-  "name": "pont-kinetic-manifesto",
+  "name": "pont-presentation",
   "version": "0.1.0",
   "private": true,
   "engines": {
@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "node scripts/clean-next-cache.mjs && next build --webpack",
     "start": "next start",
     "test": "node --test tests/*.test.mjs",
     "lint": "oxlint app src tests",

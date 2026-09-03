@@ -1,3 +1,14 @@
+export const COVER = Object.freeze({
+  proposition: 'BUILDING THE PHYSICAL INFRASTRUCTURE FOR EUROPE\u2019S NEXT TECHNOLOGICAL ERA.',
+  pillars: Object.freeze([
+    'PHYSICAL AI',
+    'LIFE SCIENCES',
+    'CAPITAL',
+    'COMMUNITY',
+    'EDUCATION',
+  ]),
+});
+
 export const ROBOT_TECHNOLOGIES = Object.freeze([
   'AI',
   'VISION',
@@ -19,6 +30,7 @@ export const SCENES = Object.freeze([
       'NOW IT IS LEARNING TO ACT.',
       'THE NEXT ERA IS PHYSICAL.',
     ],
+    argument: 'AI IS MOVING BEYOND SCREENS AND SOFTWARE INTO MACHINES, LABORATORIES, FACTORIES AND HEALTHCARE.',
   },
   {
     id: 'european-paradox',
@@ -29,6 +41,7 @@ export const SCENES = Object.freeze([
       'IT KEEPS LOSING THE COMPANIES.',
       'BUILD SOMETHING WORTH STAYING FOR.',
     ],
+    argument: 'EUROPE HAS THE SCIENCE AND TALENT. IT LACKS THE ENVIRONMENTS WHERE AMBITIOUS COMPANIES CAN BUILD, TEST, FINANCE AND SCALE TOGETHER.',
   },
   {
     id: 'two-worlds',
@@ -39,6 +52,7 @@ export const SCENES = Object.freeze([
       'LIFE SCIENCES',
       'TWO WORLDS. ONE PHYSICAL FUTURE.',
     ],
+    argument: 'BOTH DOMAINS SHARE ONE CHALLENGE: TURNING INTELLIGENCE, SCIENCE AND SOFTWARE INTO PHYSICAL REALITY.',
   },
   {
     id: 'robot-ecosystem',
@@ -49,6 +63,7 @@ export const SCENES = Object.freeze([
       'HUNDREDS OF TECHNOLOGIES.',
       'NO SINGLE COMPANY BUILDS THE PHYSICAL AI FUTURE ALONE.',
     ],
+    argument: 'EVERY LAYER DEPENDS ON COMPANIES, SPECIALISTS AND SUPPLIERS THAT NEED ONE ANOTHER.',
     technologies: ROBOT_TECHNOLOGIES,
   },
 ]);

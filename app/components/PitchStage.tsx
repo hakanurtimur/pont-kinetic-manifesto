@@ -10,7 +10,7 @@ import {
   timelineValueForProgress,
   viewportMode,
 } from '@/src/lib/experience.mjs';
-import { ROBOT_TECHNOLOGIES, SCENES } from '@/src/content/pitch.mjs';
+import { COVER, ROBOT_TECHNOLOGIES, SCENES } from '@/src/content/pitch.mjs';
 import { PontMark } from './PontMark';
 
 const LANDSCAPE_STAGE = { width: 1133, height: 744 };
@@ -119,6 +119,7 @@ export function PitchStage() {
       timeline.addLabel('cover', 0);
       timeline
         .to($('.cover-mark'), { scale: 1.42, y: -36, autoAlpha: 0, duration: 0.62 }, 0.08)
+        .to($('.cover-copy'), { y: -18, autoAlpha: 0, duration: 0.42 }, '<')
         .to($('.cover-rule'), { scaleX: 0, duration: 0.46, transformOrigin: 'right center' }, '<0.04')
         .set($('.scene-era'), { autoAlpha: 1 }, '<0.16')
         .fromTo($('.think-line .line-inner'), { yPercent: 120 }, { yPercent: 0, duration: 0.58, stagger: 0.06, ease: 'power2.out' }, '<0.08')
@@ -129,6 +130,7 @@ export function PitchStage() {
         .fromTo($('.act-word'), { yPercent: 120, autoAlpha: 0 }, { yPercent: 0, autoAlpha: 1, duration: 0.52, ease: 'power2.out' }, '<0.08')
         .to($('.era-orbit'), { scale: 1, autoAlpha: 1, rotate: 180, duration: 0.62 }, '<')
         .fromTo($('.physical-statement .line-inner'), { yPercent: 120 }, { yPercent: 0, duration: 0.56, stagger: 0.06, ease: 'power2.out' }, '<0.12')
+        .fromTo($('.era-argument'), { y: 16, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.44 }, '<0.08')
         .addLabel('act')
         .to($('.scene-era'), { xPercent: isPortrait ? 0 : -16, yPercent: isPortrait ? -10 : 0, autoAlpha: 0, duration: 0.58 })
         .set($('.scene-europe'), { autoAlpha: 1 }, '<0.18')
@@ -143,6 +145,7 @@ export function PitchStage() {
         .to($('.companies-lockup'), { y: isPortrait ? -72 : -96, scale: isPortrait ? 0.82 : 0.74, transformOrigin: 'left top', duration: 0.58 })
         .to($('.escape-line'), { scaleX: 0, autoAlpha: 0, transformOrigin: 'right center', duration: 0.38 }, '<')
         .fromTo($('.stay-line .line-inner'), { yPercent: 120 }, { yPercent: 0, duration: 0.62, stagger: 0.06, ease: 'power2.out' }, '<0.12')
+        .fromTo($('.europe-argument'), { y: 16, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.44 }, '<0.12')
         .addLabel('stay')
         .to($('.scene-europe'), { yPercent: -12, autoAlpha: 0, duration: 0.58 })
         .set($('.scene-worlds'), { autoAlpha: 1 }, '<0.16')
@@ -159,6 +162,7 @@ export function PitchStage() {
         .to($('.world-axis'), { scaleX: 0, duration: 0.42 }, '<0.04')
         .to($('.convergence-orb'), { scale: isPortrait ? 7.8 : 6.4, autoAlpha: 0.08, duration: 0.7 }, '<')
         .fromTo($('.future-line .line-inner'), { yPercent: 120 }, { yPercent: 0, duration: 0.62, stagger: 0.06, ease: 'power2.out' }, '<0.12')
+        .fromTo($('.worlds-argument'), { y: 16, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.44 }, '<0.12')
         .addLabel('future')
         .to($('.scene-worlds'), { scale: 0.92, autoAlpha: 0, duration: 0.58 })
         .set($('.scene-robot'), { autoAlpha: 1 }, '<0.18')
@@ -170,7 +174,8 @@ export function PitchStage() {
         .fromTo($('.robot-link'), { scaleX: 0 }, { scaleX: 1, duration: 0.5, stagger: 0.025, ease: 'power2.out' })
         .fromTo($('.robot-node'), { scale: 0.72, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.5, stagger: 0.045, ease: 'back.out(1.35)' }, '<0.08')
         .fromTo($('.robot-result .line-inner'), { yPercent: 120 }, { yPercent: 0, duration: 0.58, stagger: 0.06, ease: 'power2.out' }, '<0.12')
-        .fromTo($('.robot-principle'), { y: 18, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.46 }, '<0.16')
+        .fromTo($('.robot-argument'), { y: 16, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.44 }, '<0.12')
+        .fromTo($('.robot-principle'), { y: 18, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.46 }, '<0.08')
         .addLabel('robot-ecosystem');
 
       const initialBeat = Math.min(BEATS.length - 1, Math.max(0, beatRef.current));
@@ -331,8 +336,14 @@ export function PitchStage() {
             )}
           </button>
 
-          <section className="scene scene-cover" aria-label="PONT Kinetic Manifesto">
-            <PontMark className="cover-mark" />
+          <section className="scene scene-cover" aria-label="PONT introduction">
+            <div className="cover-content">
+              <PontMark className="cover-mark" />
+              <div className="cover-copy">
+                <p className="cover-proposition">{COVER.proposition}</p>
+                <p className="cover-pillars">{COVER.pillars.join(' \u00d7 ')}</p>
+              </div>
+            </div>
             <span className="cover-rule" />
           </section>
 
@@ -347,6 +358,7 @@ export function PitchStage() {
               <span className="mask-line"><span className="line-inner">THE NEXT ERA</span></span>
               <span className="mask-line"><span className="line-inner accent">IS PHYSICAL.</span></span>
             </p>
+            <p className="scene-argument era-argument">{SCENES[0].argument}</p>
           </section>
 
           <section className="scene scene-europe" aria-label={SCENES[1].eyebrow}>
@@ -364,6 +376,7 @@ export function PitchStage() {
               <span className="mask-line"><span className="line-inner">BUILD SOMETHING</span></span>
               <span className="mask-line"><span className="line-inner">WORTH <em>STAYING</em> FOR.</span></span>
             </div>
+            <p className="scene-argument europe-argument">{SCENES[1].argument}</p>
           </section>
 
           <section className="scene scene-worlds" aria-label={SCENES[2].eyebrow}>
@@ -379,6 +392,7 @@ export function PitchStage() {
               <span className="mask-line"><span className="line-inner">TWO WORLDS.</span></span>
               <span className="mask-line"><span className="line-inner">ONE PHYSICAL <em>FUTURE.</em></span></span>
             </div>
+            <p className="scene-argument worlds-argument">{SCENES[2].argument}</p>
           </section>
 
           <section className="scene scene-robot" aria-label={SCENES[3].eyebrow}>
@@ -404,14 +418,15 @@ export function PitchStage() {
               <span className="mask-line"><span className="line-inner">HUNDREDS OF</span></span>
               <span className="mask-line"><span className="line-inner accent">TECHNOLOGIES.</span></span>
             </div>
+            <p className="scene-argument robot-argument">{SCENES[3].argument}</p>
             <p className="robot-principle">NO SINGLE COMPANY BUILDS THE PHYSICAL AI FUTURE ALONE.</p>
           </section>
 
-          <section className="reduced-summary" aria-label="PONT manifesto summary">
+          <section className="reduced-summary" aria-label="PONT story summary">
             {SCENES.map((scene) => <article key={scene.id}><span>{scene.index}</span><p>{scene.statements.at(-1)}</p></article>)}
           </section>
 
-          <nav className="pagination-dots" aria-label="Manifesto pages">
+          <nav className="pagination-dots" aria-label="Story chapters">
             {BEATS.map((beat, index) => (
               <button
                 className={index === activeBeat ? 'is-active' : ''}
@@ -424,7 +439,7 @@ export function PitchStage() {
             ))}
           </nav>
 
-          <nav className="stage-controls" aria-label="Manifesto navigation">
+          <nav className="stage-controls" aria-label="Story navigation">
             <button type="button" onClick={() => goToBeat(activeBeat - 1)} aria-label="Previous moment">↑</button>
             <button type="button" onClick={() => goToBeat(activeBeat + 1)} aria-label="Next moment">↓</button>
           </nav>

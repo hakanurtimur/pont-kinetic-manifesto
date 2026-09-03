@@ -185,7 +185,40 @@ button {
   place-items: center;
 }
 
+.cover-content {
+  display: grid;
+  justify-items: center;
+  gap: 34px;
+  width: 860px;
+}
+
 .cover-mark { position: relative; }
+
+.cover-copy {
+  display: grid;
+  justify-items: center;
+  gap: 15px;
+  text-align: center;
+}
+
+.cover-proposition {
+  max-width: 850px;
+  margin: 0;
+  color: var(--fg);
+  font-size: 25px;
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -0.045em;
+}
+
+.cover-pillars {
+  margin: 0;
+  color: var(--coral);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.045em;
+}
 
 .cover-rule {
   position: absolute;
@@ -388,6 +421,37 @@ button {
   font-size: 84px;
 }
 
+.scene-argument {
+  position: absolute;
+  margin: 0;
+  color: var(--muted);
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.16;
+  letter-spacing: -0.025em;
+  text-transform: uppercase;
+  will-change: transform, opacity;
+}
+
+.era-argument {
+  top: 506px;
+  left: 53px;
+  width: 545px;
+}
+
+.europe-argument {
+  bottom: 35px;
+  left: 80px;
+  width: 790px;
+}
+
+.worlds-argument {
+  top: 448px;
+  left: 191px;
+  width: 750px;
+  text-align: center;
+}
+
 .robot-heading {
   position: absolute;
   z-index: 3;
@@ -516,7 +580,7 @@ button {
 
 .robot-principle {
   position: absolute;
-  top: 458px;
+  top: 535px;
   left: 55px;
   width: 350px;
   margin: 0;
@@ -526,6 +590,12 @@ button {
   line-height: 1.05;
   letter-spacing: -0.035em;
   will-change: transform, opacity;
+}
+
+.robot-argument {
+  top: 446px;
+  left: 55px;
+  width: 355px;
 }
 
 .theme-toggle,
@@ -629,6 +699,9 @@ button {
   .stage-controls button { width: 42px; height: 42px; }
 
   .pont-mark { width: 620px; }
+  .cover-content { gap: 42px; width: 650px; }
+  .cover-proposition { max-width: 630px; font-size: 31px; }
+  .cover-pillars { max-width: 570px; font-size: 16px; line-height: 1.35; }
   .cover-rule { right: 50px; bottom: 154px; left: 50px; }
 
   .display-heading { font-size: 76px; line-height: 0.87; }
@@ -638,12 +711,14 @@ button {
   .act-mask { top: 66px; width: 300px; }
   .era-orbit { top: 475px; right: 75px; width: 236px; height: 236px; }
   .physical-statement { right: 42px; bottom: 160px; font-size: 43px; }
+  .era-argument { top: 776px; left: 42px; width: 540px; font-size: 20px; }
 
   .europe-rule { top: 115px; bottom: 125px; left: 42px; }
   .science-lockup { top: 175px; left: 72px; }
   .escape-line { top: 455px; right: 70px; left: 72px; }
   .companies-lockup { top: 505px; left: 72px; }
   .stay-line { bottom: 170px; left: 72px; font-size: 57px; }
+  .europe-argument { bottom: 94px; left: 72px; width: 580px; font-size: 18px; }
 
   .world-axis { top: 537px; right: 74px; left: 74px; }
   .domain { width: 596px; min-height: 250px; }
@@ -653,6 +728,7 @@ button {
 
   .convergence-orb { top: 495px; left: calc(50% - 80px); width: 160px; height: 160px; }
   .display-heading--future { top: 427px; right: 42px; left: 42px; font-size: 57px; line-height: 0.9; }
+  .worlds-argument { top: 610px; left: 72px; width: 600px; font-size: 20px; }
 
   .robot-heading { top: 128px; left: 42px; width: 520px; }
   .robot-network { top: 238px; left: 42px; width: 660px; height: 600px; }
@@ -669,7 +745,8 @@ button {
   .robot-node--7 { top: 260px; left: 0; }
   .robot-node--8 { top: 80px; left: 20px; }
   .robot-result { top: 870px; left: 42px; width: 650px; font-size: 56px; }
-  .robot-principle { top: auto; bottom: 72px; left: 42px; width: 560px; font-size: 20px; }
+  .robot-argument { top: 982px; left: 42px; width: 620px; font-size: 17px; }
+  .robot-principle { top: auto; bottom: 48px; left: 42px; width: 560px; font-size: 20px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
