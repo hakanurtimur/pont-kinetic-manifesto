@@ -20,6 +20,20 @@ export const ROBOT_TECHNOLOGIES = Object.freeze([
   'MANUFACTURING',
 ]);
 
+export const THERAPY_DISCIPLINES = Object.freeze([
+  'MOLECULAR BIOLOGY',
+  'AI',
+  'BIOINFORMATICS',
+  'DIAGNOSTICS',
+  'MICROFLUIDICS',
+  'LAB AUTOMATION',
+  'BIOMATERIALS',
+  'CLINICAL',
+  'REGULATORY',
+  'MANUFACTURING',
+  'QUALITY SYSTEMS',
+]);
+
 export const SCENES = Object.freeze([
   {
     id: 'physical-era',
@@ -65,6 +79,18 @@ export const SCENES = Object.freeze([
     ],
     argument: 'EVERY LAYER DEPENDS ON COMPANIES, SPECIALISTS AND SUPPLIERS THAT NEED ONE ANOTHER.',
     technologies: ROBOT_TECHNOLOGIES,
+  },
+  {
+    id: 'therapy-ecosystem',
+    index: '05',
+    eyebrow: 'ONE THERAPY IS AN ECOSYSTEM',
+    statements: [
+      'ONE THERAPY.',
+      'HUNDREDS OF DISCIPLINES.',
+      'SCIENCE BECOMES INDUSTRY THROUGH COLLABORATION.',
+    ],
+    argument: 'A BIOTECH COMPANY DOES NOT MOVE FROM DISCOVERY TO CLINIC ALONE.',
+    disciplines: THERAPY_DISCIPLINES,
   },
 ]);
 

@@ -10,7 +10,12 @@ import {
   timelineValueForProgress,
   viewportMode,
 } from '@/src/lib/experience.mjs';
-import { COVER, ROBOT_TECHNOLOGIES, SCENES } from '@/src/content/pitch.mjs';
+import {
+  COVER,
+  ROBOT_TECHNOLOGIES,
+  SCENES,
+  THERAPY_DISCIPLINES,
+} from '@/src/content/pitch.mjs';
 import { PontMark } from './PontMark';
 
 const LANDSCAPE_STAGE = { width: 1133, height: 744 };
@@ -176,7 +181,19 @@ export function PitchStage() {
         .fromTo($('.robot-result .line-inner'), { yPercent: 120 }, { yPercent: 0, duration: 0.58, stagger: 0.06, ease: 'power2.out' }, '<0.12')
         .fromTo($('.robot-argument'), { y: 16, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.44 }, '<0.12')
         .fromTo($('.robot-principle'), { y: 18, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.46 }, '<0.08')
-        .addLabel('robot-ecosystem');
+        .addLabel('robot-ecosystem')
+        .to($('.scene-robot'), { scale: 0.92, autoAlpha: 0, duration: 0.58 })
+        .set($('.scene-therapy'), { autoAlpha: 1 }, '<0.18')
+        .fromTo($('.therapy-heading .line-inner'), { yPercent: 120 }, { yPercent: 0, duration: 0.58, ease: 'power2.out' }, '<0.08')
+        .fromTo($('.therapy-core'), { scale: 0.16, rotate: -36, autoAlpha: 0 }, { scale: 1, rotate: 0, autoAlpha: 1, duration: 0.7, ease: 'power3.out' }, '<0.02')
+        .fromTo($('.therapy-ring'), { scale: 0.35, rotate: -70, autoAlpha: 0 }, { scale: 1, rotate: 0, autoAlpha: 1, duration: 0.7, stagger: 0.06 }, '<')
+        .set($('.scene-robot'), { autoAlpha: 0 }, '>')
+        .addLabel('therapy-core')
+        .fromTo($('.therapy-node'), { scale: 0.7, y: 16, autoAlpha: 0 }, { scale: 1, y: 0, autoAlpha: 1, duration: 0.48, stagger: 0.038, ease: 'back.out(1.3)' })
+        .fromTo($('.therapy-result .line-inner'), { yPercent: 120 }, { yPercent: 0, duration: 0.58, stagger: 0.06, ease: 'power2.out' }, '<0.12')
+        .fromTo($('.therapy-argument'), { y: 16, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.44 }, '<0.12')
+        .fromTo($('.therapy-principle'), { y: 18, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.46 }, '<0.08')
+        .addLabel('therapy-ecosystem');
 
       const initialBeat = Math.min(BEATS.length - 1, Math.max(0, beatRef.current));
       beatRef.current = initialBeat;
@@ -420,6 +437,35 @@ export function PitchStage() {
             </div>
             <p className="scene-argument robot-argument">{SCENES[3].argument}</p>
             <p className="robot-principle">NO SINGLE COMPANY BUILDS THE PHYSICAL AI FUTURE ALONE.</p>
+          </section>
+
+          <section className="scene scene-therapy" aria-label={SCENES[4].eyebrow}>
+            <h2 className="therapy-heading display-heading display-heading--medium">
+              <span className="mask-line"><span className="line-inner">ONE <em>THERAPY.</em></span></span>
+            </h2>
+
+            <div className="therapy-network" aria-label="Disciplines inside a modern therapy">
+              <span className="therapy-ring therapy-ring--outer" aria-hidden="true" />
+              <span className="therapy-ring therapy-ring--middle" aria-hidden="true" />
+              <span className="therapy-ring therapy-ring--inner" aria-hidden="true" />
+              <div className="therapy-core" aria-label="One therapy">
+                <span className="therapy-cell therapy-cell--large" />
+                <span className="therapy-cell therapy-cell--medium" />
+                <span className="therapy-cell therapy-cell--small" />
+                <strong>01</strong>
+                <span className="therapy-core__label">THERAPY</span>
+              </div>
+              {THERAPY_DISCIPLINES.map((discipline, index) => (
+                <span className={`therapy-node therapy-node--${index + 1}`} key={discipline}>{discipline}</span>
+              ))}
+            </div>
+
+            <div className="therapy-result display-heading display-heading--medium">
+              <span className="mask-line"><span className="line-inner">HUNDREDS OF</span></span>
+              <span className="mask-line"><span className="line-inner accent">DISCIPLINES.</span></span>
+            </div>
+            <p className="scene-argument therapy-argument">{SCENES[4].argument}</p>
+            <p className="therapy-principle">SCIENCE BECOMES INDUSTRY THROUGH COLLABORATION.</p>
           </section>
 
           <section className="reduced-summary" aria-label="PONT story summary">

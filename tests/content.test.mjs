@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { COVER, SCENES } from '../src/content/pitch.mjs';
+import { COVER, SCENES, THERAPY_DISCIPLINES } from '../src/content/pitch.mjs';
 
 test('cover carries the core proposition and ecosystem pillars from the brief', () => {
   assert.equal(
@@ -17,10 +17,10 @@ test('cover carries the core proposition and ecosystem pillars from the brief', 
   ]);
 });
 
-test('prototype contains the approved scenes through the robot ecosystem', () => {
+test('prototype contains the approved scenes through the therapy ecosystem', () => {
   assert.deepEqual(
     SCENES.map(({ id }) => id),
-    ['physical-era', 'european-paradox', 'two-worlds', 'robot-ecosystem'],
+    ['physical-era', 'european-paradox', 'two-worlds', 'robot-ecosystem', 'therapy-ecosystem'],
   );
 });
 
@@ -51,6 +51,25 @@ test('presentation statements stay verbatim', () => {
     'BATTERIES',
     'MANUFACTURING',
   ]);
+  assert.deepEqual(SCENES[4].statements, [
+    'ONE THERAPY.',
+    'HUNDREDS OF DISCIPLINES.',
+    'SCIENCE BECOMES INDUSTRY THROUGH COLLABORATION.',
+  ]);
+  assert.deepEqual(SCENES[4].disciplines, THERAPY_DISCIPLINES);
+  assert.deepEqual(THERAPY_DISCIPLINES, [
+    'MOLECULAR BIOLOGY',
+    'AI',
+    'BIOINFORMATICS',
+    'DIAGNOSTICS',
+    'MICROFLUIDICS',
+    'LAB AUTOMATION',
+    'BIOMATERIALS',
+    'CLINICAL',
+    'REGULATORY',
+    'MANUFACTURING',
+    'QUALITY SYSTEMS',
+  ]);
 });
 
 test('every approved scene carries a visible argument line from the brief', () => {
@@ -59,5 +78,6 @@ test('every approved scene carries a visible argument line from the brief', () =
     'EUROPE HAS THE SCIENCE AND TALENT. IT LACKS THE ENVIRONMENTS WHERE AMBITIOUS COMPANIES CAN BUILD, TEST, FINANCE AND SCALE TOGETHER.',
     'BOTH DOMAINS SHARE ONE CHALLENGE: TURNING INTELLIGENCE, SCIENCE AND SOFTWARE INTO PHYSICAL REALITY.',
     'EVERY LAYER DEPENDS ON COMPANIES, SPECIALISTS AND SUPPLIERS THAT NEED ONE ANOTHER.',
+    'A BIOTECH COMPANY DOES NOT MOVE FROM DISCOVERY TO CLINIC ALONE.',
   ]);
 });

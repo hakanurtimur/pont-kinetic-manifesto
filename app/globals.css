@@ -598,6 +598,167 @@ button {
   width: 355px;
 }
 
+.therapy-heading {
+  position: absolute;
+  z-index: 3;
+  top: 112px;
+  left: 53px;
+  width: 390px;
+}
+
+.therapy-network {
+  position: absolute;
+  top: 82px;
+  left: 430px;
+  width: 650px;
+  height: 580px;
+}
+
+.therapy-ring {
+  position: absolute;
+  border: 1px solid var(--hairline);
+  will-change: transform, opacity;
+}
+
+.therapy-ring--outer {
+  top: 75px;
+  left: 90px;
+  width: 470px;
+  height: 430px;
+  border-radius: 46% 54% 51% 49% / 58% 43% 57% 42%;
+  background: color-mix(in srgb, var(--coral) 4%, transparent);
+}
+
+.therapy-ring--middle {
+  top: 125px;
+  left: 145px;
+  width: 360px;
+  height: 330px;
+  border-radius: 55% 45% 47% 53% / 45% 57% 43% 55%;
+  background: color-mix(in srgb, var(--coral) 5%, transparent);
+}
+
+.therapy-ring--inner {
+  top: 180px;
+  left: 205px;
+  width: 240px;
+  height: 220px;
+  border-color: color-mix(in srgb, var(--coral) 45%, var(--hairline));
+  border-radius: 43% 57% 55% 45% / 56% 48% 52% 44%;
+  background: color-mix(in srgb, var(--coral) 7%, transparent);
+}
+
+.therapy-core {
+  position: absolute;
+  z-index: 4;
+  top: 235px;
+  left: 270px;
+  display: grid;
+  place-items: center;
+  width: 110px;
+  height: 110px;
+  border: 2px solid var(--coral);
+  border-radius: 46% 54% 57% 43% / 55% 44% 56% 45%;
+  background: var(--bg);
+  color: var(--fg);
+  will-change: transform, opacity;
+}
+
+.therapy-cell {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--coral);
+  opacity: 0.2;
+}
+
+.therapy-cell--large { top: 10px; left: 15px; width: 42px; height: 42px; }
+.therapy-cell--medium { right: 13px; bottom: 15px; width: 34px; height: 34px; }
+.therapy-cell--small { right: 17px; top: 16px; width: 19px; height: 19px; opacity: 0.42; }
+
+.therapy-core strong,
+.therapy-core__label {
+  position: relative;
+  z-index: 1;
+  background: var(--bg);
+}
+
+.therapy-core strong {
+  align-self: end;
+  padding: 0 7px;
+  color: var(--coral);
+  font-size: 42px;
+  line-height: 0.9;
+  letter-spacing: -0.08em;
+}
+
+.therapy-core__label {
+  align-self: start;
+  padding: 3px 6px 0;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+}
+
+.therapy-node {
+  position: absolute;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  width: 150px;
+  min-height: 38px;
+  padding: 7px 9px;
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  background: var(--bg);
+  color: var(--fg);
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.015em;
+  text-align: center;
+  will-change: transform, opacity;
+}
+
+.therapy-node--1 { top: 20px; left: 250px; }
+.therapy-node--2 { top: 60px; right: 30px; }
+.therapy-node--3 { top: 145px; right: 105px; }
+.therapy-node--4 { top: 240px; right: 105px; }
+.therapy-node--5 { top: 335px; right: 105px; }
+.therapy-node--6 { right: 35px; bottom: 60px; }
+.therapy-node--7 { bottom: 20px; left: 250px; }
+.therapy-node--8 { bottom: 60px; left: 35px; }
+.therapy-node--9 { bottom: 145px; left: 0; }
+.therapy-node--10 { top: 240px; left: 0; }
+.therapy-node--11 { top: 60px; left: 35px; }
+
+.therapy-result {
+  position: absolute;
+  top: 322px;
+  left: 53px;
+  width: 380px;
+  font-size: 50px;
+}
+
+.therapy-argument {
+  top: 446px;
+  left: 55px;
+  width: 355px;
+}
+
+.therapy-principle {
+  position: absolute;
+  top: 535px;
+  left: 55px;
+  width: 350px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 19px;
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  will-change: transform, opacity;
+}
+
 .theme-toggle,
 .stage-controls button,
 .pagination-dots button {
@@ -747,6 +908,28 @@ button {
   .robot-result { top: 870px; left: 42px; width: 650px; font-size: 56px; }
   .robot-argument { top: 982px; left: 42px; width: 620px; font-size: 17px; }
   .robot-principle { top: auto; bottom: 48px; left: 42px; width: 560px; font-size: 20px; }
+
+  .therapy-heading { top: 128px; left: 42px; width: 520px; }
+  .therapy-network { top: 205px; left: 22px; width: 700px; height: 610px; }
+  .therapy-ring--outer { top: 70px; left: 100px; width: 500px; height: 450px; }
+  .therapy-ring--middle { top: 125px; left: 165px; width: 370px; height: 340px; }
+  .therapy-ring--inner { top: 185px; left: 230px; width: 240px; height: 220px; }
+  .therapy-core { top: 240px; left: 295px; }
+  .therapy-node { width: 160px; min-height: 42px; font-size: 13px; }
+  .therapy-node--1 { top: 0; left: 270px; }
+  .therapy-node--2 { top: 55px; right: 25px; }
+  .therapy-node--3 { top: 135px; right: 120px; }
+  .therapy-node--4 { top: 225px; right: 120px; }
+  .therapy-node--5 { top: 315px; right: 120px; }
+  .therapy-node--6 { right: 25px; bottom: 55px; }
+  .therapy-node--7 { bottom: 0; left: 270px; }
+  .therapy-node--8 { bottom: 55px; left: 25px; }
+  .therapy-node--9 { bottom: 135px; left: 0; }
+  .therapy-node--10 { top: 225px; left: 0; }
+  .therapy-node--11 { top: 55px; left: 25px; }
+  .therapy-result { top: 835px; left: 42px; width: 650px; font-size: 56px; }
+  .therapy-argument { top: 947px; left: 42px; width: 620px; font-size: 17px; }
+  .therapy-principle { top: auto; bottom: 44px; left: 42px; width: 580px; font-size: 20px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
