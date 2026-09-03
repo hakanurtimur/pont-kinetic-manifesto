@@ -5,15 +5,16 @@ import { gsap } from 'gsap';
 
 import { BEATS } from '@/src/lib/progress.mjs';
 import {
-  dragPreviewPosition,
-  swipeStepTarget,
-  wheelStepTarget,
-} from '@/src/lib/navigation.mjs';
-import {
+  pageIndexForProgress,
   resolveTheme,
   timelineValueForProgress,
   viewportMode,
 } from '@/src/lib/experience.mjs';
+import {
+  appearanceTokensFor,
+  PALETTES,
+  resolvePalette,
+} from '@/src/lib/theme.mjs';
 import {
   BRIDGE_ROUTES,
   CAPITAL_PARTNERS,
@@ -42,7 +43,18 @@ const LANDSCAPE_STAGE = { width: 1133, height: 744 };
 const PORTRAIT_STAGE = { width: 744, height: 1133 };
 
 type Theme = 'light' | 'dark';
+type Palette = 'pont' | 'green' | 'cobalt' | 'violet';
 type Orientation = 'landscape' | 'portrait';
+
+function applyAppearanceTokens(theme: Theme, palette: Palette) {
+  const root = document.documentElement;
+  const tokens = appearanceTokensFor(theme, palette) as Record<string, string>;
+  root.dataset.theme = theme;
+  root.dataset.palette = palette;
+  for (const [token, value] of Object.entries(tokens)) {
+    root.style.setProperty(token, value);
+  }
+}
 
 function useStageGeometry() {
   const [geometry, setGeometry] = useState({ scale: 1, mode: 'landscape' as Orientation });
@@ -77,28 +89,40 @@ function useStageGeometry() {
   return geometry;
 }
 
-function useTheme() {
-  const [theme, setTheme] = useState<Theme>('dark');
+function useAppearance() {
+  const [appearance, setAppearance] = useState<{ theme: Theme; palette: Palette }>({
+    theme: 'dark',
+    palette: 'pont',
+  });
 
   useEffect(() => {
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     const saved = window.localStorage.getItem('pont-theme');
-    const initial = resolveTheme(saved, prefersDark) as Theme;
-    document.documentElement.dataset.theme = initial;
-    const frame = requestAnimationFrame(() => setTheme(initial));
+    const theme = resolveTheme(saved, prefersDark) as Theme;
+    const palette = resolvePalette(window.localStorage.getItem('pont-palette')) as Palette;
+    applyAppearanceTokens(theme, palette);
+    const frame = requestAnimationFrame(() => setAppearance({ theme, palette }));
     return () => cancelAnimationFrame(frame);
   }, []);
 
-  const toggle = () => {
-    setTheme((current) => {
-      const next = current === 'dark' ? 'light' : 'dark';
-      document.documentElement.dataset.theme = next;
-      window.localStorage.setItem('pont-theme', next);
-      return next;
+  const toggleTheme = () => {
+    setAppearance((current) => {
+      const theme = current.theme === 'dark' ? 'light' : 'dark';
+      applyAppearanceTokens(theme, current.palette);
+      window.localStorage.setItem('pont-theme', theme);
+      return { ...current, theme };
     });
   };
 
-  return { theme, toggle };
+  const selectPalette = (palette: Palette) => {
+    setAppearance((current) => {
+      applyAppearanceTokens(current.theme, palette);
+      window.localStorage.setItem('pont-palette', palette);
+      return { ...current, palette };
+    });
+  };
+
+  return { ...appearance, toggleTheme, selectPalette };
 }
 
 export function PitchStage() {
@@ -107,12 +131,26 @@ export function PitchStage() {
   const beatRef = useRef(0);
   const navigationRef = useRef<(index: number) => void>(() => undefined);
   const [activeBeat, setActiveBeat] = useState(0);
+  const [paletteOpen, setPaletteOpen] = useState(false);
   const geometry = useStageGeometry();
-  const { theme, toggle: toggleTheme } = useTheme();
+  const { theme, palette, toggleTheme, selectPalette } = useAppearance();
 
   const goToBeat = useCallback((index: number) => {
     navigationRef.current(index);
   }, []);
+
+  useEffect(() => {
+    if (!paletteOpen) return;
+
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setPaletteOpen(false);
+    };
+    window.addEventListener('keydown', closeOnEscape);
+
+    return () => {
+      window.removeEventListener('keydown', closeOnEscape);
+    };
+  }, [paletteOpen]);
 
   useLayoutEffect(() => {
     const shell = shellRef.current;
@@ -121,15 +159,8 @@ export function PitchStage() {
 
     const isPortrait = geometry.mode === 'portrait';
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    let transitionTween: gsap.core.Tween | null = null;
-    let isTransitioning = false;
-    let wheelGestureActive = false;
-    let wheelIdleTimer: ReturnType<typeof setTimeout> | null = null;
-    let activePointerId: number | null = null;
-    let pointerStartY = 0;
-    let pointerStartBeat = 0;
-    let pointerDistance = 0;
-    let visualPosition = beatRef.current;
+    let animationFrame = 0;
+    let initialFrame = 0;
     let timelineInstance: gsap.core.Timeline | null = null;
 
     const context = gsap.context(() => {
@@ -501,133 +532,43 @@ export function PitchStage() {
 
     const labelValues = BEATS.map((beat) => timelineInstance?.labels[beat] ?? 0);
 
-    const renderPosition = (position: number) => {
+    const updateFromScroll = () => {
       if (!timelineInstance) return;
-      visualPosition = Math.min(BEATS.length - 1, Math.max(0, position));
-      const progress = visualPosition / Math.max(1, BEATS.length - 1);
+      const maxScroll = Math.max(1, shell.scrollHeight - shell.clientHeight);
+      const progress = Math.min(1, Math.max(0, shell.scrollTop / maxScroll));
       timelineInstance.time(timelineValueForProgress(progress, labelValues), false);
+
+      const currentBeat = pageIndexForProgress(progress, BEATS.length);
+      if (currentBeat !== beatRef.current) {
+        beatRef.current = currentBeat;
+        setActiveBeat(currentBeat);
+      }
     };
 
-    const setSettledBeat = (index: number) => {
-      beatRef.current = index;
-      setActiveBeat(index);
-    };
-
-    const animateToBeat = (index: number) => {
-      if (isTransitioning) return false;
-
-      const target = Math.min(BEATS.length - 1, Math.max(0, Math.round(index)));
-      if (reduceMotion) {
-        renderPosition(target);
-        setSettledBeat(target);
-        return true;
-      }
-
-      const remaining = Math.abs(target - visualPosition);
-      if (remaining < 0.0001) {
-        renderPosition(target);
-        setSettledBeat(target);
-        return false;
-      }
-
-      const playhead = { position: visualPosition };
-      isTransitioning = true;
-      transitionTween = gsap.to(playhead, {
-        position: target,
-        duration: gsap.utils.clamp(0.52, 0.78, 0.48 + remaining * 0.3),
-        ease: 'power2.inOut',
-        overwrite: true,
-        onUpdate: () => renderPosition(playhead.position),
-        onComplete: () => {
-          renderPosition(target);
-          setSettledBeat(target);
-          isTransitioning = false;
-          transitionTween = null;
-        },
-      });
-      return true;
+    const onScroll = () => {
+      cancelAnimationFrame(animationFrame);
+      animationFrame = requestAnimationFrame(updateFromScroll);
     };
 
     navigationRef.current = (index: number) => {
-      if (activePointerId !== null) return;
-      animateToBeat(index);
+      const target = Math.min(BEATS.length - 1, Math.max(0, Math.round(index)));
+      shell.scrollTo({
+        top: target * shell.clientHeight,
+        behavior: reduceMotion ? 'auto' : 'smooth',
+      });
     };
 
-    const releaseWheelGesture = () => {
-      wheelGestureActive = false;
-      wheelIdleTimer = null;
-    };
-
-    const onWheel = (event: WheelEvent) => {
-      if (event.ctrlKey) return;
-      event.preventDefault();
-
-      if (wheelIdleTimer !== null) clearTimeout(wheelIdleTimer);
-      wheelIdleTimer = setTimeout(releaseWheelGesture, 160);
-      if (wheelGestureActive || isTransitioning || activePointerId !== null) return;
-
-      const target = wheelStepTarget(
-        beatRef.current,
-        event.deltaY,
-        event.deltaX,
-        BEATS.length,
-      );
-      if (target === beatRef.current) return;
-
-      wheelGestureActive = true;
-      animateToBeat(target);
-    };
-
-    const onPointerDown = (event: PointerEvent) => {
-      if (event.pointerType === 'mouse' || !event.isPrimary || isTransitioning) return;
-      activePointerId = event.pointerId;
-      pointerStartY = event.clientY;
-      pointerStartBeat = beatRef.current;
-      pointerDistance = 0;
-      shell.setPointerCapture?.(event.pointerId);
-    };
-
-    const onPointerMove = (event: PointerEvent) => {
-      if (event.pointerId !== activePointerId) return;
-      event.preventDefault();
-      pointerDistance = pointerStartY - event.clientY;
-      renderPosition(dragPreviewPosition(
-        pointerStartBeat,
-        pointerDistance,
-        shell.clientHeight,
-        BEATS.length,
-      ));
-    };
-
-    const finishPointer = (event: PointerEvent, cancelled = false) => {
-      if (event.pointerId !== activePointerId) return;
-      if (shell.hasPointerCapture?.(event.pointerId)) shell.releasePointerCapture(event.pointerId);
-      activePointerId = null;
-      const target = cancelled
-        ? pointerStartBeat
-        : swipeStepTarget(pointerStartBeat, pointerDistance, BEATS.length);
-      animateToBeat(target);
-    };
-
-    const onPointerUp = (event: PointerEvent) => finishPointer(event);
-    const onPointerCancel = (event: PointerEvent) => finishPointer(event, true);
-
-    shell.addEventListener('wheel', onWheel, { passive: false });
-    shell.addEventListener('pointerdown', onPointerDown, { passive: true });
-    shell.addEventListener('pointermove', onPointerMove, { passive: false });
-    shell.addEventListener('pointerup', onPointerUp, { passive: true });
-    shell.addEventListener('pointercancel', onPointerCancel, { passive: true });
-    renderPosition(beatRef.current);
+    shell.addEventListener('scroll', onScroll, { passive: true });
+    initialFrame = requestAnimationFrame(() => {
+      shell.scrollTop = beatRef.current * shell.clientHeight;
+      updateFromScroll();
+    });
 
     return () => {
-      if (wheelIdleTimer !== null) clearTimeout(wheelIdleTimer);
-      transitionTween?.kill();
+      cancelAnimationFrame(animationFrame);
+      cancelAnimationFrame(initialFrame);
       navigationRef.current = () => undefined;
-      shell.removeEventListener('wheel', onWheel);
-      shell.removeEventListener('pointerdown', onPointerDown);
-      shell.removeEventListener('pointermove', onPointerMove);
-      shell.removeEventListener('pointerup', onPointerUp);
-      shell.removeEventListener('pointercancel', onPointerCancel);
+      shell.removeEventListener('scroll', onScroll);
       context.revert();
     };
   }, [geometry.mode]);
@@ -655,14 +596,6 @@ export function PitchStage() {
           ref={stageRef}
           style={{ '--stage-scale': geometry.scale } as React.CSSProperties}
         >
-          <button className="theme-toggle" type="button" onClick={toggleTheme} aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}>
-            {theme === 'dark' ? (
-              <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" /></svg>
-            ) : (
-              <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M20.8 15.1A8.5 8.5 0 0 1 8.9 3.2 8.5 8.5 0 1 0 20.8 15.1Z" /></svg>
-            )}
-          </button>
-
           <section className="scene scene-cover" aria-label="PONT introduction">
             <div className="cover-content">
               <PontMark className="cover-mark" />
@@ -1269,25 +1202,91 @@ export function PitchStage() {
           <section className="reduced-summary" aria-label="PONT story summary">
             {SCENES.map((scene) => <article key={scene.id}><span>{scene.index}</span><p>{scene.statements.at(-1)}</p></article>)}
           </section>
-
-          <nav className="pagination-dots" aria-label="Story chapters">
-            {BEATS.map((beat, index) => (
-              <button
-                className={index === activeBeat ? 'is-active' : ''}
-                key={beat}
-                type="button"
-                onClick={() => goToBeat(index)}
-                aria-label={`Go to moment ${index + 1}`}
-                aria-current={index === activeBeat ? 'step' : undefined}
-              />
-            ))}
-          </nav>
-
-          <nav className="stage-controls" aria-label="Story navigation">
-            <button type="button" onClick={() => goToBeat(activeBeat - 1)} aria-label="Previous moment">↑</button>
-            <button type="button" onClick={() => goToBeat(activeBeat + 1)} aria-label="Next moment">↓</button>
-          </nav>
         </div>
+
+          <div className="experience-controls">
+            <div className="palette-control">
+              <button
+                className="palette-toggle"
+                type="button"
+                onClick={() => setPaletteOpen((current) => !current)}
+                aria-label="Choose color palette"
+                aria-expanded={paletteOpen}
+                aria-controls="palette-options"
+              >
+                <span className="palette-toggle__mark" aria-hidden="true">
+                  <i /><i /><i />
+                </span>
+              </button>
+
+              {paletteOpen && (
+                <fieldset className="palette-options" id="palette-options">
+                  <legend className="sr-only">Project color palette</legend>
+                  {PALETTES.map((option) => (
+                    <button
+                      className="palette-option"
+                      key={option.id}
+                      type="button"
+                      aria-pressed={palette === option.id}
+                      aria-label={option.label}
+                      title={option.label}
+                      onClick={() => {
+                        selectPalette(option.id as Palette);
+                        setPaletteOpen(false);
+                      }}
+                      style={{ '--swatch': option.swatch } as CSSProperties}
+                    >
+                      <span className="palette-option__swatch" aria-hidden="true" />
+                    </button>
+                  ))}
+                </fieldset>
+              )}
+            </div>
+
+            <button className="theme-toggle" type="button" onClick={toggleTheme} aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}>
+              {theme === 'dark' ? (
+                <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" /></svg>
+              ) : (
+                <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M20.8 15.1A8.5 8.5 0 0 1 8.9 3.2 8.5 8.5 0 1 0 20.8 15.1Z" /></svg>
+              )}
+            </button>
+
+            <div
+              className="chapter-progress"
+            >
+              <span className="chapter-progress__count" aria-hidden="true">
+                <strong>{String(activeBeat + 1).padStart(2, '0')}</strong>
+                <span>/ {String(BEATS.length).padStart(2, '0')}</span>
+              </span>
+              <span className="chapter-progress__meter">
+                <progress
+                  className="chapter-progress__track"
+                  max={BEATS.length}
+                  value={activeBeat + 1}
+                  aria-label="Story progress"
+                  aria-valuetext={`Moment ${activeBeat + 1} of ${BEATS.length}: ${BEATS[activeBeat].replaceAll('-', ' ')}`}
+                />
+                <span
+                  className="chapter-progress__thumb"
+                  style={{ '--progress': `${((activeBeat + 1) / BEATS.length) * 100}%` } as CSSProperties}
+                  aria-hidden="true"
+                />
+              </span>
+            </div>
+
+            <nav className="stage-controls" aria-label="Story navigation">
+              <button type="button" onClick={() => goToBeat(activeBeat - 1)} aria-label="Previous moment" disabled={activeBeat === 0}>
+                <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m7 14 5-5 5 5" /></svg>
+              </button>
+              <button type="button" onClick={() => goToBeat(activeBeat + 1)} aria-label="Next moment" disabled={activeBeat === BEATS.length - 1}>
+                <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m7 10 5 5 5-5" /></svg>
+              </button>
+            </nav>
+          </div>
+      </div>
+
+      <div className="pagination-rail" aria-hidden="true">
+        {BEATS.map((beat) => <section className="scroll-page" key={beat} />)}
       </div>
 
     </main>
