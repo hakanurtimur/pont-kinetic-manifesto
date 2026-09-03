@@ -56,6 +56,103 @@ export const COMMUNITY_GROUPS = Object.freeze([
   'ECOSYSTEM PARTNERS',
 ]);
 
+export const HOME_LAYERS = Object.freeze([
+  'ROBOTICS',
+  'LIFE SCIENCES',
+  'HARDWARE',
+  'LABS',
+  'TESTING',
+  'CAPITAL',
+  'COMMUNITY',
+]);
+
+export const STACK_TRANSITIONS = Object.freeze([
+  Object.freeze({ from: 'AI', to: 'PHYSICAL AI' }),
+  Object.freeze({ from: 'SOFTWARE', to: 'SCIENCE' }),
+  Object.freeze({ from: 'INTELLIGENCE', to: 'THE REAL WORLD' }),
+]);
+
+export const REVENUE_ENGINES = Object.freeze([
+  Object.freeze({ name: 'SPACE', detail: 'LABS · ROBOTICS · OFFICES · FLEXIBLE SPACE' }),
+  Object.freeze({ name: 'SERVICES', detail: 'LEGAL · FINANCE · REGULATORY · OPERATIONS · CORPORATE SERVICES' }),
+  Object.freeze({ name: 'COMMUNITY', detail: 'EVENTS · MEMBERSHIPS · PARTNERSHIPS · SPONSORSHIPS' }),
+  Object.freeze({ name: 'VENTURES', detail: 'EQUITY-FOR-SPACE · EQUITY-FOR-SERVICES · STARTUP PORTFOLIO' }),
+  Object.freeze({ name: 'CAPITAL', detail: 'INVESTOR NETWORK · CO-INVESTMENT · FUTURE INVESTMENT VEHICLES' }),
+  Object.freeze({ name: 'EDUCATION', detail: 'ACADEMY · EXECUTIVE PROGRAMMES · FUTURE UNIVERSITY' }),
+]);
+
+export const FLYWHEEL_STEPS = Object.freeze([
+  'TENANT',
+  'COMMUNITY MEMBER',
+  'EMBEDDED SERVICES',
+  'INVESTOR ACCESS',
+  'COLLABORATION',
+  'CORPORATE DISCOVERY',
+  'SELECTED EQUITY',
+  'NEXT-GEN FOUNDERS',
+]);
+
+export const FLYWHEEL_LAYERS = Object.freeze([
+  'RENT PAYS THE FLOOR',
+  'SERVICES DEEPEN THE RELATIONSHIP',
+  'COMMUNITY CREATES THE NETWORK EFFECT',
+  'EQUITY CAPTURES THE UPSIDE',
+]);
+
+export const CAPITAL_PARTNERS = Object.freeze([
+  'INVESTOR GATHERINGS',
+  'CORPORATE INVESTORS',
+  'VENTURE CAPITAL',
+  'FAMILY OFFICES',
+  'STRATEGIC PARTNERS',
+  'INVESTMENT VEHICLES',
+]);
+
+export const BRIDGE_ROUTES = Object.freeze([
+  { origin: 'EUROPE', via: 'PONT', destination: 'SCALE IN EUROPE' },
+  { origin: 'WORLD', via: 'PONT', destination: 'ENTER EUROPE' },
+]);
+
+export const UNIVERSITY_LAYERS = Object.freeze([
+  'ENTREPRENEURSHIP',
+  'TECHNOLOGY',
+  'PROJECTS',
+  'COMPETENCIES',
+  'NETWORKS',
+  'REAL-WORLD PRODUCTION',
+]);
+
+export const UNIVERSITY_MODES = Object.freeze([
+  Object.freeze({ value: '90%', label: 'DIGITAL' }),
+  Object.freeze({ value: '10%', label: 'PHYSICAL' }),
+]);
+
+export const FOUNDER_FIRST_FEATURES = Object.freeze([
+  'AI-NATIVE ADMINISTRATION',
+  'AI-NATIVE EDUCATION',
+  'AI-SUPPORTED LEGAL + OPERATIONAL ARCHITECTURE',
+  'PROJECT-BASED',
+  'FOUNDER-LED',
+  'INDUSTRY-EMBEDDED',
+  'INTERNATIONAL BY DESIGN',
+]);
+
+export const MODEL_LAYERS = Object.freeze([
+  'INFRASTRUCTURE',
+  'COMMUNITY',
+  'CAPITAL',
+  'SERVICES',
+  'EDUCATION',
+]);
+
+export const VISION_TRANSFORMATIONS = Object.freeze([
+  Object.freeze({ from: 'INTELLIGENCE', to: 'MACHINES' }),
+  Object.freeze({ from: 'SCIENCE', to: 'COMPANIES' }),
+  Object.freeze({ from: 'FOUNDERS', to: 'CAPITAL' }),
+  Object.freeze({ from: 'COMMUNITY', to: 'INFRASTRUCTURE' }),
+  Object.freeze({ from: 'EDUCATION', to: 'THE REAL ECONOMY' }),
+]);
+
 export const SCENES = Object.freeze([
   {
     id: 'physical-era',
@@ -161,6 +258,129 @@ export const SCENES = Object.freeze([
     ],
     argument: 'PONT STARTS WITH AN EXISTING COMMUNITY OF THOUSANDS AND GIVES THAT ECOSYSTEM A PHYSICAL HOME.',
     community: COMMUNITY_GROUPS,
+  },
+  {
+    id: 'the-home',
+    index: '10',
+    eyebrow: 'THE HOME',
+    statements: [
+      '10,000 M² TO BUILD WHAT EUROPE IS MISSING.',
+      'PONT ADDS THE PHYSICAL LAYER.',
+      'AN ECOSYSTEM INSIDE AN ECOSYSTEM.',
+    ],
+    argument: 'PONT IS BEING DEVELOPED IN THE STACK, IN AMSTERDAM OOST, WITH ROOM TO GROW TOWARDS APPROXIMATELY 10,000 M².',
+    layers: HOME_LAYERS,
+  },
+  {
+    id: 'stack-pont',
+    index: '11',
+    eyebrow: 'THE STACK × PONT',
+    statements: [
+      'THE STACK BUILDS THE INTELLIGENCE LAYER.',
+      'PONT GIVES INTELLIGENCE A BODY.',
+      'INTELLIGENCE MEETS THE REAL WORLD.',
+    ],
+    argument: 'PONT HAS SIGNED AN MOU WITH TECHLEAP TO EXPLORE AND DEVELOP THIS COLLABORATION.',
+    transitions: STACK_TRANSITIONS,
+  },
+  {
+    id: 'business-model',
+    index: '12',
+    eyebrow: 'THE BUSINESS MODEL',
+    statements: [
+      'WE DON’T MONETISE DESKS.',
+      'WE MONETISE THE ECOSYSTEM.',
+      'PARTICIPATE ECONOMICALLY IN THE VALUE CREATED BY THE ECOSYSTEM.',
+    ],
+    argument: 'PONT IS DESIGNED AROUND MULTIPLE INTERCONNECTED REVENUE ENGINES.',
+    engines: REVENUE_ENGINES,
+  },
+  {
+    id: 'economic-flywheel',
+    index: '13',
+    eyebrow: 'THE ECONOMIC FLYWHEEL',
+    statements: [
+      'EVERY COMPANY THAT ENTERS PONT CAN CREATE MORE THAN RENT.',
+      'SUCCESSFUL FOUNDERS ATTRACT THE NEXT GENERATION OF FOUNDERS.',
+      'EQUITY CAPTURES THE UPSIDE.',
+    ],
+    argument: 'A TENANT CAN BECOME A MEMBER, CUSTOMER, COLLABORATOR, INVESTMENT AND THE NEXT GENERATION’S MAGNET.',
+    steps: FLYWHEEL_STEPS,
+    layers: FLYWHEEL_LAYERS,
+  },
+  {
+    id: 'capital-inside',
+    index: '14',
+    eyebrow: 'CAPITAL LIVES INSIDE THE ECOSYSTEM',
+    statements: [
+      'FOUNDERS SHOULDN’T HAVE TO LEAVE THE BUILDING TO FIND INVESTORS.',
+      'FROM LANDLORD AND TENANT TO FOUNDER AND INVESTOR.',
+      'DISCOVERED. FINANCED. SCALED.',
+    ],
+    argument: 'CAPITAL IS PART OF PONT’S PHYSICAL AND SOCIAL ARCHITECTURE, INTERACTING DIRECTLY WITH THE COMPANIES BUILDING INSIDE.',
+    partners: CAPITAL_PARTNERS,
+  },
+  {
+    id: 'two-way-bridge',
+    index: '15',
+    eyebrow: 'THE TWO-WAY BRIDGE',
+    statements: [
+      'KEEP EUROPEAN TALENT IN.',
+      'BRING GLOBAL TALENT IN.',
+      'EUROPE DOESN’T ONLY NEED TO STOP THE OUTFLOW. IT NEEDS TO BECOME THE DESTINATION.',
+    ],
+    argument: 'PONT IS DESIGNED AS A TWO-WAY BRIDGE: HELPING EUROPEAN FOUNDERS REMAIN AND SCALE HERE WHILE AMBITIOUS INTERNATIONAL DEEP-TECH COMPANIES ESTABLISH A CREDIBLE EUROPEAN BASE.',
+    network: 'NON-EU AND THE WIDER EAST–WEST CORRIDOR PROVIDE AN IMMEDIATE STARTING NETWORK. THE AMBITION IS GLOBAL.',
+    routes: BRIDGE_ROUTES,
+  },
+  {
+    id: 'founder-first-university',
+    index: '16',
+    eyebrow: 'THE UNIVERSITY',
+    statements: [
+      'NOT ANOTHER UNIVERSITY SURROUNDED BY ENTREPRENEURSHIP PROGRAMMES.',
+      'A FOUNDER-FIRST UNIVERSITY.',
+      'PUT THE UNIVERSITY INSIDE THE ECOSYSTEM.',
+    ],
+    argument: 'PONT INTENDS TO ESTABLISH A FOUNDER-FIRST UNIVERSITY, DESIGNED FROM THE GROUND UP AROUND ENTREPRENEURSHIP, TECHNOLOGY, PROJECTS, COMPETENCIES, NETWORKS AND REAL-WORLD PRODUCTION.',
+    layers: UNIVERSITY_LAYERS,
+  },
+  {
+    id: 'university-inside-companies',
+    index: '17',
+    eyebrow: 'THE FOUNDER-FIRST UNIVERSITY',
+    statements: [
+      'DON’T BRING STARTUPS INTO THE UNIVERSITY.',
+      'BRING THE UNIVERSITY INTO THE STARTUPS.',
+      'WE ARE BUILDING A UNIVERSITY INSIDE THE COMPANIES.',
+    ],
+    argument: 'STUDENTS LEARN INSIDE THE ENVIRONMENT WHERE TECHNOLOGIES ARE BUILT, COMPANIES ARE FINANCED AND FOUNDERS SOLVE REAL PROBLEMS.',
+    modes: UNIVERSITY_MODES,
+    features: FOUNDER_FIRST_FEATURES,
+  },
+  {
+    id: 'traveling-model',
+    index: '18',
+    eyebrow: 'THE MODEL',
+    statements: [
+      'ONE BUILDING NOW.',
+      'A MODEL THAT CAN TRAVEL.',
+      'BUILD THE ECOSYSTEM ONCE. LEARN FROM IT. THEN MAKE THE MODEL TRAVEL.',
+    ],
+    argument: 'AMSTERDAM IS THE STARTING POINT, NOT THE LIMIT. DIFFERENT CITIES CAN EXPRESS DIFFERENT TECHNOLOGICAL STRENGTHS THROUGH THE SAME ECOSYSTEM ARCHITECTURE.',
+    layers: MODEL_LAYERS,
+  },
+  {
+    id: 'final-vision',
+    index: '19',
+    eyebrow: 'THE VISION',
+    statements: [
+      'THE PHYSICAL HOME OF EUROPE’S NEXT TECHNOLOGICAL ERA.',
+      'EUROPE HAS THE SCIENCE.',
+      'NOW LET’S BUILD THE ENVIRONMENT THAT TURNS IT INTO THE FUTURE.',
+    ],
+    argument: 'SCIENTISTS, ENGINEERS, FOUNDERS, INVESTORS, CORPORATES AND STUDENTS PARTICIPATE IN THE SAME TECHNOLOGICAL ECOSYSTEM.',
+    transformations: VISION_TRANSFORMATIONS,
   },
 ]);
 

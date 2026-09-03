@@ -15,7 +15,7 @@ test('clampProgress limits timeline input to the normalized range', () => {
 });
 
 test('beat positions increase from the first to the last beat', () => {
-  assert.deepEqual(BEATS.slice(-8), [
+  assert.deepEqual(BEATS.slice(-28), [
     'hard-tech-premise',
     'hard-tech-infrastructure',
     'space-shell',
@@ -24,6 +24,26 @@ test('beat positions increase from the first to the last beat', () => {
     'one-roof',
     'empty-building',
     'community-first',
+    'one-square-metre',
+    'ten-thousand-square-metres',
+    'intelligence-layer',
+    'intelligence-body',
+    'rent-floor',
+    'revenue-engines',
+    'tenant-enters',
+    'flywheel-compounds',
+    'capital-outside',
+    'capital-inside',
+    'talent-outflow',
+    'two-way-bridge',
+    'university-outside',
+    'university-inside',
+    'university-shifts',
+    'founder-first-system',
+    'amsterdam-prototype',
+    'model-travels',
+    'vision-convergence',
+    'europe-future',
   ]);
   assert.equal(progressForBeat(0), 0);
   assert.equal(progressForBeat(BEATS.length - 1), 1);

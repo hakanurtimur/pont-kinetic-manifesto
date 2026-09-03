@@ -13,3 +13,40 @@ test('the responsive logo uses a raster-free SVG mask', () => {
   assert.doesNotMatch(svg, /<image\b|data:image\//i);
   assert.match(svg, /<path\b/);
 });
+
+test('the capital scene shares one architectural grid in both orientations', () => {
+  const css = readFileSync(new URL('../app/globals.css', import.meta.url), 'utf8');
+
+  assert.match(css, /\.scene-capital\s*{[^}]*--capital-grid-left:\s*55px;[^}]*--capital-grid-width:\s*860px;/s);
+  assert.match(css, /\.capital-building\s*{[^}]*left:\s*var\(--capital-grid-left\);[^}]*width:\s*var\(--capital-grid-width\);/s);
+  assert.match(css, /\.capital-partners\s*{[^}]*left:\s*var\(--capital-grid-left\);[^}]*width:\s*var\(--capital-grid-width\);/s);
+  assert.match(css, /@media \(orientation:\s*portrait\)[\s\S]*\.scene-capital\s*{[^}]*--capital-grid-left:\s*42px;[^}]*--capital-grid-width:\s*600px;/s);
+});
+
+test('the university scene has an orientation-aware inversion field', () => {
+  const css = readFileSync(new URL('../app/globals.css', import.meta.url), 'utf8');
+
+  assert.match(css, /\.university-field\s*{[^}]*width:\s*860px;[^}]*height:\s*300px;/s);
+  assert.match(css, /@media \(orientation:\s*portrait\)[\s\S]*\.university-field\s*{[^}]*width:\s*600px;[^}]*height:\s*520px;/s);
+});
+
+test('the founder-first system has a portrait-specific operating field', () => {
+  const css = readFileSync(new URL('../app/globals.css', import.meta.url), 'utf8');
+
+  assert.match(css, /\.founder-first-field\s*{[^}]*width:\s*860px;[^}]*height:\s*330px;/s);
+  assert.match(css, /@media \(orientation:\s*portrait\)[\s\S]*\.founder-first-field\s*{[^}]*width:\s*600px;[^}]*height:\s*580px;/s);
+});
+
+test('the traveling model switches from horizontal to vertical routing', () => {
+  const css = readFileSync(new URL('../app/globals.css', import.meta.url), 'utf8');
+
+  assert.match(css, /\.model-field\s*{[^}]*width:\s*860px;[^}]*height:\s*320px;/s);
+  assert.match(css, /@media \(orientation:\s*portrait\)[\s\S]*\.model-field\s*{[^}]*width:\s*600px;[^}]*height:\s*590px;/s);
+});
+
+test('the final vision has an orientation-aware transformation field', () => {
+  const css = readFileSync(new URL('../app/globals.css', import.meta.url), 'utf8');
+
+  assert.match(css, /\.vision-field\s*{[^}]*width:\s*860px;[^}]*height:\s*320px;/s);
+  assert.match(css, /@media \(orientation:\s*portrait\)[\s\S]*\.vision-field\s*{[^}]*width:\s*600px;[^}]*height:\s*600px;/s);
+});
