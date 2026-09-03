@@ -1,0 +1,5 @@
+.DS_Store
+/output/
+/pitch/output/
+/pitch/.playwright-cli/
+/pitch/tsconfig.tsbuildinfo
