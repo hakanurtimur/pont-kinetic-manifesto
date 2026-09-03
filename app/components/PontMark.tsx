@@ -1,19 +1,13 @@
-import Image from 'next/image';
-
 type PontMarkProps = {
   className?: string;
 };
 
 export function PontMark({ className = '' }: PontMarkProps) {
   return (
-    <Image
-      className={`pont-mark ${className}`}
-      src="/pont-logo.png"
-      width={741}
-      height={193}
-      alt="PONT."
-      draggable="false"
-      priority
-    />
+    <span className={`pont-mark ${className}`}>
+      <span className="sr-only">PONT.</span>
+      <span className="pont-mark__base" aria-hidden="true" />
+      <span className="pont-mark__contrast" aria-hidden="true" />
+    </span>
   );
 }
