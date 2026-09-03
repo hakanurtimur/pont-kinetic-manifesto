@@ -5,7 +5,6 @@ Scroll-driven presentation website for PONT Amsterdam. The experience uses discr
 ## Run locally
 
 ```bash
-cd pitch
 npm install
 npm run dev
 ```
@@ -13,7 +12,6 @@ npm run dev
 ## Verify
 
 ```bash
-cd pitch
 npm test
 npm run lint
 npm run build
