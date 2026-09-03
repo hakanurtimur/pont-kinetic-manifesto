@@ -80,6 +80,7 @@ button {
   overflow-x: hidden;
   overflow-y: auto;
   overscroll-behavior-y: contain;
+  scroll-snap-type: y mandatory;
   scrollbar-width: none;
   touch-action: pan-y pinch-zoom;
   -webkit-overflow-scrolling: touch;
@@ -88,6 +89,10 @@ button {
 
 .pitch-shell::-webkit-scrollbar { display: none; }
 
+.pitch-shell.is-scrolling {
+  scroll-snap-type: none;
+}
+
 .pagination-rail {
   position: relative;
   width: 100%;
@@ -95,6 +100,8 @@ button {
 
 .scroll-page {
   height: 100vh;
+  scroll-snap-align: start;
+  scroll-snap-stop: normal;
 }
 
 @supports (height: 100dvh) {
@@ -509,7 +516,7 @@ button {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .pitch-shell { overflow: hidden; touch-action: auto; }
+  .pitch-shell { overflow: hidden; scroll-snap-type: none; touch-action: auto; }
   .pagination-rail { display: none; }
   .scene, .pagination-dots, .stage-controls { display: none; }
   .reduced-summary {

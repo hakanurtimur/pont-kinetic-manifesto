@@ -7,7 +7,6 @@ import { BEATS } from '@/src/lib/progress.mjs';
 import {
   pageIndexForProgress,
   resolveTheme,
-  snapTargetForScroll,
   timelineValueForProgress,
   viewportMode,
 } from '@/src/lib/experience.mjs';
@@ -81,14 +80,18 @@ export function PitchStage() {
   const shellRef = useRef<HTMLElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const beatRef = useRef(0);
-  const settleToBeatRef = useRef<(index: number) => void>(() => undefined);
   const [activeBeat, setActiveBeat] = useState(0);
   const geometry = useStageGeometry();
   const { theme, toggle: toggleTheme } = useTheme();
 
   const goToBeat = useCallback((index: number) => {
     const safeIndex = Math.min(BEATS.length - 1, Math.max(0, index));
-    settleToBeatRef.current(safeIndex);
+    const shell = shellRef.current;
+    if (!shell) return;
+    shell.scrollTo({
+      top: safeIndex * shell.clientHeight,
+      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+    });
   }, []);
 
   useLayoutEffect(() => {
@@ -98,8 +101,8 @@ export function PitchStage() {
 
     const isPortrait = geometry.mode === 'portrait';
     let animationFrame = 0;
-    let settleTimer = 0;
-    let settleTween: gsap.core.Tween | null = null;
+    let snapWatchFrame = 0;
+    let snapTween: gsap.core.Tween | null = null;
     let isPointerActive = false;
     let isSettling = false;
     let timelineInstance: gsap.core.Timeline | null = null;
@@ -177,87 +180,109 @@ export function PitchStage() {
       }
     };
 
-    const cancelSettle = () => {
-      window.clearTimeout(settleTimer);
-      settleTween?.kill();
-      settleTween = null;
-      isSettling = false;
-    };
+    const settleToNearestBeat = () => {
+      if (isPointerActive || isSettling) return;
 
-    const settleToBeat = (index: number) => {
-      const safeIndex = Math.min(BEATS.length - 1, Math.max(0, index));
-      const targetTop = safeIndex * shell.clientHeight;
+      const pageHeight = shell.clientHeight;
+      const maxScroll = Math.max(1, shell.scrollHeight - pageHeight);
+      const progress = shell.scrollTop / maxScroll;
+      const targetIndex = pageIndexForProgress(progress, BEATS.length);
+      const targetTop = targetIndex * pageHeight;
       const distance = Math.abs(targetTop - shell.scrollTop);
-
-      cancelSettle();
 
       if (distance < 0.5) {
         shell.scrollTop = targetTop;
+        shell.classList.remove('is-scrolling');
         return;
       }
 
       isSettling = true;
-      settleTween = gsap.to(shell, {
+      snapTween = gsap.to(shell, {
         scrollTop: targetTop,
-        duration: gsap.utils.clamp(0.22, 0.46, (distance / shell.clientHeight) * 0.38),
-        ease: 'power3.out',
+        duration: gsap.utils.clamp(0.48, 0.78, 0.32 + (distance / pageHeight) * 0.8),
+        ease: 'power2.inOut',
         overwrite: 'auto',
         onComplete: () => {
-          settleTween = null;
+          snapTween = null;
           isSettling = false;
+          shell.classList.remove('is-scrolling');
         },
       });
     };
 
-    settleToBeatRef.current = settleToBeat;
-
-    const scheduleSettle = () => {
-      window.clearTimeout(settleTimer);
+    const releaseSnap = () => {
+      cancelAnimationFrame(snapWatchFrame);
       if (isPointerActive || isSettling) return;
 
-      settleTimer = window.setTimeout(() => {
-        const target = snapTargetForScroll(shell.scrollTop, shell.clientHeight, BEATS.length);
-        settleToBeat(target.index);
-      }, 140);
+      let lastScrollTop = shell.scrollTop;
+      let stableFrames = 0;
+      const watchForRest = () => {
+        if (isPointerActive || isSettling) return;
+
+        const currentScrollTop = shell.scrollTop;
+        stableFrames = Math.abs(currentScrollTop - lastScrollTop) < 0.25
+          ? stableFrames + 1
+          : 0;
+        lastScrollTop = currentScrollTop;
+
+        if (stableFrames >= 4) {
+          settleToNearestBeat();
+          return;
+        }
+
+        snapWatchFrame = requestAnimationFrame(watchForRest);
+      };
+
+      snapWatchFrame = requestAnimationFrame(watchForRest);
+    };
+
+    const holdSnap = () => {
+      cancelAnimationFrame(snapWatchFrame);
+      snapTween?.kill();
+      snapTween = null;
+      isSettling = false;
+      shell.classList.add('is-scrolling');
     };
 
     const onScroll = () => {
       cancelAnimationFrame(animationFrame);
       animationFrame = requestAnimationFrame(updateFromScroll);
-      scheduleSettle();
-    };
-
-    const onInteractionStart = () => {
-      isPointerActive = true;
-      cancelSettle();
-    };
-
-    const onInteractionEnd = () => {
-      isPointerActive = false;
-      scheduleSettle();
+      releaseSnap();
     };
 
     const onWheel = () => {
-      cancelSettle();
+      holdSnap();
+      releaseSnap();
+    };
+
+    const onPointerDown = () => {
+      isPointerActive = true;
+      holdSnap();
+    };
+
+    const onPointerEnd = () => {
+      isPointerActive = false;
+      releaseSnap();
     };
 
     shell.addEventListener('scroll', onScroll, { passive: true });
-    shell.addEventListener('pointerdown', onInteractionStart, { passive: true });
-    shell.addEventListener('pointerup', onInteractionEnd, { passive: true });
-    shell.addEventListener('pointercancel', onInteractionEnd, { passive: true });
     shell.addEventListener('wheel', onWheel, { passive: true });
+    shell.addEventListener('pointerdown', onPointerDown, { passive: true });
+    shell.addEventListener('pointerup', onPointerEnd, { passive: true });
+    shell.addEventListener('pointercancel', onPointerEnd, { passive: true });
     shell.scrollTop = beatRef.current * shell.clientHeight;
     updateFromScroll();
 
     return () => {
       cancelAnimationFrame(animationFrame);
-      cancelSettle();
+      cancelAnimationFrame(snapWatchFrame);
+      snapTween?.kill();
+      shell.classList.remove('is-scrolling');
       shell.removeEventListener('scroll', onScroll);
-      shell.removeEventListener('pointerdown', onInteractionStart);
-      shell.removeEventListener('pointerup', onInteractionEnd);
-      shell.removeEventListener('pointercancel', onInteractionEnd);
       shell.removeEventListener('wheel', onWheel);
-      settleToBeatRef.current = () => undefined;
+      shell.removeEventListener('pointerdown', onPointerDown);
+      shell.removeEventListener('pointerup', onPointerEnd);
+      shell.removeEventListener('pointercancel', onPointerEnd);
       context.revert();
     };
   }, [geometry.mode]);
