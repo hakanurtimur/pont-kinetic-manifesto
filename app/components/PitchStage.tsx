@@ -4,7 +4,12 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react
 import { gsap } from 'gsap';
 
 import { BEATS } from '@/src/lib/progress.mjs';
-import { pageIndexForProgress, resolveTheme, viewportMode } from '@/src/lib/experience.mjs';
+import {
+  pageIndexForProgress,
+  resolveTheme,
+  timelineValueForProgress,
+  viewportMode,
+} from '@/src/lib/experience.mjs';
 import { SCENES } from '@/src/content/pitch.mjs';
 import { PontMark } from './PontMark';
 
@@ -81,9 +86,11 @@ export function PitchStage() {
 
   const goToBeat = useCallback((index: number) => {
     const safeIndex = Math.min(BEATS.length - 1, Math.max(0, index));
-    document.querySelector<HTMLElement>(`[data-page-index="${safeIndex}"]`)?.scrollIntoView({
+    const shell = shellRef.current;
+    if (!shell) return;
+    shell.scrollTo({
+      top: safeIndex * shell.clientHeight,
       behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
-      block: 'start',
     });
   }, []);
 
@@ -93,92 +100,94 @@ export function PitchStage() {
     if (!shell || !stage || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     const isPortrait = geometry.mode === 'portrait';
-    let observer: IntersectionObserver | undefined;
+    let animationFrame = 0;
+    let timelineInstance: gsap.core.Timeline | null = null;
 
     const context = gsap.context(() => {
-      const timeline = gsap.timeline({ paused: true, defaults: { ease: 'power3.inOut' } });
+      const timeline = gsap.timeline({ paused: true, defaults: { ease: 'power2.inOut' } });
       const $ = gsap.utils.selector(stage);
 
       gsap.set($('.scene'), { autoAlpha: 0 });
       gsap.set($('.scene-cover'), { autoAlpha: 1 });
       gsap.set($('.cover-mark'), { autoAlpha: 1, scale: 1 });
 
+      timelineInstance = timeline;
       timeline.addLabel('cover', 0);
       timeline
-        .to($('.cover-mark'), { scale: 1.42, y: -36, autoAlpha: 0, duration: 0.72 }, 0.18)
-        .to($('.cover-rule'), { scaleX: 0, duration: 0.52, transformOrigin: 'right center' }, 0.2)
-        .set($('.scene-cover'), { autoAlpha: 0 }, 0.94)
-        .set($('.scene-era'), { autoAlpha: 1 }, 0.35)
-        .fromTo($('.think-line .line-inner'), { yPercent: 120 }, { yPercent: 0, duration: 0.62, stagger: 0.07 }, 0.44)
-        .addLabel('think', 1)
-        .to($('.think-line--top'), { x: isPortrait ? 0 : -30, color: 'var(--muted)', duration: 0.58 }, 1.1)
-        .to($('.think-word'), { yPercent: -120, autoAlpha: 0, duration: 0.5 }, 1.18)
-        .fromTo($('.act-word'), { yPercent: 120, autoAlpha: 0 }, { yPercent: 0, autoAlpha: 1, duration: 0.58 }, 1.26)
-        .to($('.era-orbit'), { scale: 1, autoAlpha: 1, rotate: 180, duration: 0.72 }, 1.18)
-        .fromTo($('.physical-statement .line-inner'), { yPercent: 120 }, { yPercent: 0, duration: 0.58, stagger: 0.06 }, 1.48)
-        .addLabel('act', 2)
-        .to($('.scene-era'), { xPercent: isPortrait ? 0 : -16, yPercent: isPortrait ? -10 : 0, autoAlpha: 0, duration: 0.64 }, 2.22)
-        .set($('.scene-era'), { autoAlpha: 0 }, 2.9)
-        .set($('.scene-europe'), { autoAlpha: 1 }, 2.38)
-        .fromTo($('.europe-rule'), { scaleY: 0 }, { scaleY: 1, duration: 0.62 }, 2.42)
-        .fromTo($('.science-line .line-inner'), { yPercent: 115 }, { yPercent: 0, duration: 0.62, stagger: 0.06 }, 2.52)
-        .addLabel('science', 3)
-        .to($('.science-lockup'), { x: isPortrait ? -54 : -110, autoAlpha: 0.16, duration: 0.6 }, 3.16)
-        .fromTo($('.escape-line'), { scaleX: 0 }, { scaleX: 1, duration: 0.62 }, 3.16)
-        .fromTo($('.companies-line .line-inner'), { xPercent: 110 }, { xPercent: 0, duration: 0.62, stagger: 0.05 }, 3.28)
-        .addLabel('companies', 4)
-        .to($('.companies-lockup'), { y: isPortrait ? -72 : -96, scale: isPortrait ? 0.82 : 0.74, transformOrigin: 'left top', duration: 0.62 }, 4.14)
-        .fromTo($('.stay-line .line-inner'), { yPercent: 120 }, { yPercent: 0, duration: 0.7, stagger: 0.06 }, 4.28)
-        .addLabel('stay', 5)
-        .to($('.scene-europe'), { yPercent: -12, autoAlpha: 0, duration: 0.68 }, 5.18)
-        .set($('.scene-europe'), { autoAlpha: 0 }, 5.9)
-        .set($('.scene-worlds'), { autoAlpha: 1 }, 5.34)
-        .fromTo($('.domain--left'), { x: isPortrait ? 0 : -130, y: isPortrait ? -100 : 0, autoAlpha: 0 }, { x: 0, y: 0, autoAlpha: 1, duration: 0.64 }, 5.42)
-        .fromTo($('.domain--right'), { x: isPortrait ? 0 : 130, y: isPortrait ? 100 : 0, autoAlpha: 0 }, { x: 0, y: 0, autoAlpha: 1, duration: 0.64 }, 5.42)
-        .fromTo($('.world-axis'), { scaleX: 0 }, { scaleX: 1, duration: 0.66 }, 5.5)
-        .addLabel('domains', 6)
-        .to($('.domain--left'), { x: isPortrait ? 0 : 236, y: isPortrait ? 185 : 0, duration: 0.72 }, 6.18)
-        .to($('.domain--right'), { x: isPortrait ? 0 : -236, y: isPortrait ? -185 : 0, duration: 0.72 }, 6.18)
-        .fromTo($('.convergence-orb'), { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.72 }, 6.28)
-        .to($('.domain-title'), { letterSpacing: '0.02em', duration: 0.54 }, 6.3)
-        .addLabel('convergence', 7)
-        .to($('.domain'), { scale: 0.44, autoAlpha: 0, duration: 0.58 }, 7.16)
-        .to($('.world-axis'), { scaleX: 0, duration: 0.44 }, 7.2)
-        .to($('.convergence-orb'), { scale: isPortrait ? 7.8 : 6.4, autoAlpha: 0.08, duration: 0.78 }, 7.16)
-        .fromTo($('.future-line .line-inner'), { yPercent: 120 }, { yPercent: 0, duration: 0.68, stagger: 0.07 }, 7.3)
-        .addLabel('future', 8);
+        .to($('.cover-mark'), { scale: 1.42, y: -36, autoAlpha: 0, duration: 0.62 }, 0.08)
+        .to($('.cover-rule'), { scaleX: 0, duration: 0.46, transformOrigin: 'right center' }, '<0.04')
+        .set($('.scene-era'), { autoAlpha: 1 }, '<0.16')
+        .fromTo($('.think-line .line-inner'), { yPercent: 120 }, { yPercent: 0, duration: 0.58, stagger: 0.06, ease: 'power2.out' }, '<0.08')
+        .set($('.scene-cover'), { autoAlpha: 0 }, '>')
+        .addLabel('think')
+        .to($('.think-line--top'), { x: isPortrait ? 0 : -30, color: 'var(--muted)', duration: 0.52 })
+        .to($('.think-word'), { yPercent: -120, autoAlpha: 0, duration: 0.46 }, '<0.04')
+        .fromTo($('.act-word'), { yPercent: 120, autoAlpha: 0 }, { yPercent: 0, autoAlpha: 1, duration: 0.52, ease: 'power2.out' }, '<0.08')
+        .to($('.era-orbit'), { scale: 1, autoAlpha: 1, rotate: 180, duration: 0.62 }, '<')
+        .fromTo($('.physical-statement .line-inner'), { yPercent: 120 }, { yPercent: 0, duration: 0.56, stagger: 0.06, ease: 'power2.out' }, '<0.12')
+        .addLabel('act')
+        .to($('.scene-era'), { xPercent: isPortrait ? 0 : -16, yPercent: isPortrait ? -10 : 0, autoAlpha: 0, duration: 0.58 })
+        .set($('.scene-europe'), { autoAlpha: 1 }, '<0.18')
+        .fromTo($('.europe-rule'), { scaleY: 0 }, { scaleY: 1, duration: 0.5 }, '<0.02')
+        .fromTo($('.science-line .line-inner'), { yPercent: 115 }, { yPercent: 0, duration: 0.56, stagger: 0.05, ease: 'power2.out' }, '<0.08')
+        .set($('.scene-era'), { autoAlpha: 0 }, '>')
+        .addLabel('science')
+        .to($('.science-lockup'), { x: isPortrait ? -54 : -110, autoAlpha: 0.16, duration: 0.56 })
+        .fromTo($('.escape-line'), { scaleX: 0 }, { scaleX: 1, duration: 0.56 }, '<')
+        .fromTo($('.companies-line .line-inner'), { xPercent: 110 }, { xPercent: 0, duration: 0.58, stagger: 0.05, ease: 'power2.out' }, '<0.08')
+        .addLabel('companies')
+        .to($('.companies-lockup'), { y: isPortrait ? -72 : -96, scale: isPortrait ? 0.82 : 0.74, transformOrigin: 'left top', duration: 0.58 })
+        .fromTo($('.stay-line .line-inner'), { yPercent: 120 }, { yPercent: 0, duration: 0.62, stagger: 0.06, ease: 'power2.out' }, '<0.12')
+        .addLabel('stay')
+        .to($('.scene-europe'), { yPercent: -12, autoAlpha: 0, duration: 0.58 })
+        .set($('.scene-worlds'), { autoAlpha: 1 }, '<0.16')
+        .fromTo($('.domain--left'), { x: isPortrait ? 0 : -130, y: isPortrait ? -100 : 0, autoAlpha: 0 }, { x: 0, y: 0, autoAlpha: 1, duration: 0.58, ease: 'power2.out' }, '<0.08')
+        .fromTo($('.domain--right'), { x: isPortrait ? 0 : 130, y: isPortrait ? 100 : 0, autoAlpha: 0 }, { x: 0, y: 0, autoAlpha: 1, duration: 0.58, ease: 'power2.out' }, '<')
+        .fromTo($('.world-axis'), { scaleX: 0 }, { scaleX: 1, duration: 0.58 }, '<0.04')
+        .set($('.scene-europe'), { autoAlpha: 0 }, '>')
+        .addLabel('domains')
+        .to($('.domain--left'), { x: isPortrait ? 0 : 236, y: isPortrait ? 185 : 0, duration: 0.64 })
+        .to($('.domain--right'), { x: isPortrait ? 0 : -236, y: isPortrait ? -185 : 0, duration: 0.64 }, '<')
+        .fromTo($('.convergence-orb'), { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.64, ease: 'power2.out' }, '<0.08')
+        .addLabel('convergence')
+        .to($('.domain'), { scale: 0.44, autoAlpha: 0, duration: 0.54 })
+        .to($('.world-axis'), { scaleX: 0, duration: 0.42 }, '<0.04')
+        .to($('.convergence-orb'), { scale: isPortrait ? 7.8 : 6.4, autoAlpha: 0.08, duration: 0.7 }, '<')
+        .fromTo($('.future-line .line-inner'), { yPercent: 120 }, { yPercent: 0, duration: 0.62, stagger: 0.06, ease: 'power2.out' }, '<0.12')
+        .addLabel('future');
 
-      const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-      const initialBeat = pageIndexForProgress(window.scrollY / maxScroll, BEATS.length);
+      const initialBeat = Math.min(BEATS.length - 1, Math.max(0, beatRef.current));
       beatRef.current = initialBeat;
       setActiveBeat(initialBeat);
-      timeline.time(initialBeat);
-
-      const settleAt = (index: number) => {
-        if (index === beatRef.current) return;
-        beatRef.current = index;
-        setActiveBeat(index);
-        timeline.tweenTo(BEATS[index], {
-          duration: 0.82,
-          ease: 'power3.inOut',
-          overwrite: true,
-        });
-      };
-
-      observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) settleAt(Number((entry.target as HTMLElement).dataset.pageIndex));
-          });
-        },
-        { rootMargin: '-45% 0px -45% 0px', threshold: 0 },
-      );
-
-      document.querySelectorAll<HTMLElement>('.scroll-page').forEach((page) => observer?.observe(page));
+      timeline.seek(BEATS[initialBeat], false);
     }, stage);
 
+    const updateFromScroll = () => {
+      if (!timelineInstance) return;
+      const maxScroll = Math.max(1, shell.scrollHeight - shell.clientHeight);
+      const progress = shell.scrollTop / maxScroll;
+      const labelValues = BEATS.map((beat) => timelineInstance?.labels[beat] ?? 0);
+      timelineInstance.time(timelineValueForProgress(progress, labelValues), false);
+
+      const currentBeat = pageIndexForProgress(progress, BEATS.length);
+      if (currentBeat !== beatRef.current) {
+        beatRef.current = currentBeat;
+        setActiveBeat(currentBeat);
+      }
+    };
+
+    const onScroll = () => {
+      cancelAnimationFrame(animationFrame);
+      animationFrame = requestAnimationFrame(updateFromScroll);
+    };
+
+    shell.addEventListener('scroll', onScroll, { passive: true });
+    shell.scrollTop = beatRef.current * shell.clientHeight;
+    updateFromScroll();
+
     return () => {
-      observer?.disconnect();
+      cancelAnimationFrame(animationFrame);
+      shell.removeEventListener('scroll', onScroll);
       context.revert();
     };
   }, [geometry.mode]);
@@ -191,7 +200,10 @@ export function PitchStage() {
       goToBeat(beatRef.current + direction);
     };
     window.addEventListener('keydown', onKeyDown);
-    return () => window.removeEventListener('keydown', onKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', onKeyDown);
+    };
   }, [goToBeat]);
 
   return (
@@ -286,8 +298,9 @@ export function PitchStage() {
       </div>
 
       <div className="pagination-rail" aria-hidden="true">
-        {BEATS.map((beat, index) => <section className="scroll-page" data-page-index={index} key={beat} />)}
+        {BEATS.map((beat) => <section className="scroll-page" key={beat} />)}
       </div>
+
     </main>
   );
 }

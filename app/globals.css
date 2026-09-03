@@ -40,10 +40,11 @@
 * { box-sizing: border-box; }
 
 html {
-  overflow-x: hidden;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
   background: var(--bg);
-  scroll-snap-type: y mandatory;
-  overscroll-behavior-y: none;
+  overscroll-behavior: none;
   scrollbar-width: none;
 }
 
@@ -52,30 +53,49 @@ html::-webkit-scrollbar { display: none; }
 body {
   margin: 0;
   min-width: 320px;
-  overflow-x: hidden;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
   background: var(--bg);
   color: var(--fg);
   -webkit-font-smoothing: antialiased;
   text-rendering: geometricPrecision;
 }
 
-button { font: inherit; }
+button {
+  font: inherit;
+  touch-action: manipulation;
+}
 
-.pitch-shell,
+.pitch-shell {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  scroll-snap-type: y mandatory;
+  scrollbar-width: none;
+  touch-action: pan-y pinch-zoom;
+  -webkit-overflow-scrolling: touch;
+  background: var(--bg);
+}
+
+.pitch-shell::-webkit-scrollbar { display: none; }
+
 .pagination-rail {
   position: relative;
   width: 100%;
-  background: var(--bg);
 }
 
 .scroll-page {
   height: 100vh;
   scroll-snap-align: start;
-  scroll-snap-stop: always;
 }
 
-@supports (height: 100svh) {
-  .scroll-page { height: 100svh; }
+@supports (height: 100dvh) {
+  .pitch-shell,
+  .scroll-page { height: 100dvh; }
 }
 
 .pitch-viewport {
@@ -88,10 +108,11 @@ button { font: inherit; }
     radial-gradient(circle at 73% 21%, var(--glow), transparent 28%),
     var(--bg);
   transition: background-color 420ms ease, color 420ms ease;
+  pointer-events: none;
 }
 
-@supports (height: 100svh) {
-  .pitch-viewport { height: 100svh; }
+@supports (height: 100dvh) {
+  .pitch-viewport { height: 100dvh; }
 }
 
 .pitch-viewport::before {
@@ -126,37 +147,10 @@ button { font: inherit; }
 .scene-cover { visibility: visible; }
 
 .pont-mark {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.015em;
-  color: var(--fg);
-  font-size: 188px;
-  font-weight: 800;
-  line-height: 0.8;
-  letter-spacing: -0.09em;
-  white-space: nowrap;
-  transition: color 420ms ease;
-}
-
-.pont-mark__orb {
-  position: relative;
-  display: inline-grid;
-  place-items: center;
-  width: 0.72em;
-  height: 0.72em;
-  margin: 0 0.04em 0 0.055em;
-  overflow: hidden;
-  border: 0.065em solid currentColor;
-  border-radius: 50%;
-  background: linear-gradient(to bottom, transparent 0 49%, var(--coral) 50% 100%);
-}
-
-.pont-mark__core {
-  width: 0.13em;
-  height: 0.13em;
-  border-radius: 50%;
-  background: var(--fg);
-  box-shadow: 0 0 0 0.025em var(--bg);
+  display: block;
+  width: 760px;
+  height: auto;
+  user-select: none;
 }
 
 .scene-cover {
@@ -164,7 +158,7 @@ button { font: inherit; }
   place-items: center;
 }
 
-.cover-mark { position: relative; left: -12px; }
+.cover-mark { position: relative; }
 
 .cover-rule {
   position: absolute;
@@ -374,6 +368,7 @@ button { font: inherit; }
   background: transparent;
   color: var(--fg);
   cursor: pointer;
+  pointer-events: auto;
 }
 
 .theme-toggle {
@@ -466,8 +461,7 @@ button { font: inherit; }
   .stage-controls { right: 35px; bottom: 34px; }
   .stage-controls button { width: 42px; height: 42px; }
 
-  .pont-mark { font-size: 132px; }
-  .cover-mark { left: -8px; }
+  .pont-mark { width: 620px; }
   .cover-rule { right: 50px; bottom: 154px; left: 50px; }
 
   .display-heading { font-size: 76px; line-height: 0.87; }
@@ -495,7 +489,7 @@ button { font: inherit; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-snap-type: none; }
+  .pitch-shell { overflow: hidden; scroll-snap-type: none; touch-action: auto; }
   .pagination-rail { display: none; }
   .scene, .pagination-dots, .stage-controls { display: none; }
   .reduced-summary {

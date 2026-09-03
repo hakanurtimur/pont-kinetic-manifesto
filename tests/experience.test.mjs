@@ -4,6 +4,7 @@ import assert from 'node:assert/strict';
 import {
   pageIndexForProgress,
   resolveTheme,
+  timelineValueForProgress,
   viewportMode,
 } from '../src/lib/experience.mjs';
 
@@ -25,4 +26,13 @@ test('resolveTheme honors a valid saved theme and otherwise follows the system',
   assert.equal(resolveTheme('dark', false), 'dark');
   assert.equal(resolveTheme(null, true), 'dark');
   assert.equal(resolveTheme('invalid', false), 'light');
+});
+
+test('timelineValueForProgress scrubs continuously and lands exactly on scene labels', () => {
+  const labels = [0, 2, 5];
+  assert.equal(timelineValueForProgress(0, labels), 0);
+  assert.equal(timelineValueForProgress(0.25, labels), 1);
+  assert.equal(timelineValueForProgress(0.5, labels), 2);
+  assert.equal(timelineValueForProgress(0.75, labels), 3.5);
+  assert.equal(timelineValueForProgress(1, labels), 5);
 });
