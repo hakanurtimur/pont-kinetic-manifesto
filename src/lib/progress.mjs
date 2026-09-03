@@ -12,6 +12,14 @@ export const BEATS = Object.freeze([
   'robot-ecosystem',
   'therapy-core',
   'therapy-ecosystem',
+  'hard-tech-premise',
+  'hard-tech-infrastructure',
+  'space-shell',
+  'ecosystem-product',
+  'founder-streams',
+  'one-roof',
+  'empty-building',
+  'community-first',
 ]);
 
 export function clampProgress(value) {

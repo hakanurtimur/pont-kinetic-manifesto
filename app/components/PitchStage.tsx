@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from 'react';
 import { gsap } from 'gsap';
 
 import { BEATS } from '@/src/lib/progress.mjs';
@@ -11,11 +11,15 @@ import {
   viewportMode,
 } from '@/src/lib/experience.mjs';
 import {
+  COMMUNITY_GROUPS,
   COVER,
+  ECOSYSTEM_SERVICES,
+  FOUNDERS,
+  HARD_INFRASTRUCTURE,
   ROBOT_TECHNOLOGIES,
   SCENES,
-  THERAPY_DISCIPLINES,
 } from '@/src/content/pitch.mjs';
+import { THERAPY_NODE_LAYOUT } from '@/src/content/therapy-layout.mjs';
 import { PontMark } from './PontMark';
 
 const LANDSCAPE_STAGE = { width: 1133, height: 744 };
@@ -193,7 +197,68 @@ export function PitchStage() {
         .fromTo($('.therapy-result .line-inner'), { yPercent: 120 }, { yPercent: 0, duration: 0.58, stagger: 0.06, ease: 'power2.out' }, '<0.12')
         .fromTo($('.therapy-argument'), { y: 16, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.44 }, '<0.12')
         .fromTo($('.therapy-principle'), { y: 18, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.46 }, '<0.08')
-        .addLabel('therapy-ecosystem');
+        .addLabel('therapy-ecosystem')
+        .to($('.scene-therapy'), { scale: 0.92, autoAlpha: 0, duration: 0.58 })
+        .set($('.scene-hard'), { autoAlpha: 1 }, '<0.18')
+        .fromTo($('.hard-heading .line-inner'), { yPercent: 120 }, { yPercent: 0, duration: 0.58, stagger: 0.05, ease: 'power2.out' }, '<0.08')
+        .fromTo($('.hard-start'), { y: 28, scale: 0.88, autoAlpha: 0 }, { y: 0, scale: 1, autoAlpha: 1, duration: 0.62, ease: 'power3.out' }, '<0.02')
+        .fromTo($('.hard-anywhere'), { y: 18, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.44 }, '<0.12')
+        .set($('.scene-therapy'), { autoAlpha: 0 }, '>')
+        .addLabel('hard-tech-premise')
+        .to($('.hard-start'), { x: isPortrait ? -40 : -90, scale: 0.86, autoAlpha: 0.16, duration: 0.56 })
+        .to($('.hard-anywhere'), { autoAlpha: 0.28, duration: 0.42 }, '<')
+        .fromTo($('.hard-limit'), { scaleX: 0 }, { scaleX: 1, duration: 0.52, transformOrigin: 'left center' }, '<0.02')
+        .fromTo($('.hard-module'), { x: isPortrait ? 0 : 56, y: isPortrait ? 28 : 0, autoAlpha: 0 }, { x: 0, y: 0, autoAlpha: 1, duration: 0.5, stagger: 0.07, ease: 'power2.out' }, '<0.08')
+        .fromTo($('.hard-verdict .line-inner'), { yPercent: 120 }, { yPercent: 0, duration: 0.58, stagger: 0.05, ease: 'power2.out' }, '<0.1')
+        .fromTo($('.hard-argument'), { y: 16, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.44 }, '<0.12')
+        .addLabel('hard-tech-infrastructure')
+        .to($('.scene-hard'), { xPercent: isPortrait ? 0 : -10, yPercent: isPortrait ? -7 : 0, autoAlpha: 0, duration: 0.58 })
+        .set($('.scene-space'), { autoAlpha: 1 }, '<0.18')
+        .fromTo($('.space-heading .line-inner'), { yPercent: 120 }, { yPercent: 0, duration: 0.58, stagger: 0.05, ease: 'power2.out' }, '<0.08')
+        .fromTo($('.square-metre'), { scale: 0.72, rotate: -5, autoAlpha: 0 }, { scale: 1, rotate: 0, autoAlpha: 1, duration: 0.62, ease: 'power3.out' }, '<0.02')
+        .fromTo($('.space-argument'), { y: 16, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.44 }, '<0.12')
+        .set($('.scene-hard'), { autoAlpha: 0 }, '>')
+        .addLabel('space-shell')
+        .to($('.square-metre'), { scale: isPortrait ? 0.7 : 0.64, x: isPortrait ? -150 : -80, y: isPortrait ? 60 : 32, autoAlpha: 0.18, duration: 0.58 })
+        .to($('.space-argument'), { autoAlpha: 0, duration: 0.4 }, '<')
+        .fromTo($('.ecosystem-core'), { scale: 0.35, rotate: -28, autoAlpha: 0 }, { scale: 1, rotate: 0, autoAlpha: 1, duration: 0.62, ease: 'power3.out' }, '<0.04')
+        .fromTo($('.ecosystem-spoke'), { scaleX: 0 }, { scaleX: 1, duration: 0.48, stagger: 0.025, transformOrigin: 'left center' }, '<0.04')
+        .fromTo($('.ecosystem-node'), { scale: 0.72, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.46, stagger: 0.035, ease: 'back.out(1.28)' }, '<0.08')
+        .fromTo($('.ecosystem-verdict .line-inner'), { yPercent: 120 }, { yPercent: 0, duration: 0.58, stagger: 0.05, ease: 'power2.out' }, '<0.12')
+        .fromTo($('.ecosystem-principle'), { y: 16, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.44 }, '<0.1')
+        .addLabel('ecosystem-product')
+        .to($('.scene-space'), { scale: 0.92, autoAlpha: 0, duration: 0.58 })
+        .set($('.scene-founders'), { autoAlpha: 1 }, '<0.18')
+        .fromTo($('.founders-heading .line-inner'), { yPercent: 120 }, { yPercent: 0, duration: 0.58, stagger: 0.05, ease: 'power2.out' }, '<0.08')
+        .fromTo($('.founder-card'), { y: 42, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.54, stagger: 0.09, ease: 'power3.out' }, '<0.04')
+        .fromTo($('.founder-origin'), { y: 16, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.44 }, '<0.1')
+        .set($('.scene-space'), { autoAlpha: 0 }, '>')
+        .addLabel('founder-streams')
+        .to($('.founder-card'), { scale: 0.94, autoAlpha: 0.58, duration: 0.48, stagger: 0.04 })
+        .fromTo($('.founder-trace'), { scaleY: 0 }, { scaleY: 1, duration: 0.48, stagger: 0.05, transformOrigin: 'bottom center' }, '<0.04')
+        .fromTo($('.founder-roof-line'), { scaleX: 0 }, { scaleX: 1, duration: 0.54, stagger: 0.08, ease: 'power2.out' }, '<0.04')
+        .fromTo($('.founder-final .line-inner'), { yPercent: 120 }, { yPercent: 0, duration: 0.58, stagger: 0.05, ease: 'power2.out' }, '<0.1')
+        .fromTo($('.founder-argument'), { y: 16, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.44 }, '<0.12')
+        .addLabel('one-roof')
+        .to($('.scene-founders'), { scale: 0.92, autoAlpha: 0, duration: 0.58 })
+        .set($('.scene-community'), { autoAlpha: 1 }, '<0.18')
+        .fromTo($('.community-premise .line-inner'), { yPercent: 120 }, { yPercent: 0, duration: 0.58, stagger: 0.05, ease: 'power2.out' }, '<0.08')
+        .fromTo($('.community-empty-shell'), { scale: 0.82, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.64, ease: 'power3.out' }, '<0.04')
+        .fromTo($('.empty-grid-line'), { scale: 0 }, { scale: 1, duration: 0.42, stagger: 0.035, transformOrigin: 'center center' }, '<0.12')
+        .fromTo($('.empty-building-copy'), { y: 16, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.44 }, '<0.08')
+        .set($('.scene-founders'), { autoAlpha: 0 }, '>')
+        .addLabel('empty-building')
+        .to($('.community-premise'), { y: isPortrait ? -26 : -18, autoAlpha: 0.16, duration: 0.52 })
+        .to($('.community-empty-shell'), { scale: 0.84, autoAlpha: 0, duration: 0.54 }, '<')
+        .fromTo($('.community-link'), { scaleX: 0, autoAlpha: 0 }, { scaleX: 1, autoAlpha: 1, duration: 0.42, stagger: 0.04, transformOrigin: 'left center' }, '<0.08')
+        .fromTo($('.community-node'), { scale: 0.62, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.48, stagger: 0.055, ease: 'back.out(1.3)' }, '<0.08')
+        .fromTo($('.community-core'), { scale: 0.4, rotate: -22, autoAlpha: 0 }, { scale: 1, rotate: 0, autoAlpha: 1, duration: 0.56, ease: 'power3.out' }, '<0.06')
+        .fromTo($('.community-home-line'), { scaleX: 0 }, { scaleX: 1, duration: 0.48, stagger: 0.055, ease: 'power2.out' }, '<0.12')
+        .fromTo($('.community-home-label'), { y: 8, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.36 }, '<0.12')
+        .fromTo($('.community-final .line-inner'), { yPercent: 120 }, { yPercent: 0, duration: 0.58, stagger: 0.05, ease: 'power2.out' }, '<0.08')
+        .fromTo($('.community-principle'), { y: 18, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.46 }, '<0.1')
+        .fromTo($('.community-argument'), { y: 16, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.44 }, '<0.1')
+        .addLabel('community-first');
 
       const initialBeat = Math.min(BEATS.length - 1, Math.max(0, beatRef.current));
       beatRef.current = initialBeat;
@@ -455,9 +520,24 @@ export function PitchStage() {
                 <strong>01</strong>
                 <span className="therapy-core__label">THERAPY</span>
               </div>
-              {THERAPY_DISCIPLINES.map((discipline, index) => (
-                <span className={`therapy-node therapy-node--${index + 1}`} key={discipline}>{discipline}</span>
-              ))}
+              {THERAPY_NODE_LAYOUT.map(({ label, width, rotation, landscape, portrait }) => {
+                const point = geometry.mode === 'portrait' ? portrait : landscape;
+
+                return (
+                  <span
+                    className="therapy-node"
+                    key={label}
+                    style={{
+                      top: `${point.y}%`,
+                      left: `${point.x}%`,
+                      width,
+                      '--node-rotation': `${rotation}deg`,
+                    } as CSSProperties}
+                  >
+                    {label}
+                  </span>
+                );
+              })}
             </div>
 
             <div className="therapy-result display-heading display-heading--medium">
@@ -466,6 +546,151 @@ export function PitchStage() {
             </div>
             <p className="scene-argument therapy-argument">{SCENES[4].argument}</p>
             <p className="therapy-principle">SCIENCE BECOMES INDUSTRY THROUGH COLLABORATION.</p>
+          </section>
+
+          <section className="scene scene-hard" aria-label={SCENES[5].eyebrow}>
+            <h2 className="hard-heading display-heading display-heading--medium">
+              <span className="mask-line"><span className="line-inner">HARD TECH NEEDS</span></span>
+              <span className="mask-line"><span className="line-inner accent">HARD INFRASTRUCTURE.</span></span>
+            </h2>
+
+            <div className="hard-start" aria-label="Laptop and coffee shop">
+              <div className="hard-laptop" aria-hidden="true">
+                <span>SOFTWARE</span>
+                <i />
+              </div>
+              <div className="hard-coffee" aria-hidden="true"><span /></div>
+            </div>
+            <p className="hard-anywhere">SOFTWARE CAN START ANYWHERE.</p>
+            <span className="hard-limit" aria-hidden="true" />
+
+            <div className="hard-stack" aria-label="Infrastructure for Physical AI and Life Sciences">
+              {HARD_INFRASTRUCTURE.map(({ name, detail }, index) => (
+                <article className="hard-module" key={name}>
+                  <span>0{index + 1}</span>
+                  <h3>{name}</h3>
+                  <p>{detail}</p>
+                </article>
+              ))}
+            </div>
+
+            <p className="hard-verdict display-heading display-heading--medium">
+              <span className="mask-line"><span className="line-inner">DEEP TECH</span></span>
+              <span className="mask-line"><span className="line-inner accent">CANNOT.</span></span>
+            </p>
+            <p className="scene-argument hard-argument">{SCENES[5].argument}</p>
+          </section>
+
+          <section className="scene scene-space" aria-label={SCENES[6].eyebrow}>
+            <h2 className="space-heading display-heading display-heading--medium">
+              <span className="mask-line"><span className="line-inner">SPACE IS NOT</span></span>
+              <span className="mask-line"><span className="line-inner accent">THE PRODUCT.</span></span>
+            </h2>
+
+            <div className="square-metre" aria-label="Square metres are infrastructure">
+              <strong>M<sup>2</sup></strong>
+              <span>SQUARE METRES</span>
+              <i>INFRASTRUCTURE</i>
+            </div>
+            <p className="scene-argument space-argument">{SCENES[6].argument}</p>
+
+            <div className="ecosystem-map" aria-label="PONT founder ecosystem">
+              {ECOSYSTEM_SERVICES.map((service, index) => (
+                <span
+                  className="ecosystem-spoke"
+                  key={`spoke-${service}`}
+                  style={{ '--spoke-angle': `${index * 36}deg` } as CSSProperties}
+                  aria-hidden="true"
+                />
+              ))}
+              <div className="ecosystem-core"><strong>PONT</strong><span>ECOSYSTEM</span></div>
+              {ECOSYSTEM_SERVICES.map((service, index) => (
+                <span className={`ecosystem-node ecosystem-node--${index + 1}`} key={service}>{service}</span>
+              ))}
+            </div>
+
+            <p className="ecosystem-verdict display-heading display-heading--medium">
+              <span className="mask-line"><span className="line-inner">ECOSYSTEM IS</span></span>
+              <span className="mask-line"><span className="line-inner accent">THE PRODUCT.</span></span>
+            </p>
+            <p className="ecosystem-principle">EVERYTHING A FOUNDER NORMALLY SEARCHES FOR OUTSIDE, WE BRING INSIDE.</p>
+          </section>
+
+          <section className="scene scene-founders" aria-label={SCENES[7].eyebrow}>
+            <h2 className="founders-heading display-heading display-heading--medium">
+              <span className="mask-line"><span className="line-inner">PONT DIDN&apos;T START</span></span>
+              <span className="mask-line"><span className="line-inner accent">WITH A BUILDING.</span></span>
+            </h2>
+            <p className="founder-origin">IT STARTED WITH <em>THREE ECOSYSTEMS.</em></p>
+
+            <div className="founder-streams" aria-label="PONT founders">
+              {FOUNDERS.map(({ name, focus }, index) => (
+                <article className={`founder-card founder-card--${index + 1}`} key={name}>
+                  <span>0{index + 1}</span>
+                  <h3>{name}</h3>
+                  <p>{focus}</p>
+                </article>
+              ))}
+              {FOUNDERS.map(({ name }, index) => (
+                <span className={`founder-trace founder-trace--${index + 1}`} aria-hidden="true" key={`trace-${name}`} />
+              ))}
+            </div>
+
+            <div className="founder-roof" aria-hidden="true">
+              <span className="founder-roof-line founder-roof-line--left" />
+              <span className="founder-roof-line founder-roof-line--right" />
+              <i>PONT</i>
+            </div>
+
+            <p className="founder-final display-heading display-heading--medium">
+              <span className="mask-line"><span className="line-inner">WHAT WE BUILT SEPARATELY,</span></span>
+              <span className="mask-line"><span className="line-inner accent">WE NOW BRING UNDER ONE ROOF.</span></span>
+            </p>
+            <p className="scene-argument founder-argument">{SCENES[7].argument}</p>
+          </section>
+
+          <section className="scene scene-community" aria-label={SCENES[8].eyebrow}>
+            <h2 className="community-premise display-heading display-heading--medium">
+              <span className="mask-line"><span className="line-inner">MOST CAMPUSES BUILD A BUILDING</span></span>
+              <span className="mask-line"><span className="line-inner">THEN SEARCH FOR <em>A COMMUNITY.</em></span></span>
+            </h2>
+
+            <div className="community-empty-shell" aria-label="An empty building searching for a community">
+              <span className="empty-grid-line empty-grid-line--v1" aria-hidden="true" />
+              <span className="empty-grid-line empty-grid-line--v2" aria-hidden="true" />
+              <span className="empty-grid-line empty-grid-line--v3" aria-hidden="true" />
+              <span className="empty-grid-line empty-grid-line--h1" aria-hidden="true" />
+              <span className="empty-grid-line empty-grid-line--h2" aria-hidden="true" />
+              <p className="empty-building-copy"><span>01 / BUILDING FIRST</span><strong>EMPTY SHELL</strong><i>SEARCHING FOR COMMUNITY…</i></p>
+            </div>
+
+            <div className="community-home" aria-label="An existing community given a physical home">
+              {COMMUNITY_GROUPS.map((group, index) => (
+                <span
+                  className="community-link"
+                  key={`community-link-${group}`}
+                  style={{ '--community-angle': `${index * 60 - 90}deg` } as CSSProperties}
+                  aria-hidden="true"
+                />
+              ))}
+              <div className="community-core"><strong>THOUSANDS</strong><span>ALREADY CONNECTED</span></div>
+              {COMMUNITY_GROUPS.map((group, index) => (
+                <span className={`community-node community-node--${index + 1}`} key={group}>{group}</span>
+              ))}
+              <span className="community-home-line community-home-line--roof-left" aria-hidden="true" />
+              <span className="community-home-line community-home-line--roof-right" aria-hidden="true" />
+              <span className="community-home-line community-home-line--wall-left" aria-hidden="true" />
+              <span className="community-home-line community-home-line--wall-right" aria-hidden="true" />
+              <span className="community-home-line community-home-line--floor" aria-hidden="true" />
+              <i className="community-home-label">PHYSICAL HOME</i>
+            </div>
+
+            <p className="community-final display-heading display-heading--medium">
+              <span className="mask-line"><span className="line-inner">WE BUILT THE</span></span>
+              <span className="mask-line"><span className="line-inner accent">COMMUNITY FIRST.</span></span>
+            </p>
+            <p className="community-principle">COMMUNITY IS <em>INFRASTRUCTURE.</em></p>
+            <p className="scene-argument community-argument">{SCENES[8].argument}</p>
           </section>
 
           <section className="reduced-summary" aria-label="PONT story summary">
