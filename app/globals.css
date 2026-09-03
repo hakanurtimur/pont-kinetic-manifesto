@@ -77,36 +77,16 @@ button {
   position: relative;
   width: 100%;
   height: 100%;
-  overflow-x: hidden;
-  overflow-y: auto;
-  overscroll-behavior-y: contain;
-  scroll-snap-type: y mandatory;
-  scrollbar-width: none;
-  touch-action: pan-y pinch-zoom;
-  -webkit-overflow-scrolling: touch;
+  overflow: hidden;
+  overscroll-behavior: none;
+  touch-action: pan-x pinch-zoom;
   background: var(--bg);
 }
 
 .pitch-shell::-webkit-scrollbar { display: none; }
 
-.pitch-shell.is-scrolling {
-  scroll-snap-type: none;
-}
-
-.pagination-rail {
-  position: relative;
-  width: 100%;
-}
-
-.scroll-page {
-  height: 100vh;
-  scroll-snap-align: start;
-  scroll-snap-stop: normal;
-}
-
 @supports (height: 100dvh) {
-  .pitch-shell,
-  .scroll-page { height: 100dvh; }
+  .pitch-shell { height: 100dvh; }
 }
 
 .pitch-viewport {
