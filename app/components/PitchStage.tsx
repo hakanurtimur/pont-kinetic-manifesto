@@ -141,6 +141,7 @@ export function PitchStage() {
         .fromTo($('.companies-line .line-inner'), { xPercent: 110 }, { xPercent: 0, duration: 0.58, stagger: 0.05, ease: 'power2.out' }, '<0.08')
         .addLabel('companies')
         .to($('.companies-lockup'), { y: isPortrait ? -72 : -96, scale: isPortrait ? 0.82 : 0.74, transformOrigin: 'left top', duration: 0.58 })
+        .to($('.escape-line'), { scaleX: 0, autoAlpha: 0, transformOrigin: 'right center', duration: 0.38 }, '<')
         .fromTo($('.stay-line .line-inner'), { yPercent: 120 }, { yPercent: 0, duration: 0.62, stagger: 0.06, ease: 'power2.out' }, '<0.12')
         .addLabel('stay')
         .to($('.scene-europe'), { yPercent: -12, autoAlpha: 0, duration: 0.58 })
