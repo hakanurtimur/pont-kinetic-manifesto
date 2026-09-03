@@ -1,9 +1,29 @@
 import type { Metadata } from 'next';
 import './globals.css';
 
+const title = 'PONT — Building Europe’s Physical Future';
+const description = "Building the physical infrastructure for Europe’s next technological era across Physical AI, Life Sciences, capital, community and education.";
+
 export const metadata: Metadata = {
-  title: 'PONT — Building Europe’s Physical Future',
-  description: "Building the physical infrastructure for Europe’s next technological era across Physical AI, Life Sciences, capital, community and education.",
+  metadataBase: new URL('https://pont-amsterdam.vercel.app'),
+  title,
+  description,
+  applicationName: 'PONT',
+  alternates: {
+    canonical: '/',
+  },
+  openGraph: {
+    type: 'website',
+    url: '/',
+    siteName: 'PONT',
+    title,
+    description,
+  },
+  twitter: {
+    card: 'summary',
+    title,
+    description,
+  },
 };
 
 export default function RootLayout({
