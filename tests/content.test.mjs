@@ -239,6 +239,10 @@ test('the business model preserves all six interconnected revenue engines', () =
     'CAPITAL',
     'ACADEMY',
   ]);
+  assert.equal(
+    REVENUE_ENGINES.at(-1).detail,
+    'AI-NATIVE EDUCATION · EXECUTIVE PROGRAMMES · FUTURE ACADEMY',
+  );
   assert.deepEqual(SCENES[11].engines, REVENUE_ENGINES);
 });
 
@@ -292,7 +296,7 @@ test('the two-way bridge preserves both directions through PONT', () => {
   assert.deepEqual(SCENES[14].routes, BRIDGE_ROUTES);
 });
 
-test('the university is embedded inside the founder ecosystem', () => {
+test('the academy is embedded inside the founder ecosystem', () => {
   assert.deepEqual(UNIVERSITY_LAYERS, [
     'ENTREPRENEURSHIP',
     'TECHNOLOGY',
@@ -302,10 +306,19 @@ test('the university is embedded inside the founder ecosystem', () => {
     'REAL-WORLD PRODUCTION',
   ]);
   assert.deepEqual(SCENES[15].layers, UNIVERSITY_LAYERS);
-  assert.equal(SCENES[15].statements.at(-1), 'PUT THE UNIVERSITY INSIDE THE ECOSYSTEM.');
+  assert.equal(SCENES[15].eyebrow, 'THE ACADEMY');
+  assert.deepEqual(SCENES[15].statements, [
+    'NOT ANOTHER ACADEMY SURROUNDED BY ENTREPRENEURSHIP PROGRAMMES.',
+    'A FOUNDER-FIRST ACADEMY.',
+    'PUT THE ACADEMY INSIDE THE ECOSYSTEM.',
+  ]);
+  assert.equal(
+    SCENES[15].argument,
+    'PONT INTENDS TO ESTABLISH A FOUNDER-FIRST ACADEMY, DESIGNED FROM THE GROUND UP AROUND ENTREPRENEURSHIP, TECHNOLOGY, PROJECTS, COMPETENCIES, NETWORKS AND REAL-WORLD PRODUCTION.',
+  );
 });
 
-test('the founder-first university uses a cost-effective hybrid learning model', () => {
+test('the founder-first academy uses a cost-effective hybrid learning model', () => {
   assert.deepEqual(UNIVERSITY_MODES, [
     { label: 'ONLINE LEARNING', detail: 'Academic content · Courses · AI-enabled learning' },
     { label: 'PHYSICAL EXPERIENCE', detail: 'Internships · Founder sessions · Workshops · Community' },
@@ -321,8 +334,9 @@ test('the founder-first university uses a cost-effective hybrid learning model',
   ]);
   assert.deepEqual(SCENES[16].modes, UNIVERSITY_MODES);
   assert.deepEqual(SCENES[16].features, FOUNDER_FIRST_FEATURES);
+  assert.equal(SCENES[16].eyebrow, 'THE FOUNDER-FIRST ACADEMY');
   assert.deepEqual(SCENES[16].statements, [
-    'WE ARE BUILDING A UNIVERSITY INSIDE THE COMPANIES.',
+    'WE ARE BUILDING AN ACADEMY INSIDE THE COMPANIES.',
   ]);
   assert.equal(SCENES[16].argument, 'Learning happens online. Experience happens inside the ecosystem.');
 });
@@ -372,7 +386,7 @@ test('every approved scene carries a visible argument line from the brief', () =
     'A TENANT CAN BECOME A MEMBER, CUSTOMER, COLLABORATOR, INVESTMENT AND THE NEXT GENERATION’S MAGNET.',
     'CAPITAL IS PART OF PONT’S PHYSICAL AND SOCIAL ARCHITECTURE, INTERACTING DIRECTLY WITH THE COMPANIES BUILDING INSIDE.',
     'A two-way bridge connecting talent, technology and capital across global deep-tech ecosystems.',
-    'PONT INTENDS TO ESTABLISH A FOUNDER-FIRST UNIVERSITY, DESIGNED FROM THE GROUND UP AROUND ENTREPRENEURSHIP, TECHNOLOGY, PROJECTS, COMPETENCIES, NETWORKS AND REAL-WORLD PRODUCTION.',
+    'PONT INTENDS TO ESTABLISH A FOUNDER-FIRST ACADEMY, DESIGNED FROM THE GROUND UP AROUND ENTREPRENEURSHIP, TECHNOLOGY, PROJECTS, COMPETENCIES, NETWORKS AND REAL-WORLD PRODUCTION.',
     'Learning happens online. Experience happens inside the ecosystem.',
     'AMSTERDAM IS THE STARTING POINT, NOT THE LIMIT. DIFFERENT CITIES CAN EXPRESS DIFFERENT TECHNOLOGICAL STRENGTHS THROUGH THE SAME ECOSYSTEM ARCHITECTURE.',
     'SCIENTISTS, ENGINEERS, FOUNDERS, INVESTORS, CORPORATES AND STUDENTS PARTICIPATE IN THE SAME TECHNOLOGICAL ECOSYSTEM.',

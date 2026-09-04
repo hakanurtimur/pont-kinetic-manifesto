@@ -1136,18 +1136,18 @@ export function PitchStage() {
 
           <section className="scene scene-university" aria-label={SCENES[15].eyebrow}>
             <h2 className="university-heading display-heading display-heading--medium">
-              <span className="mask-line"><span className="line-inner">NOT ANOTHER UNIVERSITY</span></span>
+              <span className="mask-line"><span className="line-inner">NOT ANOTHER ACADEMY</span></span>
               <span className="mask-line"><span className="line-inner">AROUND <em>ENTREPRENEURSHIP.</em></span></span>
             </h2>
 
-            <div className="university-field" aria-label="The university moving from outside to inside the PONT ecosystem">
+            <div className="university-field" aria-label="The academy moving from outside to inside the PONT ecosystem">
               <div className="university-campus-shell">
-                <p className="university-campus-label"><i>TRADITIONAL MODEL / OUTSIDE</i><strong>UNIVERSITY</strong></p>
+                <p className="university-campus-label"><i>TRADITIONAL MODEL / OUTSIDE</i><strong>ACADEMY</strong></p>
                 <div className="university-isolated-core"><span>ISOLATED</span><strong>STARTUP</strong><i>PROGRAMME</i></div>
                 <span className="university-distance"><i>DISTANCE FROM PRODUCTION</i></span>
               </div>
 
-              <div className="university-engine"><strong>UNIVERSITY</strong><span>INSIDE PONT</span></div>
+              <div className="university-engine"><strong>ACADEMY</strong><span>INSIDE PONT</span></div>
               <svg className="university-network" viewBox={universityNetwork.viewBox} preserveAspectRatio="none" aria-hidden="true">
                 {universityNetwork.routes.map((route, index) => (
                   <path className="university-spoke" d={route} pathLength="1" key={`university-route-${index}`} />
@@ -1161,16 +1161,16 @@ export function PitchStage() {
             </div>
 
             <p className="university-final display-heading display-heading--medium">
-              <span className="mask-line"><span className="line-inner">PUT THE UNIVERSITY</span></span>
+              <span className="mask-line"><span className="line-inner">PUT THE ACADEMY</span></span>
               <span className="mask-line"><span className="line-inner">INSIDE THE <em>ECOSYSTEM.</em></span></span>
             </p>
-            <p className="university-subline">A FOUNDER-FIRST UNIVERSITY.</p>
+            <p className="university-subline">A FOUNDER-FIRST ACADEMY.</p>
             <p className="scene-argument university-argument">{SCENES[15].argument}</p>
           </section>
 
           <section className="scene scene-founder-first" aria-label={SCENES[16].eyebrow}>
             <div className="founder-first-field">
-              <div className="founder-first-operating" aria-label="Founder-first university operating system">
+              <div className="founder-first-operating" aria-label="Founder-first academy operating system">
                 <div className="founder-first-modes">
                   <p className="founder-first-model-title">A COST-EFFECTIVE HYBRID MODEL</p>
                   {UNIVERSITY_MODES.map((mode, index) => (
@@ -1180,7 +1180,7 @@ export function PitchStage() {
                     </article>
                   ))}
                 </div>
-                <div className="founder-first-core"><i>LEARN WHERE YOU</i><strong>BUILD.</strong><span>UNIVERSITY × COMPANIES</span></div>
+                <div className="founder-first-core"><i>LEARN WHERE YOU</i><strong>BUILD.</strong><span>ACADEMY × COMPANIES</span></div>
                 <span className="founder-first-pulse" aria-hidden="true" />
                 <div className="founder-first-features">
                   {FOUNDER_FIRST_FEATURES.map((feature, index) => <p className="founder-first-feature" key={feature}><i>0{index + 1}</i>{feature}</p>)}
@@ -1189,7 +1189,7 @@ export function PitchStage() {
             </div>
 
             <p className="founder-first-final display-heading display-heading--medium">
-              <span className="mask-line"><span className="line-inner">THE UNIVERSITY</span></span>
+              <span className="mask-line"><span className="line-inner">THE ACADEMY</span></span>
               <span className="mask-line"><span className="line-inner">INSIDE THE <em>COMPANIES.</em></span></span>
             </p>
             <p className="scene-argument founder-first-argument">{SCENES[16].argument}</p>

@@ -164,6 +164,19 @@ test('section 35 removes the obsolete startup-to-university transition', () => {
   assert.match(source, /className="founder-first-operating"/);
 });
 
+test('all visible university copy is replaced by academy copy', () => {
+  const source = readFileSync(new URL('../app/components/PitchStage.tsx', import.meta.url), 'utf8');
+
+  assert.doesNotMatch(source, />UNIVERSITY</);
+  assert.doesNotMatch(source, /UNIVERSITY × COMPANIES/);
+  assert.doesNotMatch(source, /NOT ANOTHER UNIVERSITY|PUT THE UNIVERSITY|THE UNIVERSITY/);
+  assert.doesNotMatch(source, /aria-label="[^"]*university/i);
+  assert.match(source, /NOT ANOTHER ACADEMY/);
+  assert.match(source, /PUT THE ACADEMY/);
+  assert.match(source, /ACADEMY × COMPANIES/);
+  assert.match(source, /THE ACADEMY/);
+});
+
 test('the flywheel entry uses the tenant token without the obsolete arrow', () => {
   const source = readFileSync(new URL('../app/components/PitchStage.tsx', import.meta.url), 'utf8');
   const css = readFileSync(new URL('../app/globals.css', import.meta.url), 'utf8');
