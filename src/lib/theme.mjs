@@ -153,4 +153,5 @@ export const APPEARANCE_BOOTSTRAP_SCRIPT = `(() => {
   root.style.setProperty('--stage-scale', String(Math.min(width / stageWidth, height / stageHeight)));
   root.style.setProperty('--compact-stage-width', stageWidth + 'px');
   root.style.setProperty('--compact-stage-margin-left', (stageWidth / -2) + 'px');
+  root.style.setProperty('--compact-scene-offset-x', (compactLandscape ? (stageWidth - 1133) / 2 : 0) + 'px');
 })();`;

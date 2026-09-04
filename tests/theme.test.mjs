@@ -153,4 +153,5 @@ test('appearance bootstrap makes compact landscape stages edge-to-edge before hy
   assert.equal(Number(properties.get('--stage-scale')).toFixed(6), '0.524194');
   assert.equal(Number.parseFloat(properties.get('--compact-stage-width')).toFixed(3), '1610.092');
   assert.equal(Number.parseFloat(properties.get('--compact-stage-margin-left')).toFixed(3), '-805.046');
+  assert.equal(Number.parseFloat(properties.get('--compact-scene-offset-x')).toFixed(3), '238.546');
 });

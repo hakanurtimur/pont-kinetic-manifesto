@@ -45,6 +45,7 @@ export function stageGeometryForViewport(width, height) {
     return {
       ...base,
       scale: Math.min(width / base.width, height / base.height),
+      sceneOffsetX: 0,
       mode,
       profile,
     };
@@ -57,6 +58,7 @@ export function stageGeometryForViewport(width, height) {
     width: stageWidth,
     height: stageHeight,
     scale: height / stageHeight,
+    sceneOffsetX: (stageWidth - base.width) / 2,
     mode,
     profile,
   };

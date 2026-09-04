@@ -86,6 +86,7 @@ function useStageGeometry() {
         document.documentElement.style.setProperty('--stage-scale', String(scale));
         document.documentElement.style.setProperty('--compact-stage-width', `${stage.width}px`);
         document.documentElement.style.setProperty('--compact-stage-margin-left', `${stage.width / -2}px`);
+        document.documentElement.style.setProperty('--compact-scene-offset-x', `${stage.sceneOffsetX}px`);
         setGeometry({ scale, mode, profile });
       });
     };

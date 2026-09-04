@@ -3751,6 +3751,12 @@ button {
     margin-left: var(--compact-stage-margin-left, -566.5px);
   }
 
+  .scene:not(.scene-cover) {
+    left: var(--compact-scene-offset-x, 0);
+    right: auto;
+    width: 1133px;
+  }
+
   .cover-content {
     width: min(1010px, calc(100% - 80px));
     gap: 22px;

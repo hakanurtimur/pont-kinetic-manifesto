@@ -44,6 +44,18 @@ test('compact landscape stage fills wide phones without side letterboxing', () =
   assert.ok(Math.abs(geometry.height * geometry.scale - 390) < 0.001);
 });
 
+test('compact landscape centers the fixed scene grid inside the edge-to-edge canvas', () => {
+  for (const [width, height] of [[844, 390], [568, 320]]) {
+    const geometry = stageGeometryForViewport(width, height);
+    const leftGutter = geometry.sceneOffsetX * geometry.scale;
+    const rightGutter = width - ((geometry.sceneOffsetX + 1133) * geometry.scale);
+
+    assert.ok(Math.abs(geometry.sceneOffsetX - ((geometry.width - 1133) / 2)) < 0.001);
+    assert.ok(leftGutter >= 0);
+    assert.ok(Math.abs(leftGutter - rightGutter) < 0.001);
+  }
+});
+
 test('science statement recedes without crossing the Europe section spine', () => {
   assert.deepEqual(scienceLockupRecedeMotion('portrait'), {
     x: 0,
