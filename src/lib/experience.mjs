@@ -163,31 +163,33 @@ export function communityHomeFrameGeometry() {
   const roofAngle = Math.atan2(roofRise, roofRun) * (180 / Math.PI);
   const wallWidth = leftFloor.y - leftEave.y;
   const wallTop = ((leftEave.y + leftFloor.y) / 2) - 1;
+  const cssPx = (value) => `${Number(value.toFixed(3))}px`;
+  const cssDeg = (value) => `${Number(value.toFixed(3))}deg`;
 
   return {
     anchors: { apex, leftEave, rightEave, leftFloor, rightFloor },
     roofLeft: {
-      top: apex.y - 1,
-      left: apex.x - roofWidth,
-      width: roofWidth,
-      rotate: `${-roofAngle}deg`,
+      top: cssPx(apex.y - 1),
+      left: cssPx(apex.x - roofWidth),
+      width: cssPx(roofWidth),
+      rotate: cssDeg(-roofAngle),
     },
     roofRight: {
-      top: apex.y - 1,
-      left: apex.x,
-      width: roofWidth,
-      rotate: `${roofAngle}deg`,
+      top: cssPx(apex.y - 1),
+      left: cssPx(apex.x),
+      width: cssPx(roofWidth),
+      rotate: cssDeg(roofAngle),
     },
     wallLeft: {
-      top: wallTop,
-      left: leftEave.x - (wallWidth / 2),
-      width: wallWidth,
+      top: cssPx(wallTop),
+      left: cssPx(leftEave.x - (wallWidth / 2)),
+      width: cssPx(wallWidth),
       rotate: '90deg',
     },
     wallRight: {
-      top: wallTop,
-      right: (width - rightEave.x) - (wallWidth / 2),
-      width: wallWidth,
+      top: cssPx(wallTop),
+      right: cssPx((width - rightEave.x) - (wallWidth / 2)),
+      width: cssPx(wallWidth),
       rotate: '90deg',
     },
     floor: {
@@ -208,6 +210,10 @@ export function businessRailMotion(profile) {
   };
 }
 
+export function homeBlueprintModeForProfile(profile, mode) {
+  return profile === 'compact-landscape' ? 'portrait' : mode;
+}
+
 export function homeBlueprintGeometry(mode) {
   if (mode === 'portrait') {
     return {
@@ -218,7 +224,7 @@ export function homeBlueprintGeometry(mode) {
 
   return {
     viewBox: '0 0 980 300',
-    route: 'M20 242 H170 V190 H328 V78 H492 V142 H646 V54 H806 V243 H960',
+    route: 'M20 236 H180 V183 H350 V76 H480 V140 H610 V51 H769 V211 H810 V243 H960',
   };
 }
 

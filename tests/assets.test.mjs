@@ -14,13 +14,15 @@ test('the responsive logo uses a raster-free SVG mask', () => {
   assert.match(svg, /<path\b/);
 });
 
-test('the first paint is covered by a short theme-aware intro', () => {
+test('the first paint is covered by a branded theme-aware intro', () => {
   const source = readFileSync(new URL('../app/components/PitchStage.tsx', import.meta.url), 'utf8');
   const css = readFileSync(new URL('../app/globals.css', import.meta.url), 'utf8');
 
   assert.match(source, /className="intro-mask"/);
+  assert.doesNotMatch(source, /intro-mask--ready/);
   assert.match(source, /<PontMark\s+className="intro-mark"\s*\/>/);
-  assert.match(css, /\.intro-mask\s*{[^}]*animation:\s*pont-intro-exit 300ms/s);
+  assert.match(source, /THE PHYSICAL HOME OF EUROPE&apos;S NEXT TECHNOLOGICAL ERA\./);
+  assert.match(css, /\.intro-mask\s*{[^}]*animation:\s*pont-intro-exit 300ms 650ms/s);
   assert.match(css, /@media \(prefers-reduced-motion:\s*reduce\)[\s\S]*\.intro-mask\s*{[^}]*visibility:\s*hidden/s);
 });
 
@@ -110,10 +112,39 @@ test('the desktop home copy uses the open right column above the blueprint', () 
   assert.match(css, /@media \(orientation:\s*landscape\) and \(min-height:\s*561px\)[\s\S]*?\.home-argument\s*{[^}]*top:\s*112px;[^}]*right:\s*55px;[^}]*bottom:\s*auto;[^}]*left:\s*auto;[^}]*width:\s*300px;[^}]*text-align:\s*right;/s);
 });
 
-test('section 33 desktop copy stays below its two-line closing statement', () => {
+test('section 23 separates its blueprint and copy in compact mobile landscape', () => {
   const css = readFileSync(new URL('../app/globals.css', import.meta.url), 'utf8');
 
-  assert.match(css, /@media \(orientation:\s*landscape\) and \(min-height:\s*561px\)[\s\S]*?\.bridge-network\s*{[^}]*top:\s*660px;[^}]*width:\s*560px;/s);
+  assert.match(css, /@media \(orientation:\s*landscape\) and \(max-height:\s*560px\) and \(max-width:\s*1100px\)[\s\S]*?\.home-blueprint\s*{[^}]*top:\s*190px;[^}]*left:\s*40px;[^}]*width:\s*650px;[^}]*height:\s*430px;[^}]*}[\s\S]*?\.home-final\s*{[^}]*top:\s*190px;[^}]*left:\s*720px;[^}]*width:\s*360px;[^}]*}[\s\S]*?\.home-argument\s*{[^}]*top:\s*350px;[^}]*right:\s*auto;[^}]*bottom:\s*auto;[^}]*left:\s*720px;[^}]*width:\s*350px;/s);
+});
+
+test('section 33 omits the redundant accent helper copy', () => {
+  const source = readFileSync(new URL('../app/components/PitchStage.tsx', import.meta.url), 'utf8');
+  const css = readFileSync(new URL('../app/globals.css', import.meta.url), 'utf8');
+
+  assert.doesNotMatch(source, /bridge-network/);
+  assert.doesNotMatch(css, /\.bridge-network/);
+});
+
+test('the flywheel entry uses the tenant token without the obsolete arrow', () => {
+  const source = readFileSync(new URL('../app/components/PitchStage.tsx', import.meta.url), 'utf8');
+  const css = readFileSync(new URL('../app/globals.css', import.meta.url), 'utf8');
+
+  assert.match(source, /className="flywheel-entrant"/);
+  assert.doesNotMatch(source, /flywheel-entry-line/);
+  assert.doesNotMatch(css, /\.flywheel-entry-line/);
+});
+
+test('the portrait vision uses only one connector above the PONT lockup', () => {
+  const css = readFileSync(new URL('../app/globals.css', import.meta.url), 'utf8');
+
+  assert.match(css, /@media \(orientation:\s*portrait\)[\s\S]*?\.vision-core::before\s*{[^}]*display:\s*none;/s);
+});
+
+test('section 31 gives its closing copy breathing room in compact landscape', () => {
+  const css = readFileSync(new URL('../app/globals.css', import.meta.url), 'utf8');
+
+  assert.match(css, /@media \(orientation:\s*landscape\) and \(max-height:\s*560px\) and \(max-width:\s*1100px\)[\s\S]*?\.capital-building\s*{[^}]*height:\s*270px;[^}]*}[\s\S]*?\.capital-old-relation\s*{[^}]*top:\s*486px;[^}]*}[\s\S]*?\.capital-final\s*{[^}]*top:\s*522px;[^}]*}[\s\S]*?\.capital-outcome\s*{[^}]*top:\s*582px;/s);
 });
 
 test('the Europe finale settles its heading before revealing separated portrait copy', () => {

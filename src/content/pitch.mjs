@@ -99,6 +99,12 @@ export const FLYWHEEL_LAYERS = Object.freeze([
   'EQUITY CAPTURES THE UPSIDE',
 ]);
 
+export const FLYWHEEL_HEADING_LINES = Object.freeze([
+  Object.freeze({ text: 'EVERY COMPANY' }),
+  Object.freeze({ text: 'CAN CREATE' }),
+  Object.freeze({ text: 'MORE THAN', accent: 'RENT.' }),
+]);
+
 export const CAPITAL_PARTNERS = Object.freeze([
   'INVESTOR GATHERINGS',
   'CORPORATE INVESTORS',

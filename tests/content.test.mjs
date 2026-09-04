@@ -253,6 +253,16 @@ test('the economic flywheel keeps the journey and value layers from the brief', 
   assert.deepEqual(SCENES[12].steps, FLYWHEEL_STEPS);
 });
 
+test('the economic flywheel keeps CAN with CREATE on the second display line', async () => {
+  const content = await import('../src/content/pitch.mjs');
+
+  assert.deepEqual(content.FLYWHEEL_HEADING_LINES, [
+    { text: 'EVERY COMPANY' },
+    { text: 'CAN CREATE' },
+    { text: 'MORE THAN', accent: 'RENT.' },
+  ]);
+});
+
 test('capital lives inside the ecosystem with the full investor mix', () => {
   assert.deepEqual(CAPITAL_PARTNERS, [
     'INVESTOR GATHERINGS',

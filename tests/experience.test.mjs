@@ -113,8 +113,21 @@ test('landscape home blueprint route reaches the community node', async () => {
 
   assert.deepEqual(experience.homeBlueprintGeometry?.('landscape'), {
     viewBox: '0 0 980 300',
-    route: 'M20 242 H170 V190 H328 V78 H492 V142 H646 V54 H806 V243 H960',
+    route: 'M20 236 H180 V183 H350 V76 H480 V140 H610 V51 H769 V211 H810 V243 H960',
   });
+});
+
+test('compact landscape selects the vertical home blueprint geometry', async () => {
+  const experience = await import('../src/lib/experience.mjs');
+
+  assert.equal(
+    experience.homeBlueprintModeForProfile?.('compact-landscape', 'landscape'),
+    'portrait',
+  );
+  assert.equal(
+    experience.homeBlueprintModeForProfile?.('landscape', 'landscape'),
+    'landscape',
+  );
 });
 
 test('the setup heading clears before the blueprint becomes primary', async () => {
@@ -208,6 +221,10 @@ test('the community home frame terminates inside its nodes and keeps its label o
     leftFloor: { x: 34, y: 423 },
     rightFloor: { x: 446, y: 423 },
   });
+  assert.match(frame.roofLeft.left, /^-?\d+(?:\.\d+)?px$/);
+  assert.match(frame.roofLeft.width, /^\d+(?:\.\d+)?px$/);
+  assert.match(frame.roofLeft.rotate, /^-?\d+(?:\.\d+)?deg$/);
+  assert.match(frame.wallRight.right, /^-?\d+(?:\.\d+)?px$/);
   assert.equal(frame.label.right, 34);
   assert.equal(frame.floor.left + frame.floor.width, frame.anchors.rightFloor.x);
 });

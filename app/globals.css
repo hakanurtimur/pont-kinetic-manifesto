@@ -164,21 +164,67 @@ button {
   background: var(--bg);
   color: var(--fg);
   pointer-events: auto;
-  animation: pont-intro-exit 300ms cubic-bezier(0.25, 1, 0.5, 1) both;
+  will-change: clip-path, opacity;
+  animation: pont-intro-exit 300ms 650ms cubic-bezier(0.76, 0, 0.24, 1) both;
+}
+
+.intro-lockup {
+  display: grid;
+  width: min(78vw, 720px);
+  justify-items: center;
+  gap: 20px;
 }
 
 .intro-mark {
-  width: min(42vw, 270px);
+  width: min(44vw, 300px);
   min-width: 150px;
+  animation: pont-intro-mark-in 480ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.intro-rule {
+  width: min(58vw, 480px);
+  height: 2px;
+  background: var(--coral);
+  transform-origin: center;
+  animation: pont-intro-rule-in 520ms 90ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.intro-signature {
+  max-width: 560px;
+  margin: 0;
+  color: var(--muted);
+  font-size: clamp(10px, 1.15vw, 13px);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: 0.14em;
+  text-align: center;
+  animation: pont-intro-copy-in 440ms 170ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes pont-intro-mark-in {
+  from { opacity: 0; transform: translateY(12px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes pont-intro-rule-in {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+@keyframes pont-intro-copy-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes pont-intro-exit {
-  0%, 52% {
+  0% {
     opacity: 1;
+    clip-path: inset(0 0 0 0);
     visibility: visible;
   }
   100% {
     opacity: 0;
+    clip-path: inset(0 0 100% 0);
     visibility: hidden;
   }
 }
@@ -1963,28 +2009,6 @@ button {
   height: 44px;
 }
 
-.flywheel-entry-line {
-  position: absolute;
-  top: 21px;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: var(--coral);
-  will-change: transform;
-}
-
-.flywheel-entry-line::after {
-  content: "";
-  position: absolute;
-  top: -5px;
-  right: 0;
-  width: 10px;
-  height: 10px;
-  border-top: 2px solid var(--coral);
-  border-right: 2px solid var(--coral);
-  rotate: 45deg;
-}
-
 .flywheel-entrant {
   position: absolute;
   z-index: 2;
@@ -2487,19 +2511,6 @@ button {
   left: 55px;
   width: 900px;
   font-size: 54px;
-}
-
-.bridge-network {
-  position: absolute;
-  top: 660px;
-  left: 55px;
-  width: 780px;
-  margin: 0;
-  color: var(--coral);
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.035em;
-  will-change: transform, opacity;
 }
 
 .bridge-argument { right: 105px; bottom: 24px; left: 55px; text-align: left; font-size: 12px; }
@@ -3703,7 +3714,6 @@ button {
   .bridge-gate { top: 180px; left: 240px; width: 120px; height: 100px; }
   .bridge-flow { top: calc(50% - 14px); left: calc(50% - 7px); width: 14px; height: 28px; }
   .bridge-final { top: 730px; left: 42px; width: 650px; font-size: 50px; }
-  .bridge-network { top: 840px; left: 42px; width: 620px; font-size: 12px; }
   .bridge-argument { top: 895px; right: auto; bottom: auto; left: 42px; width: 620px; font-size: 14px; }
 
   /* Section 18 portrait preserves the inversion while giving the system vertical room. */
@@ -3781,7 +3791,7 @@ button {
   .vision-transform strong { font-size: 12px; }
   .vision-spine { top: 345px; bottom: auto; left: 299px; width: 2px; height: 62px; }
   .vision-core { top: 407px; right: auto; left: 180px; width: 240px; height: 168px; }
-  .vision-core::before { top: auto; right: auto; bottom: 100%; left: 119px; width: 2px; height: 62px; }
+  .vision-core::before { display: none; }
   .vision-core-mark { width: 190px; }
   .vision-argument { top: 885px; right: auto; bottom: auto; left: 42px; width: 620px; font-size: 14px; }
   .vision-final-mark { top: 174px; left: 82px; width: 580px; }
@@ -3959,7 +3969,6 @@ button {
 
   .bridge-field { top: 200px; }
   .bridge-final { top: 485px; font-size: 46px; }
-  .bridge-network { top: 568px; width: 490px; }
   .bridge-argument { right: auto; bottom: 30px; width: 395px; }
 
   .university-field { top: 194px; }
@@ -4001,6 +4010,36 @@ button {
     top: 535px;
     bottom: auto;
   }
+
+  /* Section 23: keep the footprint diagram and its closing copy in separate columns. */
+  .home-number { top: 60px; left: 40px; }
+  .home-number strong { font-size: 112px; }
+  .home-number span { margin-top: 7px; font-size: 28px; }
+  .home-blueprint { top: 190px; left: 40px; width: 650px; height: 430px; }
+  .home-program { min-height: 45px; font-size: 11px; }
+  .home-program--1 { top: 320px; left: 18px; width: 140px; }
+  .home-program--2 { top: 230px; left: 132px; width: 164px; }
+  .home-program--3 { top: 78px; left: 205px; width: 138px; }
+  .home-program--4 { top: 168px; left: 326px; width: 112px; }
+  .home-program--5 { top: 38px; right: 16px; left: auto; width: 128px; }
+  .home-program--6 { top: 278px; right: 22px; left: auto; width: 116px; }
+  .home-program--7 { right: auto; bottom: 18px; left: 257px; width: 136px; }
+  .home-final { top: 190px; left: 720px; width: 360px; font-size: 37px; }
+  .home-final-sub { margin-top: 18px; font-size: 14px; line-height: 1.08; }
+  .home-argument {
+    top: 350px;
+    right: auto;
+    bottom: auto;
+    left: 720px;
+    width: 350px;
+    font-size: 14px;
+    line-height: 1.18;
+  }
+
+  .capital-building { height: 270px; }
+  .capital-old-relation { top: 486px; }
+  .capital-final { top: 522px; }
+  .capital-outcome { top: 582px; }
 }
 
 @media (orientation: landscape) and (min-height: 561px) {
@@ -4019,7 +4058,6 @@ button {
   .stack-proof { right: 520px; }
   .business-argument { right: 520px; }
   .capital-argument { right: 520px; }
-  .bridge-network { top: 660px; width: 560px; }
   .bridge-argument { right: 520px; }
   .university-argument { right: 520px; }
   .founder-first-argument { right: 520px; }
@@ -4110,7 +4148,10 @@ button {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .intro-mask { animation: none; visibility: hidden; }
+  .intro-mark,
+  .intro-rule,
+  .intro-signature { animation: none; }
+  .intro-mask { animation: none; opacity: 0; visibility: hidden; pointer-events: none; }
   .pitch-shell { overflow: hidden; scroll-snap-type: none; touch-action: auto; }
   .scene, .experience-controls { display: none; }
   .reduced-summary {

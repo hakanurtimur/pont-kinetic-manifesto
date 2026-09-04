@@ -11,6 +11,7 @@ import {
   communityPremiseExitMotion,
   founderRoofVisibility,
   homeBlueprintGeometry,
+  homeBlueprintModeForProfile,
   homeHeadingBlueprintMotion,
   homeSeedBlueprintMotion,
   pageIndexForProgress,
@@ -34,6 +35,7 @@ import {
   COMMUNITY_GROUPS,
   COVER,
   ECOSYSTEM_SERVICES,
+  FLYWHEEL_HEADING_LINES,
   FLYWHEEL_LAYERS,
   FLYWHEEL_STEPS,
   FOUNDER_FIRST_FEATURES,
@@ -162,7 +164,7 @@ export function PitchStage() {
   const geometry = useStageGeometry();
   const businessRail = businessRailMotion(geometry.profile);
   const communityFrame = communityHomeFrameGeometry();
-  const homeBlueprint = homeBlueprintGeometry(geometry.mode);
+  const homeBlueprint = homeBlueprintGeometry(homeBlueprintModeForProfile(geometry.profile, geometry.mode));
   const universityNetwork = universityNetworkGeometry(geometry.mode);
   const { theme, palette, toggleTheme, selectPalette } = useAppearance();
 
@@ -411,7 +413,6 @@ export function PitchStage() {
         .fromTo($('.flywheel-heading .line-inner'), { yPercent: 120 }, { yPercent: 0, duration: 0.58, stagger: 0.05, ease: 'power2.out' }, '<0.08')
         .fromTo($('.flywheel-ring'), { scale: 0.55, rotate: -80, autoAlpha: 0 }, { scale: 1, rotate: 0, autoAlpha: 1, duration: 0.62, stagger: 0.06, ease: 'power3.out' }, '<0.04')
         .fromTo($('.flywheel-core'), { scale: 0.25, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.56, ease: 'back.out(1.25)' }, '<0.08')
-        .fromTo($('.flywheel-entry-line'), { scaleX: 0 }, { scaleX: 1, duration: 0.5, transformOrigin: 'left center' }, '<0.08')
         .fromTo($('.flywheel-entrant'), { x: isPortrait ? -170 : -280, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 0.62, ease: 'power3.out' }, '<0.04')
         .set($('.scene-business'), { autoAlpha: 0 }, '>')
         .addLabel('tenant-enters')
@@ -450,7 +451,7 @@ export function PitchStage() {
         .addLabel('capital-inside')
         .to($('.scene-capital'), { scale: 0.92, autoAlpha: 0, duration: 0.58 })
         .set($('.scene-bridge'), { autoAlpha: 1 }, '<0.18')
-        .set($('.bridge-route, .bridge-gate, .bridge-final, .bridge-network, .bridge-argument'), { autoAlpha: 0 }, '<')
+        .set($('.bridge-route, .bridge-gate, .bridge-final, .bridge-argument'), { autoAlpha: 0 }, '<')
         .fromTo($('.bridge-heading .line-inner'), { yPercent: 120 }, { yPercent: 0, duration: 0.58, stagger: 0.05, ease: 'power2.out' }, '<0.08')
         .fromTo($('.bridge-frame'), { scaleX: isPortrait ? 1 : 0, scaleY: isPortrait ? 0 : 1 }, { scaleX: 1, scaleY: 1, duration: 0.58, transformOrigin: isPortrait ? 'center top' : 'left center', ease: 'power3.out' }, '<0.04')
         .fromTo($('.bridge-outflow-node'), { scale: 0.72, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.44, stagger: 0.08 }, '<0.08')
@@ -478,7 +479,6 @@ export function PitchStage() {
         .fromTo($('.bridge-flow--arrival'), { x: 0, y: 0, autoAlpha: 0 }, { x: isPortrait ? 0 : -220, y: isPortrait ? -120 : 0, autoAlpha: 1, duration: 0.58, ease: 'power2.out' }, '<')
         .set($('.bridge-final'), { autoAlpha: 1 }, '<')
         .fromTo($('.bridge-final .line-inner'), { yPercent: 120 }, { yPercent: 0, duration: 0.58, stagger: 0.05, ease: 'power2.out' }, '<0.08')
-        .fromTo($('.bridge-network'), { y: 12, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.42 }, '<0.08')
         .fromTo($('.bridge-argument'), { y: 12, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.4 }, '<0.06')
         .addLabel('two-way-bridge')
         .to($('.scene-bridge'), { scale: 0.92, autoAlpha: 0, duration: 0.58 })
@@ -648,7 +648,11 @@ export function PitchStage() {
     <main className="pitch-shell" ref={shellRef}>
       <div className="pitch-viewport">
         <div className="intro-mask" aria-hidden="true">
-          <PontMark className="intro-mark" />
+          <div className="intro-lockup">
+            <PontMark className="intro-mark" />
+            <span className="intro-rule" />
+            <p className="intro-signature">THE PHYSICAL HOME OF EUROPE&apos;S NEXT TECHNOLOGICAL ERA.</p>
+          </div>
         </div>
         <div
           className="pitch-stage"
@@ -1031,12 +1035,14 @@ export function PitchStage() {
 
           <section className="scene scene-flywheel" aria-label={SCENES[12].eyebrow}>
             <h2 className="flywheel-heading display-heading display-heading--medium">
-              <span className="mask-line"><span className="line-inner">EVERY COMPANY CAN CREATE</span></span>
-              <span className="mask-line"><span className="line-inner">MORE THAN <em>RENT.</em></span></span>
+              {FLYWHEEL_HEADING_LINES.map((line) => (
+                <span className="mask-line" key={line.text}>
+                  <span className="line-inner">{line.text}{'accent' in line ? <> <em>{line.accent}</em></> : null}</span>
+                </span>
+              ))}
             </h2>
 
             <div className="flywheel-entry" aria-label="A tenant entering the economic flywheel">
-              <span className="flywheel-entry-line" aria-hidden="true" />
               <strong className="flywheel-entrant">TENANT</strong>
             </div>
 
@@ -1123,7 +1129,6 @@ export function PitchStage() {
               <span className="mask-line"><span className="line-inner">EUROPE NEEDS TO BECOME</span></span>
               <span className="mask-line"><span className="line-inner">THE <em>DESTINATION.</em></span></span>
             </p>
-            <p className="bridge-network">{SCENES[14].network}</p>
             <p className="scene-argument bridge-argument">{SCENES[14].argument}</p>
           </section>
 
