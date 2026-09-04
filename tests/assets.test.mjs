@@ -37,10 +37,11 @@ test('the university uses a single SVG network and the founder-first diagram has
   assert.doesNotMatch(source, /founder-first-wrong/);
 });
 
-test('the vision core renders the supplied vector logo asset directly', () => {
+test('the vision core renders the theme-aware vector PONT mark', () => {
   const source = readFileSync(new URL('../app/components/PitchStage.tsx', import.meta.url), 'utf8');
 
-  assert.match(source, /<Image\s+className="vision-core-mark"\s+src="\/pont-logo\.svg"/);
+  assert.match(source, /<PontMark\s+className="vision-core-mark"\s*\/>/);
+  assert.doesNotMatch(source, /<Image\s+className="vision-core-mark"/);
 });
 
 test('the founder-first system has a portrait-specific operating field', () => {

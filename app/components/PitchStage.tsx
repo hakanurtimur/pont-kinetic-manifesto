@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from 'react';
 import { gsap } from 'gsap';
-import Image from 'next/image';
 
 import { BEATS } from '@/src/lib/progress.mjs';
 import {
@@ -1228,7 +1227,7 @@ export function PitchStage() {
                 ))}
               </div>
               <span className="vision-spine" aria-hidden="true" />
-              <div className="vision-core"><Image className="vision-core-mark" src="/pont-logo.svg" width={740} height={193} alt="PONT." /><span>ONE TECHNOLOGICAL ECOSYSTEM</span></div>
+              <div className="vision-core"><PontMark className="vision-core-mark" /><span>ONE TECHNOLOGICAL ECOSYSTEM</span></div>
             </div>
             <p className="scene-argument vision-argument">{SCENES[18].argument}</p>
 
