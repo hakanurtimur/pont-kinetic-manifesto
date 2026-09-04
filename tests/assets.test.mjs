@@ -120,6 +120,7 @@ test('the acting state replaces the full heading with responsive two-line copy',
   assert.match(source, /act-copy__lead[^>]*>NOW AI IS LEARNING</);
   assert.match(source, /act-copy__accent[^>]*>HOW TO ACT\.</);
   assert.match(css, /\.act-mask\s*{[^}]*top:\s*0;[^}]*width:\s*100%;/s);
+  assert.match(css, /\.act-copy__lead\s*{[^}]*color:\s*var\(--fg\);/s);
   assert.match(css, /@media \(orientation:\s*portrait\)[\s\S]*\.act-copy__lead\s*{[^}]*font-size:/s);
 });
 

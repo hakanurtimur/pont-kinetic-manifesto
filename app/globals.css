@@ -380,6 +380,7 @@ button {
 .act-copy__lead,
 .act-copy__accent { display: block; }
 .act-copy__lead {
+  color: var(--fg);
   font-size: 78px;
   line-height: 0.94;
   letter-spacing: -0.055em;
