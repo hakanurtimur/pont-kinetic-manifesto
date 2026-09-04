@@ -35,6 +35,7 @@ import {
   COMMUNITY_GROUPS,
   COVER,
   ECOSYSTEM_SERVICES,
+  EUROPE_GAP_STATEMENTS,
   FLYWHEEL_HEADING_LINES,
   FLYWHEEL_LAYERS,
   FLYWHEEL_STEPS,
@@ -43,6 +44,7 @@ import {
   HARD_INFRASTRUCTURE,
   HOME_LAYERS,
   MODEL_LAYERS,
+  PONT_SOLUTION_STATEMENTS,
   REVENUE_ENGINES,
   ROBOT_TECHNOLOGIES,
   SCENES,
@@ -205,6 +207,7 @@ export function PitchStage() {
       gsap.set($('.scene-cover'), { autoAlpha: 1 });
       gsap.set($('.cover-mark'), { autoAlpha: 1, scale: 1 });
       gsap.set($('.founder-roof'), founderRoofVisibility(false));
+      gsap.set($('.europe-gap, .europe-solution'), { autoAlpha: 0 });
 
       timelineInstance = timeline;
       timeline.addLabel('cover', 0);
@@ -216,8 +219,7 @@ export function PitchStage() {
         .fromTo($('.think-line .line-inner'), { yPercent: 120 }, { yPercent: 0, duration: 0.58, stagger: 0.06, ease: 'power2.out' }, '<0.08')
         .set($('.scene-cover'), { autoAlpha: 0 }, '>')
         .addLabel('think')
-        .to($('.think-line--top'), { x: isPortrait ? 0 : -30, color: 'var(--muted)', duration: 0.52 })
-        .to($('.think-word'), { yPercent: -120, autoAlpha: 0, duration: 0.46 }, '<0.04')
+        .to($('.think-line .line-inner'), { yPercent: -120, autoAlpha: 0, duration: 0.46, stagger: 0.04 })
         .fromTo($('.act-word'), { yPercent: 120, autoAlpha: 0 }, { yPercent: 0, autoAlpha: 1, duration: 0.52, ease: 'power2.out' }, '<0.08')
         .to($('.era-orbit'), { scale: 1, autoAlpha: 1, rotate: 180, duration: 0.62 }, '<')
         .fromTo($('.physical-statement .line-inner'), { yPercent: 120 }, { yPercent: 0, duration: 0.56, stagger: 0.06, ease: 'power2.out' }, '<0.12')
@@ -237,11 +239,17 @@ export function PitchStage() {
         .fromTo($('.escape-line'), { scaleX: 0 }, { scaleX: 1, duration: 0.56 }, '<')
         .fromTo($('.companies-line .line-inner'), { xPercent: 110 }, { xPercent: 0, duration: 0.58, stagger: 0.05, ease: 'power2.out' }, '<0.08')
         .addLabel('companies')
-        .to($('.companies-lockup'), { y: isPortrait ? -72 : -96, scale: isPortrait ? 0.82 : 0.74, transformOrigin: 'left top', duration: 0.58 })
-        .to($('.escape-line'), { scaleX: 0, autoAlpha: 0, transformOrigin: 'right center', duration: 0.38 }, '<')
-        .fromTo($('.stay-line .line-inner'), { yPercent: 120 }, { yPercent: 0, duration: 0.62, stagger: 0.06, ease: 'power2.out' }, '<0.12')
-        .fromTo($('.europe-argument'), { y: 16, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.44 }, '>')
-        .addLabel('stay')
+        .to($('.science-lockup, .companies-lockup'), { y: isPortrait ? -34 : -28, scale: 0.94, autoAlpha: 0, duration: 0.48, ease: 'power2.in' })
+        .to($('.escape-line'), { scaleX: 0, autoAlpha: 0, transformOrigin: 'right center', duration: 0.42 }, '<')
+        .fromTo($('.europe-gap'), { y: isPortrait ? 52 : 34, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.58, ease: 'power3.out' }, '<0.12')
+        .fromTo($('.europe-gap-title .line-inner'), { yPercent: 120 }, { yPercent: 0, duration: 0.54, stagger: 0.06, ease: 'power2.out' }, '<0.04')
+        .fromTo($('.europe-gap-statement'), { y: 18, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.42, stagger: 0.1, ease: 'power2.out' }, '<0.12')
+        .addLabel('infrastructure-gap')
+        .to($('.europe-gap'), { y: isPortrait ? -38 : -28, scale: 0.96, autoAlpha: 0, duration: 0.5, ease: 'power2.in' })
+        .fromTo($('.europe-solution'), { y: isPortrait ? 52 : 34, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.58, ease: 'power3.out' }, '<0.12')
+        .fromTo($('.europe-solution-title .line-inner'), { yPercent: 120 }, { yPercent: 0, duration: 0.54, stagger: 0.06, ease: 'power2.out' }, '<0.04')
+        .fromTo($('.europe-solution-statement'), { y: 18, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.42, stagger: 0.1, ease: 'power2.out' }, '<0.12')
+        .addLabel('pont-comes-in')
         .to($('.scene-europe'), { yPercent: -12, autoAlpha: 0, duration: 0.58 })
         .set($('.scene-worlds'), { autoAlpha: 1 }, '<0.16')
         .fromTo($('.domain--left'), { x: isPortrait ? 0 : -130, y: isPortrait ? -100 : 0, autoAlpha: 0 }, { x: 0, y: 0, autoAlpha: 1, duration: 0.58, ease: 'power2.out' }, '<0.08')
@@ -452,24 +460,8 @@ export function PitchStage() {
         .to($('.scene-capital'), { scale: 0.92, autoAlpha: 0, duration: 0.58 })
         .set($('.scene-bridge'), { autoAlpha: 1 }, '<0.18')
         .set($('.bridge-route, .bridge-gate, .bridge-final, .bridge-argument'), { autoAlpha: 0 }, '<')
-        .fromTo($('.bridge-heading .line-inner'), { yPercent: 120 }, { yPercent: 0, duration: 0.58, stagger: 0.05, ease: 'power2.out' }, '<0.08')
         .fromTo($('.bridge-frame'), { scaleX: isPortrait ? 1 : 0, scaleY: isPortrait ? 0 : 1 }, { scaleX: 1, scaleY: 1, duration: 0.58, transformOrigin: isPortrait ? 'center top' : 'left center', ease: 'power3.out' }, '<0.04')
-        .fromTo($('.bridge-outflow-node'), { scale: 0.72, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.44, stagger: 0.08 }, '<0.08')
-        .fromTo($('.bridge-outflow-line'), { scaleX: isPortrait ? 1 : 0, scaleY: isPortrait ? 0 : 1 }, { scaleX: 1, scaleY: 1, duration: 0.58, transformOrigin: isPortrait ? 'center top' : 'left center', ease: 'power2.inOut' }, '<0.04')
-        .fromTo($('.bridge-leak'), { x: 0, y: 0, scale: 0, autoAlpha: 0 }, {
-          x: (index) => isPortrait ? 0 : 225 + (index * 76),
-          y: (index) => isPortrait ? 48 + (index * 52) : 0,
-          scale: 1,
-          autoAlpha: 1,
-          duration: 0.66,
-          stagger: 0.065,
-          ease: 'power2.out',
-        }, '<0.1')
         .set($('.scene-capital'), { autoAlpha: 0 }, '>')
-        .addLabel('talent-outflow')
-        .to($('.bridge-heading'), { y: isPortrait ? -22 : -12, autoAlpha: 0.14, duration: 0.44 })
-        .to($('.bridge-outflow'), { autoAlpha: 0, duration: 0.42 }, '<')
-        .to($('.bridge-leak'), { x: isPortrait ? 0 : 390, y: isPortrait ? 210 : 0, scale: 0.2, autoAlpha: 0, duration: 0.48, stagger: 0.025 }, '<')
         .fromTo($('.bridge-gate'), { scale: 0.16, rotate: isPortrait ? 90 : 0, autoAlpha: 0 }, { scale: 1, rotate: 0, autoAlpha: 1, duration: 0.62, ease: 'power3.out' }, '<0.08')
         .fromTo($('.bridge-route'), { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.28 }, '<0.06')
         .fromTo($('.bridge-route-line--retain'), { scaleX: isPortrait ? 1 : 0, scaleY: isPortrait ? 0 : 1 }, { scaleX: 1, scaleY: 1, duration: 0.68, transformOrigin: isPortrait ? 'center top' : 'left center', ease: 'power3.inOut' }, '<0.02')
@@ -514,7 +506,8 @@ export function PitchStage() {
         .to($('.founder-first-heading'), { y: isPortrait ? -22 : -12, autoAlpha: 0.12, duration: 0.44 })
         .to($('.founder-first-direction'), { autoAlpha: 0, duration: 0.42 }, '<')
         .set($('.founder-first-operating'), { autoAlpha: 1 }, '<0.12')
-        .fromTo($('.founder-first-mode'), { scaleY: 0 }, { scaleY: 1, autoAlpha: 1, duration: 0.58, stagger: 0.08, transformOrigin: 'bottom center', ease: 'power3.out' }, '<')
+        .fromTo($('.founder-first-model-title'), { y: -10, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.38, ease: 'power2.out' }, '<')
+        .fromTo($('.founder-first-mode'), { scaleY: 0 }, { scaleY: 1, autoAlpha: 1, duration: 0.58, stagger: 0.08, transformOrigin: 'top center', ease: 'power3.out' }, '<0.05')
         .fromTo($('.founder-first-core'), { scale: 0.3, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.62, ease: 'back.out(1.16)' }, '<0.06')
         .fromTo($('.founder-first-pulse'), { scaleX: isPortrait ? 1 : 0, scaleY: isPortrait ? 0 : 1 }, { scaleX: 1, scaleY: 1, duration: 0.52, transformOrigin: isPortrait ? 'center top' : 'left center' }, '<0.08')
         .fromTo($('.founder-first-feature'), { x: isPortrait ? 0 : 24, y: isPortrait ? 16 : 0, autoAlpha: 0 }, { x: 0, y: 0, autoAlpha: 1, duration: 0.42, stagger: 0.045, ease: 'power2.out' }, '<0.08')
@@ -648,10 +641,11 @@ export function PitchStage() {
     <main className="pitch-shell" ref={shellRef}>
       <div className="pitch-viewport">
         <div className="intro-mask" aria-hidden="true">
+          <span className="intro-panel intro-panel--top" />
+          <span className="intro-panel intro-panel--bottom" />
+          <span className="intro-scan" />
           <div className="intro-lockup">
             <PontMark className="intro-mark" />
-            <span className="intro-rule" />
-            <p className="intro-signature">THE PHYSICAL HOME OF EUROPE&apos;S NEXT TECHNOLOGICAL ERA.</p>
           </div>
         </div>
         <div
@@ -676,7 +670,12 @@ export function PitchStage() {
             <h1 className="era-heading display-heading">
               <span className="mask-line think-line think-line--top"><span className="line-inner">AI LEARNED TO</span></span>
               <span className="mask-line think-line"><span className="line-inner think-word">THINK.</span></span>
-              <span className="mask-line act-mask"><span className="line-inner act-word">ACT.</span></span>
+              <span className="mask-line act-mask">
+                <span className="line-inner act-word act-copy">
+                  <span className="act-copy__lead">NOW AI IS LEARNING</span>
+                  <span className="act-copy__accent">HOW TO ACT.</span>
+                </span>
+              </span>
             </h1>
             <p className="physical-statement">
               <span className="mask-line"><span className="line-inner">THE NEXT ERA</span></span>
@@ -696,11 +695,34 @@ export function PitchStage() {
               <span className="mask-line companies-line"><span className="line-inner">BUT IT KEEPS LOSING</span></span>
               <span className="mask-line companies-line"><span className="line-inner">THE COMPANIES.</span></span>
             </div>
-            <div className="stay-line display-heading display-heading--medium">
-              <span className="mask-line"><span className="line-inner">BUILD SOMETHING</span></span>
-              <span className="mask-line"><span className="line-inner">WORTH <em>STAYING</em> FOR.</span></span>
+
+            <div className="europe-gap europe-narrative-state" aria-label="The infrastructure gap">
+              <h2 className="europe-gap-title display-heading display-heading--medium">
+                <span className="mask-line"><span className="line-inner">THE INFRASTRUCTURE</span></span>
+                <span className="mask-line"><span className="line-inner"><em>GAP.</em></span></span>
+              </h2>
+              <div className="europe-sequence" aria-label="Why Europe loses early-stage physical technology companies">
+                {EUROPE_GAP_STATEMENTS.map((statement, index) => (
+                  <p className={`europe-sequence-row europe-gap-statement${index === EUROPE_GAP_STATEMENTS.length - 1 ? ' europe-sequence-row--accent' : ''}`} key={statement}>
+                    <i>0{index + 1}</i><span>{statement}</span>
+                  </p>
+                ))}
+              </div>
             </div>
-            <p className="scene-argument europe-argument">{SCENES[1].argument}</p>
+
+            <div className="europe-solution europe-narrative-state" aria-label="How PONT closes the infrastructure gap">
+              <h2 className="europe-solution-title display-heading display-heading--medium">
+                <span className="mask-line"><span className="line-inner">THIS IS WHERE</span></span>
+                <span className="mask-line"><span className="line-inner"><em>PONT</em> COMES IN.</span></span>
+              </h2>
+              <div className="europe-sequence" aria-label="The PONT solution">
+                {PONT_SOLUTION_STATEMENTS.map((statement, index) => (
+                  <p className={`europe-sequence-row europe-solution-statement${index === PONT_SOLUTION_STATEMENTS.length - 1 ? ' europe-sequence-row--accent' : ''}`} key={statement}>
+                    <i>0{index + 1}</i><span>{statement}</span>
+                  </p>
+                ))}
+              </div>
+            </div>
           </section>
 
           <section className="scene scene-worlds" aria-label={SCENES[2].eyebrow}>
@@ -861,7 +883,7 @@ export function PitchStage() {
               <span className="mask-line"><span className="line-inner">PONT DIDN&apos;T START</span></span>
               <span className="mask-line"><span className="line-inner accent">WITH A BUILDING.</span></span>
             </h2>
-            <p className="founder-origin">IT STARTED WITH <em>THREE ECOSYSTEMS.</em></p>
+            <p className="founder-origin">IT STARTED WITH <em>THREE ECOSYSTEM BUILDERS.</em></p>
 
             <div className="founder-streams" aria-label="PONT founders">
               {FOUNDERS.map(({ name, focus }, index) => (
@@ -942,7 +964,7 @@ export function PitchStage() {
               <span className="home-crosshair home-crosshair--horizontal" aria-hidden="true" />
               <span className="home-crosshair home-crosshair--vertical" aria-hidden="true" />
               <div className="home-seed"><strong>10.000</strong><span>M²</span></div>
-              <p className="home-location"><strong>THE STACK</strong><span>AMSTERDAM OOST · FIRST PHYSICAL FOOTPRINT</span></p>
+              <p className="home-location"><strong>IN PARTNERSHIP WITH THE STACK</strong><span>AMSTERDAM OOST · FIRST PHYSICAL FOOTPRINT</span></p>
             </div>
 
             <p className="home-number" aria-label="Ten thousand square metres"><strong>10.000</strong><span>M²</span></p>
@@ -964,8 +986,8 @@ export function PitchStage() {
             </div>
 
             <p className="home-final display-heading display-heading--medium">
-              <span className="mask-line"><span className="line-inner">TO BUILD WHAT</span></span>
-              <span className="mask-line"><span className="line-inner">EUROPE IS <em>MISSING.</em></span></span>
+              <span className="mask-line"><span className="line-inner">TO ACCELERATE</span></span>
+              <span className="mask-line"><span className="line-inner">WHAT’S MISSING <em>IN EUROPE.</em></span></span>
               <span className="mask-line home-final-sub"><span className="line-inner">AN ECOSYSTEM INSIDE AN ECOSYSTEM.</span></span>
             </p>
             <p className="scene-argument home-argument">{SCENES[9].argument}</p>
@@ -1097,21 +1119,8 @@ export function PitchStage() {
           </section>
 
           <section className="scene scene-bridge" aria-label={SCENES[14].eyebrow}>
-            <h2 className="bridge-heading display-heading display-heading--medium">
-              <span className="mask-line"><span className="line-inner">KEEP EUROPEAN TALENT <em>IN.</em></span></span>
-              <span className="mask-line"><span className="line-inner">BRING GLOBAL TALENT <em>IN.</em></span></span>
-            </h2>
-
             <div className="bridge-field" aria-label="PONT two-way bridge between Europe and the world">
               <span className="bridge-frame" aria-hidden="true" />
-
-              <div className="bridge-outflow">
-                <p className="bridge-outflow-node bridge-outflow-node--origin"><i>01</i><strong>EUROPE</strong><span>TALENT ORIGIN</span></p>
-                <span className="bridge-outflow-line" aria-hidden="true">
-                  {Array.from({ length: 4 }, (_, index) => <i className={`bridge-leak bridge-leak--${index + 1}`} key={`bridge-leak-${index}`} />)}
-                </span>
-                <p className="bridge-outflow-node bridge-outflow-node--exit"><i>OUT</i><strong>OUTFLOW</strong><span>ONE-WAY SYSTEM</span></p>
-              </div>
 
               {BRIDGE_ROUTES.map((route, index) => (
                 <div className={`bridge-route bridge-route--${index === 0 ? 'retain' : 'arrival'}`} key={route.origin}>
@@ -1126,8 +1135,8 @@ export function PitchStage() {
             </div>
 
             <p className="bridge-final display-heading display-heading--medium">
-              <span className="mask-line"><span className="line-inner">EUROPE NEEDS TO BECOME</span></span>
-              <span className="mask-line"><span className="line-inner">THE <em>DESTINATION.</em></span></span>
+              <span className="mask-line"><span className="line-inner">PONT CONNECTS WHAT THE</span></span>
+              <span className="mask-line"><span className="line-inner"><em>WORLD BUILDS BEST.</em></span></span>
             </p>
             <p className="scene-argument bridge-argument">{SCENES[14].argument}</p>
           </section>
@@ -1181,7 +1190,13 @@ export function PitchStage() {
 
               <div className="founder-first-operating" aria-label="Founder-first university operating system">
                 <div className="founder-first-modes">
-                  {UNIVERSITY_MODES.map((mode) => <div className={`founder-first-mode founder-first-mode--${mode.label.toLowerCase()}`} key={mode.label}><strong>{mode.value}</strong><span>{mode.label}</span></div>)}
+                  <p className="founder-first-model-title">A COST-EFFECTIVE HYBRID MODEL</p>
+                  {UNIVERSITY_MODES.map((mode, index) => (
+                    <article className={`founder-first-mode founder-first-mode--${index === 0 ? 'online' : 'physical'}`} key={mode.label}>
+                      <strong>{mode.label}</strong>
+                      <span>{mode.detail}</span>
+                    </article>
+                  ))}
                 </div>
                 <div className="founder-first-core"><i>LEARN WHERE YOU</i><strong>BUILD.</strong><span>UNIVERSITY × COMPANIES</span></div>
                 <span className="founder-first-pulse" aria-hidden="true" />
@@ -1258,7 +1273,6 @@ export function PitchStage() {
               <PontMark className="vision-final-mark" />
               <span className="vision-final-rule" aria-hidden="true" />
               <p className="vision-closing display-heading display-heading--medium">
-                <span className="mask-line"><span className="line-inner">EUROPE HAS THE <em>SCIENCE.</em></span></span>
                 <span className="mask-line"><span className="line-inner">NOW LET&apos;S BUILD THE ENVIRONMENT</span></span>
                 <span className="mask-line"><span className="line-inner">THAT TURNS IT INTO THE <em>FUTURE.</em></span></span>
               </p>

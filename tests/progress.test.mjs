@@ -15,7 +15,7 @@ test('clampProgress limits timeline input to the normalized range', () => {
 });
 
 test('beat positions increase from the first to the last beat', () => {
-  assert.deepEqual(BEATS.slice(-28), [
+  assert.deepEqual(BEATS.slice(-27), [
     'hard-tech-premise',
     'hard-tech-infrastructure',
     'space-shell',
@@ -34,7 +34,6 @@ test('beat positions increase from the first to the last beat', () => {
     'flywheel-compounds',
     'capital-outside',
     'capital-inside',
-    'talent-outflow',
     'two-way-bridge',
     'university-outside',
     'university-inside',
@@ -59,4 +58,23 @@ test('nearestBeat selects the closest settled beat', () => {
 
   assert.equal(nearestBeat(midpoint - 0.001), 2);
   assert.equal(nearestBeat(midpoint + 0.001), 3);
+});
+
+test('the Europe sequence explains the infrastructure gap before introducing PONT', () => {
+  assert.equal(BEATS.includes('domains'), false);
+  assert.equal(BEATS.includes('stay'), false);
+  assert.deepEqual(BEATS.slice(3, 9), [
+    'science',
+    'companies',
+    'infrastructure-gap',
+    'pont-comes-in',
+    'convergence',
+    'future',
+  ]);
+  assert.equal(BEATS.length, 40);
+});
+
+test('the bridge sequence removes the standalone talent-outflow slide', () => {
+  assert.equal(BEATS.includes('talent-outflow'), false);
+  assert.equal(BEATS[31], 'two-way-bridge');
 });

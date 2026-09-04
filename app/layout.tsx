@@ -4,7 +4,7 @@ import { APPEARANCE_BOOTSTRAP_SCRIPT } from '@/src/lib/theme.mjs';
 import './globals.css';
 
 const title = 'PONT — Building Europe’s Physical Future';
-const description = "Building the physical infrastructure for Europe’s next technological era across Physical AI, Life Sciences, capital, community and education.";
+const description = "Building the physical infrastructure for Europe’s next technological era across Physical AI, Life Sciences, capital, community and academy.";
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://pont-amsterdam.vercel.app'),

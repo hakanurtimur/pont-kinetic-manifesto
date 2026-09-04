@@ -5,9 +5,21 @@ export const COVER = Object.freeze({
     'LIFE SCIENCES',
     'CAPITAL',
     'COMMUNITY',
-    'EDUCATION',
+    'ACADEMY',
   ]),
 });
+
+export const EUROPE_GAP_STATEMENTS = Object.freeze([
+  'ROBOTS CAN’T BE BUILT AT A DESK.',
+  'SCIENCE CAN’T SCALE WITHOUT LABS.',
+  'EUROPE’S EARLY-STAGE FOUNDERS LACK BOTH.',
+]);
+
+export const PONT_SOLUTION_STATEMENTS = Object.freeze([
+  'PRIVATELY INVESTED. INDEPENDENTLY BUILT.',
+  'LABS-AS-A-SERVICE. ROBOTICS ASSEMBLY & TESTING.',
+  'ALL POWERED BY COMMUNITY AND CAPITAL.',
+]);
 
 export const ROBOT_TECHNOLOGIES = Object.freeze([
   'AI',
@@ -44,7 +56,7 @@ export const ECOSYSTEM_SERVICES = Object.freeze([
 export const FOUNDERS = Object.freeze([
   Object.freeze({ name: 'OLIVER ROCKALL', focus: 'OPERATIONS \u00d7 MEDICINE \u00d7 PRODUCT \u00d7 DEEP TECH' }),
   Object.freeze({ name: 'FABIEN BOUHIER', focus: 'COMMUNITY \u00d7 FOUNDERS \u00d7 TECHNOLOGY \u00d7 EVENTS' }),
-  Object.freeze({ name: 'RE\u015eAT VOLKAN G\u00dcNEL', focus: 'INVESTMENT \u00d7 INTERNATIONAL NETWORKS \u00d7 LAW \u00d7 EDUCATION' }),
+  Object.freeze({ name: 'RESAT VOLKAN GUNEL', focus: 'INVESTMENT \u00d7 INTERNATIONAL NETWORKS \u00d7 LAW \u00d7 EDUCATION' }),
 ]);
 
 export const COMMUNITY_GROUPS = Object.freeze([
@@ -78,7 +90,7 @@ export const REVENUE_ENGINES = Object.freeze([
   Object.freeze({ name: 'COMMUNITY', detail: 'EVENTS · MEMBERSHIPS · PARTNERSHIPS · SPONSORSHIPS' }),
   Object.freeze({ name: 'VENTURES', detail: 'EQUITY-FOR-SPACE · EQUITY-FOR-SERVICES · STARTUP PORTFOLIO' }),
   Object.freeze({ name: 'CAPITAL', detail: 'INVESTOR NETWORK · CO-INVESTMENT · FUTURE INVESTMENT VEHICLES' }),
-  Object.freeze({ name: 'EDUCATION', detail: 'ACADEMY · EXECUTIVE PROGRAMMES · FUTURE UNIVERSITY' }),
+  Object.freeze({ name: 'ACADEMY', detail: 'AI-NATIVE EDUCATION · EXECUTIVE PROGRAMMES · FUTURE UNIVERSITY' }),
 ]);
 
 export const FLYWHEEL_STEPS = Object.freeze([
@@ -129,8 +141,8 @@ export const UNIVERSITY_LAYERS = Object.freeze([
 ]);
 
 export const UNIVERSITY_MODES = Object.freeze([
-  Object.freeze({ value: '90%', label: 'DIGITAL' }),
-  Object.freeze({ value: '10%', label: 'PHYSICAL' }),
+  Object.freeze({ label: 'ONLINE LEARNING', detail: 'Academic content · Courses · AI-enabled learning' }),
+  Object.freeze({ label: 'PHYSICAL EXPERIENCE', detail: 'Internships · Founder sessions · Workshops · Community' }),
 ]);
 
 export const FOUNDER_FIRST_FEATURES = Object.freeze([
@@ -148,7 +160,7 @@ export const MODEL_LAYERS = Object.freeze([
   'COMMUNITY',
   'CAPITAL',
   'SERVICES',
-  'EDUCATION',
+  'ACADEMY',
 ]);
 
 export const VISION_TRANSFORMATIONS = Object.freeze([
@@ -156,7 +168,7 @@ export const VISION_TRANSFORMATIONS = Object.freeze([
   Object.freeze({ from: 'SCIENCE', to: 'COMPANIES' }),
   Object.freeze({ from: 'FOUNDERS', to: 'CAPITAL' }),
   Object.freeze({ from: 'COMMUNITY', to: 'INFRASTRUCTURE' }),
-  Object.freeze({ from: 'EDUCATION', to: 'THE REAL ECONOMY' }),
+  Object.freeze({ from: 'ACADEMY', to: 'THE REAL ECONOMY' }),
 ]);
 
 export const SCENES = Object.freeze([
@@ -166,7 +178,7 @@ export const SCENES = Object.freeze([
     eyebrow: 'THE NEXT ERA',
     statements: [
       'AI LEARNED TO THINK.',
-      'NOW IT IS LEARNING TO ACT.',
+      'NOW AI IS LEARNING HOW TO ACT.',
       'THE NEXT ERA IS PHYSICAL.',
     ],
     argument: 'AI IS MOVING BEYOND SCREENS AND SOFTWARE INTO MACHINES, LABORATORIES, FACTORIES AND HEALTHCARE.',
@@ -178,9 +190,12 @@ export const SCENES = Object.freeze([
     statements: [
       'EUROPE MAKES THE SCIENCE.',
       'BUT IT KEEPS LOSING THE COMPANIES.',
-      'BUILD SOMETHING WORTH STAYING FOR.',
+      'THE INFRASTRUCTURE GAP.',
+      ...EUROPE_GAP_STATEMENTS,
+      'THIS IS WHERE PONT COMES IN.',
+      ...PONT_SOLUTION_STATEMENTS,
     ],
-    argument: 'EUROPE HAS THE SCIENCE AND TALENT. IT LACKS THE ENVIRONMENTS WHERE AMBITIOUS COMPANIES CAN BUILD, TEST, FINANCE AND SCALE TOGETHER.',
+    argument: 'EARLY-STAGE FOUNDERS LACK THE PHYSICAL INFRASTRUCTURE REQUIRED TO BUILD AND SCALE.',
   },
   {
     id: 'two-worlds',
@@ -247,7 +262,7 @@ export const SCENES = Object.freeze([
     eyebrow: 'WHY THE FOUNDERS',
     statements: [
       'PONT DIDN\u2019T START WITH A BUILDING.',
-      'IT STARTED WITH THREE ECOSYSTEMS.',
+      'IT STARTED WITH THREE ECOSYSTEM BUILDERS.',
       'WHAT WE BUILT SEPARATELY, WE NOW BRING UNDER ONE ROOF.',
     ],
     argument: 'THREE DIFFERENT BACKGROUNDS. ONE SHARED CONVICTION.',
@@ -270,7 +285,7 @@ export const SCENES = Object.freeze([
     index: '10',
     eyebrow: 'THE HOME',
     statements: [
-      '10.000 M² TO BUILD WHAT EUROPE IS MISSING.',
+      '10.000 M² TO ACCELERATE WHAT’S MISSING IN EUROPE.',
       'PONT ADDS THE PHYSICAL LAYER.',
       'AN ECOSYSTEM INSIDE AN ECOSYSTEM.',
     ],
@@ -331,11 +346,9 @@ export const SCENES = Object.freeze([
     index: '15',
     eyebrow: 'THE TWO-WAY BRIDGE',
     statements: [
-      'KEEP EUROPEAN TALENT IN.',
-      'BRING GLOBAL TALENT IN.',
-      'EUROPE DOESN’T ONLY NEED TO STOP THE OUTFLOW. IT NEEDS TO BECOME THE DESTINATION.',
+      'PONT CONNECTS WHAT THE WORLD BUILDS BEST.',
     ],
-    argument: 'PONT IS DESIGNED AS A TWO-WAY BRIDGE: HELPING EUROPEAN FOUNDERS REMAIN AND SCALE HERE WHILE AMBITIOUS INTERNATIONAL DEEP-TECH COMPANIES ESTABLISH A CREDIBLE EUROPEAN BASE.',
+    argument: 'A two-way bridge connecting talent, technology and capital across global deep-tech ecosystems.',
     network: 'NON-EU AND THE WIDER EAST–WEST CORRIDOR PROVIDE AN IMMEDIATE STARTING NETWORK. THE AMBITION IS GLOBAL.',
     routes: BRIDGE_ROUTES,
   },
@@ -360,7 +373,7 @@ export const SCENES = Object.freeze([
       'BRING THE UNIVERSITY INTO THE STARTUPS.',
       'WE ARE BUILDING A UNIVERSITY INSIDE THE COMPANIES.',
     ],
-    argument: 'STUDENTS LEARN INSIDE THE ENVIRONMENT WHERE TECHNOLOGIES ARE BUILT, COMPANIES ARE FINANCED AND FOUNDERS SOLVE REAL PROBLEMS.',
+    argument: 'Learning happens online. Experience happens inside the ecosystem.',
     modes: UNIVERSITY_MODES,
     features: FOUNDER_FIRST_FEATURES,
   },
@@ -382,7 +395,6 @@ export const SCENES = Object.freeze([
     eyebrow: 'THE VISION',
     statements: [
       'THE PHYSICAL HOME OF EUROPE’S NEXT TECHNOLOGICAL ERA.',
-      'EUROPE HAS THE SCIENCE.',
       'NOW LET’S BUILD THE ENVIRONMENT THAT TURNS IT INTO THE FUTURE.',
     ],
     argument: 'SCIENTISTS, ENGINEERS, FOUNDERS, INVESTORS, CORPORATES AND STUDENTS PARTICIPATE IN THE SAME TECHNOLOGICAL ECOSYSTEM.',

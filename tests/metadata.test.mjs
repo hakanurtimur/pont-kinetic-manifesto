@@ -27,6 +27,7 @@ test('Open Graph and Twitter use a purpose-built 1200 by 630 brand image', () =>
   assert.match(openGraph, /#FF5A42/i);
   assert.match(openGraph, /THE PHYSICAL HOME OF/);
   assert.match(openGraph, /TECHNOLOGICAL ERA\./);
+  assert.match(openGraph, /COMMUNITY × ACADEMY/);
 });
 
 test('the local 127.0.0.1 preview may load Next development assets', () => {

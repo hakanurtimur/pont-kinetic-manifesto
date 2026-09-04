@@ -73,7 +73,7 @@ export default function OpenGraphImage() {
 
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div style={{ display: 'flex', color: '#8992A7', fontSize: 15, fontWeight: 700, letterSpacing: '0.08em' }}>
-            PHYSICAL AI × LIFE SCIENCES × CAPITAL × COMMUNITY × EDUCATION
+            PHYSICAL AI × LIFE SCIENCES × CAPITAL × COMMUNITY × ACADEMY
           </div>
           <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
             <span style={{ fontSize: 32, fontWeight: 800 }}>10.000</span>

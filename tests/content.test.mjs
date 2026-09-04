@@ -33,7 +33,7 @@ test('cover carries the core proposition and ecosystem pillars from the brief', 
     'LIFE SCIENCES',
     'CAPITAL',
     'COMMUNITY',
-    'EDUCATION',
+    'ACADEMY',
   ]);
 });
 
@@ -67,13 +67,20 @@ test('prototype contains the approved scenes through community before real estat
 test('presentation statements stay verbatim', () => {
   assert.deepEqual(SCENES[0].statements, [
     'AI LEARNED TO THINK.',
-    'NOW IT IS LEARNING TO ACT.',
+    'NOW AI IS LEARNING HOW TO ACT.',
     'THE NEXT ERA IS PHYSICAL.',
   ]);
   assert.deepEqual(SCENES[1].statements, [
     'EUROPE MAKES THE SCIENCE.',
     'BUT IT KEEPS LOSING THE COMPANIES.',
-    'BUILD SOMETHING WORTH STAYING FOR.',
+    'THE INFRASTRUCTURE GAP.',
+    'ROBOTS CAN’T BE BUILT AT A DESK.',
+    'SCIENCE CAN’T SCALE WITHOUT LABS.',
+    'EUROPE’S EARLY-STAGE FOUNDERS LACK BOTH.',
+    'THIS IS WHERE PONT COMES IN.',
+    'PRIVATELY INVESTED. INDEPENDENTLY BUILT.',
+    'LABS-AS-A-SERVICE. ROBOTICS ASSEMBLY & TESTING.',
+    'ALL POWERED BY COMMUNITY AND CAPITAL.',
   ]);
   assert.equal(SCENES[2].statements.at(-1), 'TWO WORLDS. ONE PHYSICAL FUTURE.');
   assert.deepEqual(SCENES[3].statements, [
@@ -122,7 +129,7 @@ test('presentation statements stay verbatim', () => {
   ]);
   assert.deepEqual(SCENES[7].statements, [
     'PONT DIDN\u2019T START WITH A BUILDING.',
-    'IT STARTED WITH THREE ECOSYSTEMS.',
+    'IT STARTED WITH THREE ECOSYSTEM BUILDERS.',
     'WHAT WE BUILT SEPARATELY, WE NOW BRING UNDER ONE ROOF.',
   ]);
   assert.deepEqual(SCENES[8].statements, [
@@ -131,7 +138,7 @@ test('presentation statements stay verbatim', () => {
     'COMMUNITY IS INFRASTRUCTURE.',
   ]);
   assert.deepEqual(SCENES[9].statements, [
-    '10.000 M² TO BUILD WHAT EUROPE IS MISSING.',
+    '10.000 M² TO ACCELERATE WHAT’S MISSING IN EUROPE.',
     'PONT ADDS THE PHYSICAL LAYER.',
     'AN ECOSYSTEM INSIDE AN ECOSYSTEM.',
   ]);
@@ -156,9 +163,7 @@ test('presentation statements stay verbatim', () => {
     'DISCOVERED. FINANCED. SCALED.',
   ]);
   assert.deepEqual(SCENES[14].statements, [
-    'KEEP EUROPEAN TALENT IN.',
-    'BRING GLOBAL TALENT IN.',
-    'EUROPE DOESN’T ONLY NEED TO STOP THE OUTFLOW. IT NEEDS TO BECOME THE DESTINATION.',
+    'PONT CONNECTS WHAT THE WORLD BUILDS BEST.',
   ]);
 });
 
@@ -183,7 +188,7 @@ test('sections 08 to 10 retain the infrastructure, ecosystem and founder detail'
   assert.deepEqual(FOUNDERS, [
     { name: 'OLIVER ROCKALL', focus: 'OPERATIONS \u00d7 MEDICINE \u00d7 PRODUCT \u00d7 DEEP TECH' },
     { name: 'FABIEN BOUHIER', focus: 'COMMUNITY \u00d7 FOUNDERS \u00d7 TECHNOLOGY \u00d7 EVENTS' },
-    { name: 'RE\u015eAT VOLKAN G\u00dcNEL', focus: 'INVESTMENT \u00d7 INTERNATIONAL NETWORKS \u00d7 LAW \u00d7 EDUCATION' },
+    { name: 'RESAT VOLKAN GUNEL', focus: 'INVESTMENT \u00d7 INTERNATIONAL NETWORKS \u00d7 LAW \u00d7 EDUCATION' },
   ]);
 });
 
@@ -228,7 +233,7 @@ test('the business model preserves all six interconnected revenue engines', () =
     'COMMUNITY',
     'VENTURES',
     'CAPITAL',
-    'EDUCATION',
+    'ACADEMY',
   ]);
   assert.deepEqual(SCENES[11].engines, REVENUE_ENGINES);
 });
@@ -296,10 +301,10 @@ test('the university is embedded inside the founder ecosystem', () => {
   assert.equal(SCENES[15].statements.at(-1), 'PUT THE UNIVERSITY INSIDE THE ECOSYSTEM.');
 });
 
-test('the founder-first university preserves its 90/10 operating model', () => {
+test('the founder-first university uses a cost-effective hybrid learning model', () => {
   assert.deepEqual(UNIVERSITY_MODES, [
-    { value: '90%', label: 'DIGITAL' },
-    { value: '10%', label: 'PHYSICAL' },
+    { label: 'ONLINE LEARNING', detail: 'Academic content · Courses · AI-enabled learning' },
+    { label: 'PHYSICAL EXPERIENCE', detail: 'Internships · Founder sessions · Workshops · Community' },
   ]);
   assert.deepEqual(FOUNDER_FIRST_FEATURES, [
     'AI-NATIVE ADMINISTRATION',
@@ -313,6 +318,7 @@ test('the founder-first university preserves its 90/10 operating model', () => {
   assert.deepEqual(SCENES[16].modes, UNIVERSITY_MODES);
   assert.deepEqual(SCENES[16].features, FOUNDER_FIRST_FEATURES);
   assert.equal(SCENES[16].statements.at(-1), 'WE ARE BUILDING A UNIVERSITY INSIDE THE COMPANIES.');
+  assert.equal(SCENES[16].argument, 'Learning happens online. Experience happens inside the ecosystem.');
 });
 
 test('the traveling model keeps the same five-part ecosystem architecture', () => {
@@ -321,7 +327,7 @@ test('the traveling model keeps the same five-part ecosystem architecture', () =
     'COMMUNITY',
     'CAPITAL',
     'SERVICES',
-    'EDUCATION',
+    'ACADEMY',
   ]);
   assert.deepEqual(SCENES[17].layers, MODEL_LAYERS);
   assert.equal(SCENES[17].statements.at(-1), 'BUILD THE ECOSYSTEM ONCE. LEARN FROM IT. THEN MAKE THE MODEL TRAVEL.');
@@ -333,16 +339,20 @@ test('the final vision closes every transformation from the brief', () => {
     { from: 'SCIENCE', to: 'COMPANIES' },
     { from: 'FOUNDERS', to: 'CAPITAL' },
     { from: 'COMMUNITY', to: 'INFRASTRUCTURE' },
-    { from: 'EDUCATION', to: 'THE REAL ECONOMY' },
+    { from: 'ACADEMY', to: 'THE REAL ECONOMY' },
   ]);
   assert.deepEqual(SCENES[18].transformations, VISION_TRANSFORMATIONS);
+  assert.deepEqual(SCENES[18].statements, [
+    'THE PHYSICAL HOME OF EUROPE’S NEXT TECHNOLOGICAL ERA.',
+    'NOW LET’S BUILD THE ENVIRONMENT THAT TURNS IT INTO THE FUTURE.',
+  ]);
   assert.equal(SCENES[18].statements.at(-1), 'NOW LET’S BUILD THE ENVIRONMENT THAT TURNS IT INTO THE FUTURE.');
 });
 
 test('every approved scene carries a visible argument line from the brief', () => {
   assert.deepEqual(SCENES.map(({ argument }) => argument), [
     'AI IS MOVING BEYOND SCREENS AND SOFTWARE INTO MACHINES, LABORATORIES, FACTORIES AND HEALTHCARE.',
-    'EUROPE HAS THE SCIENCE AND TALENT. IT LACKS THE ENVIRONMENTS WHERE AMBITIOUS COMPANIES CAN BUILD, TEST, FINANCE AND SCALE TOGETHER.',
+    'EARLY-STAGE FOUNDERS LACK THE PHYSICAL INFRASTRUCTURE REQUIRED TO BUILD AND SCALE.',
     'BOTH DOMAINS SHARE ONE CHALLENGE: TURNING INTELLIGENCE, SCIENCE AND SOFTWARE INTO PHYSICAL REALITY.',
     'EVERY LAYER DEPENDS ON COMPANIES, SPECIALISTS AND SUPPLIERS THAT NEED ONE ANOTHER.',
     'A BIOTECH COMPANY DOES NOT MOVE FROM DISCOVERY TO CLINIC ALONE.',
@@ -355,9 +365,9 @@ test('every approved scene carries a visible argument line from the brief', () =
     'PONT IS DESIGNED AROUND MULTIPLE INTERCONNECTED REVENUE ENGINES.',
     'A TENANT CAN BECOME A MEMBER, CUSTOMER, COLLABORATOR, INVESTMENT AND THE NEXT GENERATION’S MAGNET.',
     'CAPITAL IS PART OF PONT’S PHYSICAL AND SOCIAL ARCHITECTURE, INTERACTING DIRECTLY WITH THE COMPANIES BUILDING INSIDE.',
-    'PONT IS DESIGNED AS A TWO-WAY BRIDGE: HELPING EUROPEAN FOUNDERS REMAIN AND SCALE HERE WHILE AMBITIOUS INTERNATIONAL DEEP-TECH COMPANIES ESTABLISH A CREDIBLE EUROPEAN BASE.',
+    'A two-way bridge connecting talent, technology and capital across global deep-tech ecosystems.',
     'PONT INTENDS TO ESTABLISH A FOUNDER-FIRST UNIVERSITY, DESIGNED FROM THE GROUND UP AROUND ENTREPRENEURSHIP, TECHNOLOGY, PROJECTS, COMPETENCIES, NETWORKS AND REAL-WORLD PRODUCTION.',
-    'STUDENTS LEARN INSIDE THE ENVIRONMENT WHERE TECHNOLOGIES ARE BUILT, COMPANIES ARE FINANCED AND FOUNDERS SOLVE REAL PROBLEMS.',
+    'Learning happens online. Experience happens inside the ecosystem.',
     'AMSTERDAM IS THE STARTING POINT, NOT THE LIMIT. DIFFERENT CITIES CAN EXPRESS DIFFERENT TECHNOLOGICAL STRENGTHS THROUGH THE SAME ECOSYSTEM ARCHITECTURE.',
     'SCIENTISTS, ENGINEERS, FOUNDERS, INVESTORS, CORPORATES AND STUDENTS PARTICIPATE IN THE SAME TECHNOLOGICAL ECOSYSTEM.',
   ]);
