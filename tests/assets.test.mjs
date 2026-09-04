@@ -33,6 +33,20 @@ test('the capital scene shares one architectural grid in both orientations', () 
   assert.match(css, /@media \(orientation:\s*portrait\)[\s\S]*\.scene-capital\s*{[^}]*--capital-grid-left:\s*42px;[^}]*--capital-grid-width:\s*600px;/s);
 });
 
+test('section 30 keeps its two-line heading clear of the diagram in compact landscape', () => {
+  const css = readFileSync(new URL('../app/globals.css', import.meta.url), 'utf8');
+
+  assert.match(css, /@media \(orientation:\s*landscape\) and \(max-height:\s*560px\)[\s\S]*?\.capital-heading\s*{[^}]*top:\s*58px;[^}]*font-size:\s*48px;[^}]*}[\s\S]*?\.capital-heading \.line-inner\s*{[^}]*white-space:\s*nowrap;/s);
+});
+
+test('section 15 removes the obsolete connector and clears its compact mobile verdict', () => {
+  const source = readFileSync(new URL('../app/components/PitchStage.tsx', import.meta.url), 'utf8');
+  const css = readFileSync(new URL('../app/globals.css', import.meta.url), 'utf8');
+
+  assert.doesNotMatch(source, /hard-limit/);
+  assert.match(css, /@media \(orientation:\s*landscape\) and \(max-height:\s*560px\) and \(max-width:\s*1100px\)[\s\S]*?\.hard-verdict\s*{[^}]*top:\s*535px;[^}]*bottom:\s*auto;/s);
+});
+
 test('the university scene has an orientation-aware inversion field', () => {
   const css = readFileSync(new URL('../app/globals.css', import.meta.url), 'utf8');
 
@@ -58,11 +72,19 @@ test('every PONT lockup follows the active accent with theme-aware contrast', ()
   assert.match(css, /\.pont-mark__base[\s\S]*?background:\s*var\(--coral\)/);
   assert.match(css, /\.pont-mark__contrast\s*{[^}]*background:\s*var\(--logo-contrast\)/s);
   assert.match(css, /\.vision-core\s*{[^}]*background:\s*var\(--bg\)/s);
-  assert.match(css, /\.vision-core span\s*{[^}]*color:\s*var\(--fg\)/s);
   assert.match(svg, /#ff5a42/i);
   assert.doesNotMatch(svg, /#c43a2b/i);
   assert.match(svg, /#01004a/i);
   assert.doesNotMatch(svg, /#fefdfd/i);
+});
+
+test('section 40 reuses the same unmodified PONT mark as the other lockups', () => {
+  const source = readFileSync(new URL('../app/components/PitchStage.tsx', import.meta.url), 'utf8');
+  const css = readFileSync(new URL('../app/globals.css', import.meta.url), 'utf8');
+
+  assert.match(source, /<div className="vision-core"><PontMark className="vision-core-mark"\s*\/><\/div>/);
+  assert.doesNotMatch(source, /vision-core"><PontMark[^\n]*ONE TECHNOLOGICAL ECOSYSTEM/);
+  assert.doesNotMatch(css, /\.vision-core span\s*{/);
 });
 
 test('the latest visual polish rules keep labels and connector axes aligned', () => {
@@ -74,6 +96,12 @@ test('the latest visual polish rules keep labels and connector axes aligned', ()
   assert.match(css, /\.business-value-current i\s*{[^}]*top:\s*22px;[^}]*bottom:\s*auto;/s);
   assert.match(css, /@media \(orientation:\s*portrait\)[\s\S]*\.founder-first-startup-token\s*{[^}]*left:\s*calc\(50% - 54px\);/s);
   assert.match(source, /THE PHYSICAL HOME OF[\s\S]*EUROPE&apos;S NEXT[\s\S]*TECHNOLOGICAL ERA\./);
+});
+
+test('the desktop home copy uses the open right column above the blueprint', () => {
+  const css = readFileSync(new URL('../app/globals.css', import.meta.url), 'utf8');
+
+  assert.match(css, /@media \(orientation:\s*landscape\) and \(min-height:\s*561px\)[\s\S]*?\.home-argument\s*{[^}]*top:\s*112px;[^}]*right:\s*55px;[^}]*bottom:\s*auto;[^}]*left:\s*auto;[^}]*width:\s*300px;[^}]*text-align:\s*right;/s);
 });
 
 test('the Europe finale settles its heading before revealing separated portrait copy', () => {

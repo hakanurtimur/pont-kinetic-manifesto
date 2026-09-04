@@ -293,7 +293,6 @@ export function PitchStage() {
         .addLabel('hard-tech-premise')
         .to($('.hard-start'), { x: isPortrait ? -40 : -90, scale: 0.86, autoAlpha: 0.16, duration: 0.56 })
         .to($('.hard-anywhere'), { autoAlpha: 0.28, duration: 0.42 }, '<')
-        .fromTo($('.hard-limit'), { scaleX: 0 }, { scaleX: 1, duration: 0.52, transformOrigin: 'left center' }, '<0.02')
         .fromTo($('.hard-module'), { x: isPortrait ? 0 : 56, y: isPortrait ? 28 : 0, autoAlpha: 0 }, { x: 0, y: 0, autoAlpha: 1, duration: 0.5, stagger: 0.07, ease: 'power2.out' }, '<0.08')
         .fromTo($('.hard-verdict .line-inner'), { yPercent: 120 }, { yPercent: 0, duration: 0.58, stagger: 0.05, ease: 'power2.out' }, '<0.1')
         .fromTo($('.hard-argument'), { y: 16, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.44 }, '<0.12')
@@ -801,8 +800,6 @@ export function PitchStage() {
               <div className="hard-coffee" aria-hidden="true"><span /></div>
             </div>
             <p className="hard-anywhere">SOFTWARE CAN START ANYWHERE.</p>
-            <span className="hard-limit" aria-hidden="true" />
-
             <div className="hard-stack" aria-label="Infrastructure for Physical AI and Life Sciences">
               {HARD_INFRASTRUCTURE.map(({ name, detail }, index) => (
                 <article className="hard-module" key={name}>
@@ -1248,7 +1245,7 @@ export function PitchStage() {
                 ))}
               </div>
               <span className="vision-spine" aria-hidden="true" />
-              <div className="vision-core"><PontMark className="vision-core-mark" /><span>ONE TECHNOLOGICAL ECOSYSTEM</span></div>
+              <div className="vision-core"><PontMark className="vision-core-mark" /></div>
             </div>
             <p className="scene-argument vision-argument">{SCENES[18].argument}</p>
 
