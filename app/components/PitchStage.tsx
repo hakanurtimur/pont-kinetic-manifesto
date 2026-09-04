@@ -82,7 +82,9 @@ function useStageGeometry() {
         const mode = stage.mode as Orientation;
         const profile = stage.profile as ViewportProfile;
         const scale = stage.scale;
+        document.documentElement.dataset.controlsLayout = stage.controlsLayout;
         document.documentElement.style.setProperty('--stage-scale', String(scale));
+        document.documentElement.style.setProperty('--stage-center-x', `${stage.centerX}px`);
         document.documentElement.style.setProperty('--stage-center-y', `${stage.centerY}px`);
         document.documentElement.style.setProperty('--compact-stage-width', `${stage.width}px`);
         document.documentElement.style.setProperty('--compact-stage-margin-left', `${stage.width / -2}px`);
@@ -632,6 +634,9 @@ export function PitchStage() {
   return (
     <main className="pitch-shell" ref={shellRef}>
       <div className="pitch-viewport">
+        <div className="intro-mask" aria-hidden="true">
+          <PontMark className="intro-mark" />
+        </div>
         <div
           className="pitch-stage"
           data-orientation={geometry.mode}

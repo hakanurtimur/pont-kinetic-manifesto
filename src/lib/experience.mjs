@@ -1,4 +1,13 @@
 export const COMPACT_CONTROL_RESERVED_HEIGHT = 64;
+export const CONTROL_RAIL_RESERVED_WIDTH = 64;
+
+export function controlLayoutForViewport(width, height) {
+  const portrait = height > width;
+  const tabletPortrait = portrait && width >= 600 && width <= 1100;
+  const constrainedLandscape = !portrait && width <= 1100;
+
+  return tabletPortrait || constrainedLandscape ? 'rail' : 'dock';
+}
 
 export function pageIndexForProgress(progress, pageCount) {
   const count = Math.max(1, Math.floor(pageCount));
@@ -39,32 +48,45 @@ export function viewportProfile(width, height) {
 export function stageGeometryForViewport(width, height) {
   const mode = viewportMode(width, height);
   const profile = viewportProfile(width, height);
+  const controlsLayout = controlLayoutForViewport(width, height);
   const base = mode === 'portrait'
     ? { width: 744, height: 1133 }
     : { width: 1133, height: 744 };
+  const availableWidth = Math.max(
+    1,
+    width - (controlsLayout === 'rail' ? CONTROL_RAIL_RESERVED_WIDTH : 0),
+  );
+  const reservesBottomDock = profile === 'compact-landscape' && controlsLayout === 'dock';
+  const availableHeight = Math.max(
+    1,
+    height - (reservesBottomDock ? COMPACT_CONTROL_RESERVED_HEIGHT : 0),
+  );
 
   if (profile !== 'compact-landscape') {
     return {
       ...base,
-      scale: Math.min(width / base.width, height / base.height),
+      scale: Math.min(availableWidth / base.width, availableHeight / base.height),
       sceneOffsetX: 0,
-      centerY: height / 2,
+      centerX: availableWidth / 2,
+      centerY: availableHeight / 2,
+      controlsLayout,
       mode,
       profile,
     };
   }
 
   const stageHeight = base.height;
-  const availableHeight = Math.max(1, height - COMPACT_CONTROL_RESERVED_HEIGHT);
   const scale = availableHeight / stageHeight;
-  const stageWidth = width / scale;
+  const stageWidth = availableWidth / scale;
 
   return {
     width: stageWidth,
     height: stageHeight,
     scale,
     sceneOffsetX: (stageWidth - base.width) / 2,
+    centerX: availableWidth / 2,
     centerY: availableHeight / 2,
+    controlsLayout,
     mode,
     profile,
   };

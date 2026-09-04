@@ -2,6 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import {
+  CONTROL_RAIL_RESERVED_WIDTH,
+  controlLayoutForViewport,
   pageIndexForProgress,
   resolveTheme,
   scienceLockupRecedeMotion,
@@ -35,29 +37,50 @@ test('viewportProfile reserves a compact layout for short landscape screens', ()
   assert.equal(viewportProfile(390, 844), 'portrait');
 });
 
-test('compact landscape stage fills the width and reserves a control dock', () => {
+test('constrained tablets and landscape phones use a side control rail', () => {
+  assert.equal(controlLayoutForViewport(768, 1024), 'rail');
+  assert.equal(controlLayoutForViewport(1024, 768), 'rail');
+  assert.equal(controlLayoutForViewport(844, 390), 'rail');
+  assert.equal(controlLayoutForViewport(390, 844), 'dock');
+  assert.equal(controlLayoutForViewport(1440, 900), 'dock');
+});
+
+test('iPad Mini portrait reserves the rail without shrinking the stage height', () => {
+  const geometry = stageGeometryForViewport(768, 1024);
+
+  assert.equal(geometry.controlsLayout, 'rail');
+  assert.equal(geometry.centerX, (768 - CONTROL_RAIL_RESERVED_WIDTH) / 2);
+  assert.equal(geometry.centerY, 512);
+  assert.ok(Math.abs(geometry.scale - (1024 / 1133)) < 0.001);
+  assert.ok(
+    geometry.centerX + ((geometry.width * geometry.scale) / 2)
+      <= 768 - CONTROL_RAIL_RESERVED_WIDTH,
+  );
+});
+
+test('compact landscape fills the full height beside the side rail', () => {
   const geometry = stageGeometryForViewport(844, 390);
 
   assert.equal(geometry.profile, 'compact-landscape');
+  assert.equal(geometry.controlsLayout, 'rail');
   assert.equal(geometry.height, 744);
-  assert.ok(Math.abs(geometry.width * geometry.scale - 844) < 0.001);
-  assert.ok(Math.abs(geometry.height * geometry.scale - 326) < 0.001);
-  assert.equal(geometry.centerY, 163);
-  assert.equal(390 - geometry.height * geometry.scale, 64);
+  assert.ok(Math.abs(geometry.height * geometry.scale - 390) < 0.001);
+  assert.equal(geometry.centerX, (844 - CONTROL_RAIL_RESERVED_WIDTH) / 2);
+  assert.equal(geometry.centerY, 195);
 });
 
-test('compact landscape centers the fixed scene grid inside the edge-to-edge canvas', () => {
+test('compact landscape centers the fixed scene grid beside the rail', () => {
   for (const [width, height] of [[844, 390], [568, 320]]) {
     const geometry = stageGeometryForViewport(width, height);
     const leftGutter = geometry.sceneOffsetX * geometry.scale;
-    const rightGutter = width - ((geometry.sceneOffsetX + 1133) * geometry.scale);
-    const controlTop = height - 56;
+    const availableWidth = width - CONTROL_RAIL_RESERVED_WIDTH;
+    const rightGutter = availableWidth - ((geometry.sceneOffsetX + 1133) * geometry.scale);
     const sceneBottom = geometry.centerY + ((geometry.height * geometry.scale) / 2);
 
     assert.ok(Math.abs(geometry.sceneOffsetX - ((geometry.width - 1133) / 2)) < 0.001);
     assert.ok(leftGutter >= 0);
     assert.ok(Math.abs(leftGutter - rightGutter) < 0.001);
-    assert.ok(sceneBottom <= controlTop - 8);
+    assert.ok(Math.abs(sceneBottom - height) < 0.001);
   }
 });
 

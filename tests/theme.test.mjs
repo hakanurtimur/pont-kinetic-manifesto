@@ -99,7 +99,7 @@ test('unknown saved palettes fall back to original PONT', async () => {
   assert.equal(resolvePalette(null), 'pont');
 });
 
-test('appearance bootstrap applies saved colors and fitted stage scale before hydration', async () => {
+test('appearance bootstrap applies saved colors and reserves the iPad landscape rail before hydration', async () => {
   const { APPEARANCE_BOOTSTRAP_SCRIPT } = await loadThemes();
   const properties = new Map();
   const root = {
@@ -127,10 +127,12 @@ test('appearance bootstrap applies saved colors and fitted stage scale before hy
   assert.equal(root.dataset.palette, 'violet');
   assert.equal(properties.get('--bg'), '#EFEEE7');
   assert.equal(properties.get('--coral'), '#6D3AB2');
-  assert.equal(Number(properties.get('--stage-scale')).toFixed(6), '0.903795');
+  assert.equal(Number(properties.get('--stage-scale')).toFixed(6), '0.847308');
+  assert.equal(Number.parseFloat(properties.get('--stage-center-x')).toFixed(3), '480.000');
+  assert.equal(root.dataset.controlsLayout, 'rail');
 });
 
-test('appearance bootstrap makes compact landscape stages edge-to-edge before hydration', async () => {
+test('appearance bootstrap fits compact landscape stages beside the rail before hydration', async () => {
   const { APPEARANCE_BOOTSTRAP_SCRIPT } = await loadThemes();
   const properties = new Map();
   const root = {
@@ -150,9 +152,11 @@ test('appearance bootstrap makes compact landscape stages edge-to-edge before hy
     matchMedia: () => ({ matches: false }),
   });
 
-  assert.equal(Number(properties.get('--stage-scale')).toFixed(6), '0.438172');
-  assert.equal(Number.parseFloat(properties.get('--compact-stage-width')).toFixed(3), '1926.184');
-  assert.equal(Number.parseFloat(properties.get('--compact-stage-margin-left')).toFixed(3), '-963.092');
-  assert.equal(Number.parseFloat(properties.get('--compact-scene-offset-x')).toFixed(3), '396.592');
-  assert.equal(Number.parseFloat(properties.get('--stage-center-y')).toFixed(3), '163.000');
+  assert.equal(Number(properties.get('--stage-scale')).toFixed(6), '0.524194');
+  assert.equal(Number.parseFloat(properties.get('--compact-stage-width')).toFixed(3), '1488.000');
+  assert.equal(Number.parseFloat(properties.get('--compact-stage-margin-left')).toFixed(3), '-744.000');
+  assert.equal(Number.parseFloat(properties.get('--compact-scene-offset-x')).toFixed(3), '177.500');
+  assert.equal(Number.parseFloat(properties.get('--stage-center-x')).toFixed(3), '390.000');
+  assert.equal(Number.parseFloat(properties.get('--stage-center-y')).toFixed(3), '195.000');
+  assert.equal(root.dataset.controlsLayout, 'rail');
 });

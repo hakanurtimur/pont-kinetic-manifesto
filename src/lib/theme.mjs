@@ -1,4 +1,7 @@
-import { COMPACT_CONTROL_RESERVED_HEIGHT } from './experience.mjs';
+import {
+  COMPACT_CONTROL_RESERVED_HEIGHT,
+  CONTROL_RAIL_RESERVED_WIDTH,
+} from './experience.mjs';
 
 const DARK_TOKENS = Object.freeze({
   '--bg': '#101629',
@@ -150,11 +153,18 @@ export const APPEARANCE_BOOTSTRAP_SCRIPT = `(() => {
   const height = viewport ? viewport.height : globalThis.innerHeight;
   const portrait = height > width;
   const compactLandscape = !portrait && height <= 560;
-  const availableHeight = compactLandscape ? Math.max(1, height - ${COMPACT_CONTROL_RESERVED_HEIGHT}) : height;
-  const stageWidth = compactLandscape ? 744 * (width / availableHeight) : (portrait ? 744 : 1133);
+  const rail = (!portrait && width <= 1100) || (portrait && width >= 600 && width <= 1100);
+  const availableWidth = Math.max(1, width - (rail ? ${CONTROL_RAIL_RESERVED_WIDTH} : 0));
+  const reservesBottomDock = compactLandscape && !rail;
+  const availableHeight = Math.max(1, height - (reservesBottomDock ? ${COMPACT_CONTROL_RESERVED_HEIGHT} : 0));
+  const baseWidth = portrait ? 744 : 1133;
   const stageHeight = portrait ? 1133 : 744;
-  root.style.setProperty('--stage-scale', String(Math.min(width / stageWidth, availableHeight / stageHeight)));
-  root.style.setProperty('--stage-center-y', (compactLandscape ? availableHeight / 2 : height / 2) + 'px');
+  const scale = Math.min(availableWidth / baseWidth, availableHeight / stageHeight);
+  const stageWidth = compactLandscape ? availableWidth / scale : baseWidth;
+  root.dataset.controlsLayout = rail ? 'rail' : 'dock';
+  root.style.setProperty('--stage-scale', String(scale));
+  root.style.setProperty('--stage-center-x', (availableWidth / 2) + 'px');
+  root.style.setProperty('--stage-center-y', (availableHeight / 2) + 'px');
   root.style.setProperty('--compact-stage-width', stageWidth + 'px');
   root.style.setProperty('--compact-stage-margin-left', (stageWidth / -2) + 'px');
   root.style.setProperty('--compact-scene-offset-x', (compactLandscape ? (stageWidth - 1133) / 2 : 0) + 'px');

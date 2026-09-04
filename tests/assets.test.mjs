@@ -14,6 +14,16 @@ test('the responsive logo uses a raster-free SVG mask', () => {
   assert.match(svg, /<path\b/);
 });
 
+test('the first paint is covered by a short theme-aware intro', () => {
+  const source = readFileSync(new URL('../app/components/PitchStage.tsx', import.meta.url), 'utf8');
+  const css = readFileSync(new URL('../app/globals.css', import.meta.url), 'utf8');
+
+  assert.match(source, /className="intro-mask"/);
+  assert.match(source, /<PontMark\s+className="intro-mark"\s*\/>/);
+  assert.match(css, /\.intro-mask\s*{[^}]*animation:\s*pont-intro-exit 300ms/s);
+  assert.match(css, /@media \(prefers-reduced-motion:\s*reduce\)[\s\S]*\.intro-mask\s*{[^}]*visibility:\s*hidden/s);
+});
+
 test('the capital scene shares one architectural grid in both orientations', () => {
   const css = readFileSync(new URL('../app/globals.css', import.meta.url), 'utf8');
 
