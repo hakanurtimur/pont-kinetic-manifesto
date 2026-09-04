@@ -165,6 +165,10 @@ test('presentation statements stay verbatim', () => {
   assert.deepEqual(SCENES[14].statements, [
     'PONT CONNECTS WHAT THE WORLD BUILDS BEST.',
   ]);
+  assert.equal(
+    SCENES[14].argument,
+    'A two-way bridge connecting talent, technology and capital across global deep-tech ecosystems.',
+  );
 });
 
 test('sections 08 to 10 retain the infrastructure, ecosystem and founder detail', () => {
@@ -317,7 +321,9 @@ test('the founder-first university uses a cost-effective hybrid learning model',
   ]);
   assert.deepEqual(SCENES[16].modes, UNIVERSITY_MODES);
   assert.deepEqual(SCENES[16].features, FOUNDER_FIRST_FEATURES);
-  assert.equal(SCENES[16].statements.at(-1), 'WE ARE BUILDING A UNIVERSITY INSIDE THE COMPANIES.');
+  assert.deepEqual(SCENES[16].statements, [
+    'WE ARE BUILDING A UNIVERSITY INSIDE THE COMPANIES.',
+  ]);
   assert.equal(SCENES[16].argument, 'Learning happens online. Experience happens inside the ecosystem.');
 });
 

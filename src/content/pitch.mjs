@@ -369,8 +369,6 @@ export const SCENES = Object.freeze([
     index: '17',
     eyebrow: 'THE FOUNDER-FIRST UNIVERSITY',
     statements: [
-      'DON’T BRING STARTUPS INTO THE UNIVERSITY.',
-      'BRING THE UNIVERSITY INTO THE STARTUPS.',
       'WE ARE BUILDING A UNIVERSITY INSIDE THE COMPANIES.',
     ],
     argument: 'Learning happens online. Experience happens inside the ecosystem.',

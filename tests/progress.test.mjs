@@ -7,6 +7,7 @@ import {
   nearestBeat,
   progressForBeat,
 } from '../src/lib/progress.mjs';
+import * as progress from '../src/lib/progress.mjs';
 
 test('clampProgress limits timeline input to the normalized range', () => {
   assert.equal(clampProgress(-0.4), 0);
@@ -14,8 +15,13 @@ test('clampProgress limits timeline input to the normalized range', () => {
   assert.equal(clampProgress(1.6), 1);
 });
 
+test('stale UI beat state is clamped after the story loses a beat', () => {
+  assert.equal(progress.clampBeatIndex?.(39, 39), 38);
+  assert.equal(progress.clampBeatIndex?.(-1, 39), 0);
+});
+
 test('beat positions increase from the first to the last beat', () => {
-  assert.deepEqual(BEATS.slice(-27), [
+  assert.deepEqual(BEATS.slice(-26), [
     'hard-tech-premise',
     'hard-tech-infrastructure',
     'space-shell',
@@ -37,7 +43,6 @@ test('beat positions increase from the first to the last beat', () => {
     'two-way-bridge',
     'university-outside',
     'university-inside',
-    'university-shifts',
     'founder-first-system',
     'amsterdam-prototype',
     'model-travels',
@@ -71,10 +76,16 @@ test('the Europe sequence explains the infrastructure gap before introducing PON
     'convergence',
     'future',
   ]);
-  assert.equal(BEATS.length, 40);
+  assert.equal(BEATS.length, 39);
 });
 
 test('the bridge sequence removes the standalone talent-outflow slide', () => {
   assert.equal(BEATS.includes('talent-outflow'), false);
   assert.equal(BEATS[31], 'two-way-bridge');
+});
+
+test('the founder-first system follows the university without the obsolete transition slide', () => {
+  assert.equal(BEATS.includes('university-shifts'), false);
+  assert.equal(BEATS[34], 'founder-first-system');
+  assert.equal(BEATS.length, 39);
 });

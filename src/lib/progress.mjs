@@ -33,7 +33,6 @@ export const BEATS = Object.freeze([
   'two-way-bridge',
   'university-outside',
   'university-inside',
-  'university-shifts',
   'founder-first-system',
   'amsterdam-prototype',
   'model-travels',
@@ -43,6 +42,11 @@ export const BEATS = Object.freeze([
 
 export function clampProgress(value) {
   return Math.min(1, Math.max(0, value));
+}
+
+export function clampBeatIndex(index, beatCount = BEATS.length) {
+  const lastIndex = Math.max(0, beatCount - 1);
+  return Math.min(lastIndex, Math.max(0, Math.round(index)));
 }
 
 export function progressForBeat(index) {

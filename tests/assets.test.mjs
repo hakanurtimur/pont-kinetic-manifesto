@@ -155,6 +155,15 @@ test('the bridge revision removes the outflow slide and leads with the global co
   assert.match(source, /WORLD BUILDS BEST\./);
 });
 
+test('section 35 removes the obsolete startup-to-university transition', () => {
+  const source = readFileSync(new URL('../app/components/PitchStage.tsx', import.meta.url), 'utf8');
+
+  assert.doesNotMatch(source, /addLabel\('university-shifts'\)/);
+  assert.doesNotMatch(source, /className="founder-first-heading/);
+  assert.doesNotMatch(source, /className="founder-first-direction/);
+  assert.match(source, /className="founder-first-operating"/);
+});
+
 test('the flywheel entry uses the tenant token without the obsolete arrow', () => {
   const source = readFileSync(new URL('../app/components/PitchStage.tsx', import.meta.url), 'utf8');
   const css = readFileSync(new URL('../app/globals.css', import.meta.url), 'utf8');

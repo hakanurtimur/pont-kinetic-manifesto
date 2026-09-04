@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from 'react';
 import { gsap } from 'gsap';
 
-import { BEATS } from '@/src/lib/progress.mjs';
+import { BEATS, clampBeatIndex } from '@/src/lib/progress.mjs';
 import {
   businessRailMotion,
   capitalInsideMotion,
@@ -162,6 +162,7 @@ export function PitchStage() {
   const beatRef = useRef(0);
   const navigationRef = useRef<(index: number) => void>(() => undefined);
   const [activeBeat, setActiveBeat] = useState(0);
+  const visibleBeat = clampBeatIndex(activeBeat);
   const [paletteOpen, setPaletteOpen] = useState(false);
   const geometry = useStageGeometry();
   const businessRail = businessRailMotion(geometry.profile);
@@ -496,16 +497,7 @@ export function PitchStage() {
         .addLabel('university-inside')
         .to($('.scene-university'), { scale: 0.92, autoAlpha: 0, duration: 0.58 })
         .set($('.scene-founder-first'), { autoAlpha: 1 }, '<0.18')
-        .set($('.founder-first-operating, .founder-first-final, .founder-first-argument'), { autoAlpha: 0 }, '<')
-        .fromTo($('.founder-first-heading .line-inner'), { yPercent: 120 }, { yPercent: 0, duration: 0.58, stagger: 0.05, ease: 'power2.out' }, '<0.08')
-        .fromTo($('.founder-first-campus, .founder-first-company'), { scale: 0.72, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.5, stagger: 0.08, ease: 'power3.out' }, '<0.06')
-        .fromTo($('.founder-first-direction-line'), { scaleX: isPortrait ? 1 : 0, scaleY: isPortrait ? 0 : 1 }, { scaleX: 1, scaleY: 1, duration: 0.58, transformOrigin: isPortrait ? 'center bottom' : 'right center' }, '<0.05')
-        .fromTo($('.founder-first-startup-token'), { x: 0, y: 0, autoAlpha: 0 }, { x: isPortrait ? 0 : -420, y: isPortrait ? -245 : 0, autoAlpha: 1, duration: 0.72, ease: 'power3.inOut' }, '<0.1')
-        .set($('.scene-university'), { autoAlpha: 0 }, '>')
-        .addLabel('university-shifts')
-        .to($('.founder-first-heading'), { y: isPortrait ? -22 : -12, autoAlpha: 0.12, duration: 0.44 })
-        .to($('.founder-first-direction'), { autoAlpha: 0, duration: 0.42 }, '<')
-        .set($('.founder-first-operating'), { autoAlpha: 1 }, '<0.12')
+        .set($('.founder-first-final, .founder-first-argument'), { autoAlpha: 0 }, '<')
         .fromTo($('.founder-first-model-title'), { y: -10, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.38, ease: 'power2.out' }, '<')
         .fromTo($('.founder-first-mode'), { scaleY: 0 }, { scaleY: 1, autoAlpha: 1, duration: 0.58, stagger: 0.08, transformOrigin: 'top center', ease: 'power3.out' }, '<0.05')
         .fromTo($('.founder-first-core'), { scale: 0.3, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.62, ease: 'back.out(1.16)' }, '<0.06')
@@ -514,6 +506,7 @@ export function PitchStage() {
         .set($('.founder-first-final'), { autoAlpha: 1 }, '<0.08')
         .fromTo($('.founder-first-final .line-inner'), { yPercent: 120 }, { yPercent: 0, duration: 0.58, stagger: 0.05, ease: 'power2.out' }, '<0.04')
         .fromTo($('.founder-first-argument'), { y: 12, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.4 }, '<0.08')
+        .set($('.scene-university'), { autoAlpha: 0 }, '>')
         .addLabel('founder-first-system')
         .to($('.scene-founder-first'), { scale: 0.92, autoAlpha: 0, duration: 0.58 })
         .set($('.scene-model'), { autoAlpha: 1 }, '<0.18')
@@ -1176,18 +1169,7 @@ export function PitchStage() {
           </section>
 
           <section className="scene scene-founder-first" aria-label={SCENES[16].eyebrow}>
-            <h2 className="founder-first-heading display-heading display-heading--medium">
-              <span className="mask-line"><span className="line-inner">DON&apos;T BRING STARTUPS</span></span>
-              <span className="mask-line"><span className="line-inner">INTO THE <em>UNIVERSITY.</em></span></span>
-            </h2>
-
             <div className="founder-first-field">
-              <div className="founder-first-direction" aria-label="The old direction from startups into a university">
-                <div className="founder-first-campus"><i>OLD MODEL</i><strong>UNIVERSITY</strong><span>THEORY FIRST</span></div>
-                <span className="founder-first-direction-line" aria-hidden="true" />
-                <div className="founder-first-company"><i>REAL ECONOMY</i><strong>COMPANIES</strong><span>BUILD · FINANCE · SOLVE</span><b className="founder-first-startup-token">STARTUPS</b></div>
-              </div>
-
               <div className="founder-first-operating" aria-label="Founder-first university operating system">
                 <div className="founder-first-modes">
                   <p className="founder-first-model-title">A COST-EFFECTIVE HYBRID MODEL</p>
@@ -1336,30 +1318,30 @@ export function PitchStage() {
               className="chapter-progress"
             >
               <span className="chapter-progress__count" aria-hidden="true">
-                <strong>{String(activeBeat + 1).padStart(2, '0')}</strong>
+                <strong>{String(visibleBeat + 1).padStart(2, '0')}</strong>
                 <span>/ {String(BEATS.length).padStart(2, '0')}</span>
               </span>
               <span className="chapter-progress__meter">
                 <progress
                   className="chapter-progress__track"
                   max={BEATS.length}
-                  value={activeBeat + 1}
+                  value={visibleBeat + 1}
                   aria-label="Story progress"
-                  aria-valuetext={`Moment ${activeBeat + 1} of ${BEATS.length}: ${BEATS[activeBeat].replaceAll('-', ' ')}`}
+                  aria-valuetext={`Moment ${visibleBeat + 1} of ${BEATS.length}: ${BEATS[visibleBeat].replaceAll('-', ' ')}`}
                 />
                 <span
                   className="chapter-progress__thumb"
-                  style={{ '--progress': `${((activeBeat + 1) / BEATS.length) * 100}%` } as CSSProperties}
+                  style={{ '--progress': `${((visibleBeat + 1) / BEATS.length) * 100}%` } as CSSProperties}
                   aria-hidden="true"
                 />
               </span>
             </div>
 
             <nav className="stage-controls" aria-label="Story navigation">
-              <button type="button" onClick={() => goToBeat(activeBeat - 1)} aria-label="Previous moment" disabled={activeBeat === 0}>
+              <button type="button" onClick={() => goToBeat(visibleBeat - 1)} aria-label="Previous moment" disabled={visibleBeat === 0}>
                 <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m7 14 5-5 5 5" /></svg>
               </button>
-              <button type="button" onClick={() => goToBeat(activeBeat + 1)} aria-label="Next moment" disabled={activeBeat === BEATS.length - 1}>
+              <button type="button" onClick={() => goToBeat(visibleBeat + 1)} aria-label="Next moment" disabled={visibleBeat === BEATS.length - 1}>
                 <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m7 10 5 5 5-5" /></svg>
               </button>
             </nav>
