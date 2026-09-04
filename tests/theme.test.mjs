@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import vm from 'node:vm';
 
 async function loadThemes() {
   return import('../src/lib/theme.mjs').catch(() => ({}));
@@ -96,4 +97,35 @@ test('unknown saved palettes fall back to original PONT', async () => {
   assert.equal(resolvePalette('green'), 'green');
   assert.equal(resolvePalette('unknown'), 'pont');
   assert.equal(resolvePalette(null), 'pont');
+});
+
+test('appearance bootstrap applies saved colors and fitted stage scale before hydration', async () => {
+  const { APPEARANCE_BOOTSTRAP_SCRIPT } = await loadThemes();
+  const properties = new Map();
+  const root = {
+    dataset: {},
+    style: {
+      setProperty(name, value) {
+        properties.set(name, value);
+      },
+    },
+  };
+
+  vm.runInNewContext(APPEARANCE_BOOTSTRAP_SCRIPT, {
+    document: { documentElement: root },
+    innerWidth: 1024,
+    innerHeight: 768,
+    localStorage: {
+      getItem(name) {
+        return name === 'pont-theme' ? 'light' : 'violet';
+      },
+    },
+    matchMedia: () => ({ matches: false }),
+  });
+
+  assert.equal(root.dataset.theme, 'light');
+  assert.equal(root.dataset.palette, 'violet');
+  assert.equal(properties.get('--bg'), '#EFEEE7');
+  assert.equal(properties.get('--coral'), '#6D3AB2');
+  assert.equal(Number(properties.get('--stage-scale')).toFixed(6), '0.903795');
 });

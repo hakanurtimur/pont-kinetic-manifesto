@@ -41,6 +41,8 @@ import { PontMark } from './PontMark';
 
 const LANDSCAPE_STAGE = { width: 1133, height: 744 };
 const PORTRAIT_STAGE = { width: 744, height: 1133 };
+const SCROLL_SCRUB_DURATION = 1.1;
+const SCROLL_SCRUB_EASE = 'power3.out';
 
 type Theme = 'light' | 'dark';
 type Palette = 'pont' | 'green' | 'cobalt' | 'violet';
@@ -59,7 +61,7 @@ function applyAppearanceTokens(theme: Theme, palette: Palette) {
 function useStageGeometry() {
   const [geometry, setGeometry] = useState({ scale: 1, mode: 'landscape' as Orientation });
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     let frame = 0;
     const update = () => {
       cancelAnimationFrame(frame);
@@ -69,7 +71,9 @@ function useStageGeometry() {
         const height = visual?.height ?? window.innerHeight;
         const mode = viewportMode(width, height) as Orientation;
         const stage = mode === 'portrait' ? PORTRAIT_STAGE : LANDSCAPE_STAGE;
-        setGeometry({ scale: Math.min(width / stage.width, height / stage.height), mode });
+        const scale = Math.min(width / stage.width, height / stage.height);
+        document.documentElement.style.setProperty('--stage-scale', String(scale));
+        setGeometry({ scale, mode });
       });
     };
 
@@ -531,12 +535,30 @@ export function PitchStage() {
     }, stage);
 
     const labelValues = BEATS.map((beat) => timelineInstance?.labels[beat] ?? 0);
+    const playhead = { time: 0 };
+    let hasRenderedInitialScroll = false;
+    const scrubTo = gsap.quickTo(playhead, 'time', {
+      duration: SCROLL_SCRUB_DURATION,
+      ease: SCROLL_SCRUB_EASE,
+      onUpdate: () => {
+        timelineInstance?.time(playhead.time, false);
+      },
+    });
 
     const updateFromScroll = () => {
       if (!timelineInstance) return;
       const maxScroll = Math.max(1, shell.scrollHeight - shell.clientHeight);
       const progress = Math.min(1, Math.max(0, shell.scrollTop / maxScroll));
-      timelineInstance.time(timelineValueForProgress(progress, labelValues), false);
+      const targetTime = timelineValueForProgress(progress, labelValues);
+
+      if (reduceMotion || !hasRenderedInitialScroll) {
+        scrubTo.tween.pause();
+        playhead.time = targetTime;
+        timelineInstance.time(targetTime, false);
+        hasRenderedInitialScroll = true;
+      } else {
+        scrubTo(targetTime);
+      }
 
       const currentBeat = pageIndexForProgress(progress, BEATS.length);
       if (currentBeat !== beatRef.current) {
@@ -567,6 +589,7 @@ export function PitchStage() {
     return () => {
       cancelAnimationFrame(animationFrame);
       cancelAnimationFrame(initialFrame);
+      scrubTo.tween.kill();
       navigationRef.current = () => undefined;
       shell.removeEventListener('scroll', onScroll);
       context.revert();
@@ -594,7 +617,6 @@ export function PitchStage() {
           className="pitch-stage"
           data-orientation={geometry.mode}
           ref={stageRef}
-          style={{ '--stage-scale': geometry.scale } as React.CSSProperties}
         >
           <section className="scene scene-cover" aria-label="PONT introduction">
             <div className="cover-content">

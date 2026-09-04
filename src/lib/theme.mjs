@@ -117,3 +117,37 @@ export function appearanceTokensFor(theme, palette) {
     ...PALETTE_TOKENS[safePalette][safeTheme],
   };
 }
+
+export const APPEARANCE_BOOTSTRAP_SCRIPT = `(() => {
+  const root = document.documentElement;
+  const themes = ${JSON.stringify(THEME_TOKENS)};
+  const palettes = ${JSON.stringify(PALETTE_TOKENS)};
+  let savedTheme = null;
+  let savedPalette = null;
+
+  try {
+    savedTheme = localStorage.getItem('pont-theme');
+    savedPalette = localStorage.getItem('pont-palette');
+  } catch {}
+
+  const prefersDark = matchMedia('(prefers-color-scheme: dark)').matches;
+  const theme = savedTheme === 'light' || savedTheme === 'dark'
+    ? savedTheme
+    : (prefersDark ? 'dark' : 'light');
+  const palette = Object.prototype.hasOwnProperty.call(palettes, savedPalette)
+    ? savedPalette
+    : 'pont';
+  const tokens = Object.assign({}, themes[theme], palettes[palette][theme]);
+
+  root.dataset.theme = theme;
+  root.dataset.palette = palette;
+  for (const name in tokens) root.style.setProperty(name, tokens[name]);
+
+  const viewport = globalThis.visualViewport;
+  const width = viewport ? viewport.width : globalThis.innerWidth;
+  const height = viewport ? viewport.height : globalThis.innerHeight;
+  const portrait = height > width;
+  const stageWidth = portrait ? 744 : 1133;
+  const stageHeight = portrait ? 1133 : 744;
+  root.style.setProperty('--stage-scale', String(Math.min(width / stageWidth, height / stageHeight)));
+})();`;

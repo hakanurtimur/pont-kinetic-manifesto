@@ -1,4 +1,6 @@
 import type { Metadata } from 'next';
+import Script from 'next/script';
+import { APPEARANCE_BOOTSTRAP_SCRIPT } from '@/src/lib/theme.mjs';
 import './globals.css';
 
 const title = 'PONT — Building Europe’s Physical Future';
@@ -32,8 +34,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body>{children}</body>
+    <html lang="en" suppressHydrationWarning>
+      <body>
+        {children}
+        <Script
+          id="pont-appearance-bootstrap"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{ __html: APPEARANCE_BOOTSTRAP_SCRIPT }}
+        />
+      </body>
     </html>
   );
 }
