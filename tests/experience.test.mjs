@@ -104,7 +104,7 @@ test('portrait home blueprint route follows the portrait program grid', async ()
 
   assert.deepEqual(experience.homeBlueprintGeometry?.('portrait'), {
     viewBox: '0 0 650 430',
-    route: 'M88 343 V253 M214 253 V101 H274 V191 H382 V61 H570 V301 H325 V430',
+    route: 'M0 343 H88 V253 H214 V101 H274 V191 H382 V61 H570 V301 H325 V430',
   });
 });
 
@@ -113,7 +113,7 @@ test('landscape home blueprint route reaches the community node', async () => {
 
   assert.deepEqual(experience.homeBlueprintGeometry?.('landscape'), {
     viewBox: '0 0 980 300',
-    route: 'M108 242 V190 M265 190 V78 H492 V142 H646 V54 H806 V243 H960',
+    route: 'M20 242 H170 V190 H328 V78 H492 V142 H646 V54 H806 V243 H960',
   });
 });
 

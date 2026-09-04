@@ -33,6 +33,12 @@ test('the capital scene shares one architectural grid in both orientations', () 
   assert.match(css, /@media \(orientation:\s*portrait\)[\s\S]*\.scene-capital\s*{[^}]*--capital-grid-left:\s*42px;[^}]*--capital-grid-width:\s*600px;/s);
 });
 
+test('the desktop capital connector terminates at the moved investor card edge', () => {
+  const css = readFileSync(new URL('../app/globals.css', import.meta.url), 'utf8');
+
+  assert.match(css, /\.capital-connection\s*{[^}]*left:\s*260px;[^}]*width:\s*406px;/s);
+});
+
 test('section 30 keeps its two-line heading clear of the diagram in compact landscape', () => {
   const css = readFileSync(new URL('../app/globals.css', import.meta.url), 'utf8');
 
@@ -102,6 +108,12 @@ test('the desktop home copy uses the open right column above the blueprint', () 
   const css = readFileSync(new URL('../app/globals.css', import.meta.url), 'utf8');
 
   assert.match(css, /@media \(orientation:\s*landscape\) and \(min-height:\s*561px\)[\s\S]*?\.home-argument\s*{[^}]*top:\s*112px;[^}]*right:\s*55px;[^}]*bottom:\s*auto;[^}]*left:\s*auto;[^}]*width:\s*300px;[^}]*text-align:\s*right;/s);
+});
+
+test('section 33 desktop copy stays below its two-line closing statement', () => {
+  const css = readFileSync(new URL('../app/globals.css', import.meta.url), 'utf8');
+
+  assert.match(css, /@media \(orientation:\s*landscape\) and \(min-height:\s*561px\)[\s\S]*?\.bridge-network\s*{[^}]*top:\s*660px;[^}]*width:\s*560px;/s);
 });
 
 test('the Europe finale settles its heading before revealing separated portrait copy', () => {

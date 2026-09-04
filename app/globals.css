@@ -2224,7 +2224,7 @@ button {
 }
 
 .capital-exit-line { left: 185px; width: calc(100% - 128px); }
-.capital-connection { left: 260px; width: 500px; }
+.capital-connection { left: 260px; width: 406px; }
 
 .capital-exit-line::after {
   content: "";
@@ -4019,7 +4019,7 @@ button {
   .stack-proof { right: 520px; }
   .business-argument { right: 520px; }
   .capital-argument { right: 520px; }
-  .bridge-network { top: 630px; width: 560px; }
+  .bridge-network { top: 660px; width: 560px; }
   .bridge-argument { right: 520px; }
   .university-argument { right: 520px; }
   .founder-first-argument { right: 520px; }
