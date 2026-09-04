@@ -47,20 +47,20 @@ test('the university uses a single SVG network and the founder-first diagram has
   assert.doesNotMatch(source, /founder-first-wrong/);
 });
 
-test('every PONT lockup uses the darker brand coral with theme-aware contrast', () => {
+test('every PONT lockup follows the active accent with theme-aware contrast', () => {
   const source = readFileSync(new URL('../app/components/PitchStage.tsx', import.meta.url), 'utf8');
   const css = readFileSync(new URL('../app/globals.css', import.meta.url), 'utf8');
   const svg = readFileSync(new URL('../public/pont-logo.svg', import.meta.url), 'utf8');
 
   assert.match(source, /<PontMark\s+className="vision-core-mark"\s*\/>/);
   assert.doesNotMatch(source, /<Image\s+className="vision-core-mark"/);
-  assert.match(css, /--brand-logo-coral:\s*#c43a2b/i);
-  assert.match(css, /\.pont-mark__base[\s\S]*?background:\s*var\(--brand-logo-coral\)/);
+  assert.doesNotMatch(css, /--brand-logo-coral:/i);
+  assert.match(css, /\.pont-mark__base[\s\S]*?background:\s*var\(--coral\)/);
   assert.match(css, /\.pont-mark__contrast\s*{[^}]*background:\s*var\(--logo-contrast\)/s);
   assert.match(css, /\.vision-core\s*{[^}]*background:\s*var\(--bg\)/s);
   assert.match(css, /\.vision-core span\s*{[^}]*color:\s*var\(--fg\)/s);
-  assert.match(svg, /#c43a2b/i);
-  assert.doesNotMatch(svg, /#fe6d4d/i);
+  assert.match(svg, /#ff5a42/i);
+  assert.doesNotMatch(svg, /#c43a2b/i);
   assert.match(svg, /#01004a/i);
   assert.doesNotMatch(svg, /#fefdfd/i);
 });

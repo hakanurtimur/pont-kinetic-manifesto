@@ -7,7 +7,6 @@
   --muted: #8992a7;
   --coral: #ff5a42;
   --logo-coral: #ff835f;
-  --brand-logo-coral: #c43a2b;
   --logo-contrast: #f4f4ef;
   --hairline: rgba(244, 244, 239, 0.18);
   --ghost: rgba(244, 244, 239, 0.13);
@@ -219,7 +218,7 @@ button {
 .pont-mark__contrast {
   position: absolute;
   inset: 0;
-  background: var(--brand-logo-coral);
+  background: var(--coral);
   mask: url('/pont-logo.svg') center / 100% 100% no-repeat;
   -webkit-mask: url('/pont-logo.svg') center / 100% 100% no-repeat;
   transition: background-color 280ms ease;
