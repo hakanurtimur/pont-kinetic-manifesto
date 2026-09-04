@@ -101,6 +101,113 @@ export function scienceLockupRecedeMotion(mode) {
   };
 }
 
+export function worldsConvergenceExitMotion(mode) {
+  return {
+    scale: mode === 'portrait' ? 7.8 : 6.4,
+    autoAlpha: 0,
+  };
+}
+
+export function worldsDomainConvergenceMotion(mode) {
+  if (mode === 'portrait') {
+    return {
+      left: { x: 0, y: 185 },
+      right: { x: 0, y: -185 },
+      titles: { scale: 0.84 },
+      axis: { y: 55 },
+      orb: { y: 55 },
+    };
+  }
+
+  return {
+    left: { x: 140, y: 0 },
+    right: { x: -140, y: 0 },
+    titles: { scale: 1 },
+    axis: { y: 0 },
+    orb: { y: 0 },
+  };
+}
+
+export function spaceCardExitMotion(mode) {
+  return {
+    scale: mode === 'portrait' ? 0.7 : 0.64,
+    x: mode === 'portrait' ? -150 : -80,
+    y: mode === 'portrait' ? 60 : 32,
+    autoAlpha: 0,
+  };
+}
+
+export function founderRoofVisibility(visible) {
+  return { autoAlpha: visible ? 1 : 0 };
+}
+
+export function communityPremiseExitMotion(mode) {
+  return {
+    y: mode === 'portrait' ? -8 : -12,
+    autoAlpha: 0,
+  };
+}
+
+export function communityHomeFrameGeometry() {
+  const width = 480;
+  const height = 430;
+  const inset = 34;
+  const apex = { x: width / 2, y: 64 };
+  const leftEave = { x: inset, y: 128 };
+  const rightEave = { x: width - inset, y: 128 };
+  const leftFloor = { x: inset, y: 423 };
+  const rightFloor = { x: width - inset, y: 423 };
+  const roofRun = apex.x - leftEave.x;
+  const roofRise = leftEave.y - apex.y;
+  const roofWidth = Math.hypot(roofRun, roofRise);
+  const roofAngle = Math.atan2(roofRise, roofRun) * (180 / Math.PI);
+  const wallWidth = leftFloor.y - leftEave.y;
+  const wallTop = ((leftEave.y + leftFloor.y) / 2) - 1;
+
+  return {
+    anchors: { apex, leftEave, rightEave, leftFloor, rightFloor },
+    roofLeft: {
+      top: apex.y - 1,
+      left: apex.x - roofWidth,
+      width: roofWidth,
+      rotate: `${-roofAngle}deg`,
+    },
+    roofRight: {
+      top: apex.y - 1,
+      left: apex.x,
+      width: roofWidth,
+      rotate: `${roofAngle}deg`,
+    },
+    wallLeft: {
+      top: wallTop,
+      left: leftEave.x - (wallWidth / 2),
+      width: wallWidth,
+      rotate: '90deg',
+    },
+    wallRight: {
+      top: wallTop,
+      right: (width - rightEave.x) - (wallWidth / 2),
+      width: wallWidth,
+      rotate: '90deg',
+    },
+    floor: {
+      bottom: height - leftFloor.y,
+      left: leftFloor.x,
+      width: rightFloor.x - leftFloor.x,
+    },
+    label: { right: inset, bottom: -18 },
+  };
+}
+
+export function businessRailMotion(profile) {
+  const portrait = profile === 'portrait' || profile === 'compact-portrait';
+
+  return {
+    deskY: portrait ? 260 : profile === 'compact-landscape' ? 158 : 182,
+    valueBottom: -13,
+  };
+}
+
 export function homeBlueprintGeometry(mode) {
   if (mode === 'portrait') {
     return {

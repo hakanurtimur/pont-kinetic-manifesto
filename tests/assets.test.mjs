@@ -47,15 +47,33 @@ test('the university uses a single SVG network and the founder-first diagram has
   assert.doesNotMatch(source, /founder-first-wrong/);
 });
 
-test('the vision core renders the supplied two-color PONT logo without recoloring it', () => {
+test('every PONT lockup uses the darker brand coral with theme-aware contrast', () => {
   const source = readFileSync(new URL('../app/components/PitchStage.tsx', import.meta.url), 'utf8');
+  const css = readFileSync(new URL('../app/globals.css', import.meta.url), 'utf8');
   const svg = readFileSync(new URL('../public/pont-logo.svg', import.meta.url), 'utf8');
 
-  assert.match(source, /<Image\s+className="vision-core-mark"\s+src="\/pont-logo\.svg"\s+alt="PONT\."\s+width=\{740\}\s+height=\{193\}\s+unoptimized\s*\/>/);
-  assert.doesNotMatch(source, /<PontMark\s+className="vision-core-mark"/);
-  assert.match(svg, /#fe6d4d/i);
+  assert.match(source, /<PontMark\s+className="vision-core-mark"\s*\/>/);
+  assert.doesNotMatch(source, /<Image\s+className="vision-core-mark"/);
+  assert.match(css, /--brand-logo-coral:\s*#c43a2b/i);
+  assert.match(css, /\.pont-mark__base[\s\S]*?background:\s*var\(--brand-logo-coral\)/);
+  assert.match(css, /\.pont-mark__contrast\s*{[^}]*background:\s*var\(--logo-contrast\)/s);
+  assert.match(css, /\.vision-core\s*{[^}]*background:\s*var\(--bg\)/s);
+  assert.match(css, /\.vision-core span\s*{[^}]*color:\s*var\(--fg\)/s);
+  assert.match(svg, /#c43a2b/i);
+  assert.doesNotMatch(svg, /#fe6d4d/i);
   assert.match(svg, /#01004a/i);
   assert.doesNotMatch(svg, /#fefdfd/i);
+});
+
+test('the latest visual polish rules keep labels and connector axes aligned', () => {
+  const source = readFileSync(new URL('../app/components/PitchStage.tsx', import.meta.url), 'utf8');
+  const css = readFileSync(new URL('../app/globals.css', import.meta.url), 'utf8');
+
+  assert.doesNotMatch(source, />10,000</);
+  assert.match(source, />10\.000</);
+  assert.match(css, /\.business-value-current i\s*{[^}]*top:\s*22px;[^}]*bottom:\s*auto;/s);
+  assert.match(css, /@media \(orientation:\s*portrait\)[\s\S]*\.founder-first-startup-token\s*{[^}]*left:\s*calc\(50% - 54px\);/s);
+  assert.match(source, /THE PHYSICAL HOME OF[\s\S]*EUROPE&apos;S NEXT[\s\S]*TECHNOLOGICAL ERA\./);
 });
 
 test('the Europe finale settles its heading before revealing separated portrait copy', () => {

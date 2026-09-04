@@ -1,12 +1,15 @@
 'use client';
 
-import Image from 'next/image';
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from 'react';
 import { gsap } from 'gsap';
 
 import { BEATS } from '@/src/lib/progress.mjs';
 import {
+  businessRailMotion,
   capitalInsideMotion,
+  communityHomeFrameGeometry,
+  communityPremiseExitMotion,
+  founderRoofVisibility,
   homeBlueprintGeometry,
   homeHeadingBlueprintMotion,
   homeSeedBlueprintMotion,
@@ -14,8 +17,11 @@ import {
   resolveTheme,
   scienceLockupRecedeMotion,
   stageGeometryForViewport,
+  spaceCardExitMotion,
   timelineValueForProgress,
   universityNetworkGeometry,
+  worldsDomainConvergenceMotion,
+  worldsConvergenceExitMotion,
 } from '@/src/lib/experience.mjs';
 import {
   appearanceTokensFor,
@@ -154,6 +160,8 @@ export function PitchStage() {
   const [activeBeat, setActiveBeat] = useState(0);
   const [paletteOpen, setPaletteOpen] = useState(false);
   const geometry = useStageGeometry();
+  const businessRail = businessRailMotion(geometry.profile);
+  const communityFrame = communityHomeFrameGeometry();
   const homeBlueprint = homeBlueprintGeometry(geometry.mode);
   const universityNetwork = universityNetworkGeometry(geometry.mode);
   const { theme, palette, toggleTheme, selectPalette } = useAppearance();
@@ -181,6 +189,7 @@ export function PitchStage() {
     if (!shell || !stage) return;
 
     const isPortrait = geometry.mode === 'portrait';
+    const worldsConvergence = worldsDomainConvergenceMotion(geometry.mode);
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     let animationFrame = 0;
     let initialFrame = 0;
@@ -193,6 +202,7 @@ export function PitchStage() {
       gsap.set($('.scene'), { autoAlpha: 0 });
       gsap.set($('.scene-cover'), { autoAlpha: 1 });
       gsap.set($('.cover-mark'), { autoAlpha: 1, scale: 1 });
+      gsap.set($('.founder-roof'), founderRoofVisibility(false));
 
       timelineInstance = timeline;
       timeline.addLabel('cover', 0);
@@ -237,13 +247,15 @@ export function PitchStage() {
         .fromTo($('.world-axis'), { scaleX: 0 }, { scaleX: 1, duration: 0.58 }, '<0.04')
         .set($('.scene-europe'), { autoAlpha: 0 }, '>')
         .addLabel('domains')
-        .to($('.domain--left'), { x: isPortrait ? 0 : 236, y: isPortrait ? 185 : 0, duration: 0.64 })
-        .to($('.domain--right'), { x: isPortrait ? 0 : -236, y: isPortrait ? -185 : 0, duration: 0.64 }, '<')
-        .fromTo($('.convergence-orb'), { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.64, ease: 'power2.out' }, '<0.08')
+        .to($('.domain--left'), { ...worldsConvergence.left, duration: 0.64 })
+        .to($('.domain--right'), { ...worldsConvergence.right, duration: 0.64 }, '<')
+        .to($('.domain-title'), { ...worldsConvergence.titles, duration: 0.64 }, '<')
+        .to($('.world-axis'), { ...worldsConvergence.axis, duration: 0.64 }, '<')
+        .fromTo($('.convergence-orb'), { scale: 0, y: 0, autoAlpha: 0 }, { scale: 1, ...worldsConvergence.orb, autoAlpha: 1, duration: 0.64, ease: 'power2.out' }, '<0.08')
         .addLabel('convergence')
         .to($('.domain'), { scale: 0.44, autoAlpha: 0, duration: 0.54 })
         .to($('.world-axis'), { scaleX: 0, duration: 0.42 }, '<0.04')
-        .to($('.convergence-orb'), { scale: isPortrait ? 7.8 : 6.4, autoAlpha: 0.08, duration: 0.7 }, '<')
+        .to($('.convergence-orb'), { ...worldsConvergenceExitMotion(isPortrait ? 'portrait' : 'landscape'), duration: 0.7 }, '<')
         .fromTo($('.future-line .line-inner'), { yPercent: 120 }, { yPercent: 0, duration: 0.62, stagger: 0.06, ease: 'power2.out' }, '<0.12')
         .fromTo($('.worlds-argument'), { y: 16, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.44 }, '<0.12')
         .addLabel('future')
@@ -293,7 +305,7 @@ export function PitchStage() {
         .fromTo($('.space-argument'), { y: 16, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.44 }, '<0.12')
         .set($('.scene-hard'), { autoAlpha: 0 }, '>')
         .addLabel('space-shell')
-        .to($('.square-metre'), { scale: isPortrait ? 0.7 : 0.64, x: isPortrait ? -150 : -80, y: isPortrait ? 60 : 32, autoAlpha: 0.18, duration: 0.58 })
+        .to($('.square-metre'), { ...spaceCardExitMotion(geometry.mode), duration: 0.58 })
         .to($('.space-argument'), { autoAlpha: 0, duration: 0.4 }, '<')
         .fromTo($('.ecosystem-core'), { scale: 0.35, rotate: -28, autoAlpha: 0 }, { scale: 1, rotate: 0, autoAlpha: 1, duration: 0.62, ease: 'power3.out' }, '<0.04')
         .fromTo($('.ecosystem-spoke'), { scaleX: 0 }, { scaleX: 1, duration: 0.48, stagger: 0.025, transformOrigin: 'left center' }, '<0.04')
@@ -310,6 +322,7 @@ export function PitchStage() {
         .addLabel('founder-streams')
         .to($('.founder-card'), { scale: 0.94, autoAlpha: 0.58, duration: 0.48, stagger: 0.04 })
         .fromTo($('.founder-trace'), { scaleY: 0 }, { scaleY: 1, duration: 0.48, stagger: 0.05, transformOrigin: 'bottom center' }, '<0.04')
+        .set($('.founder-roof'), founderRoofVisibility(true), '<')
         .fromTo($('.founder-roof-line'), { scaleX: 0 }, { scaleX: 1, duration: 0.54, stagger: 0.08, ease: 'power2.out' }, '<0.04')
         .fromTo($('.founder-final .line-inner'), { yPercent: 120 }, { yPercent: 0, duration: 0.58, stagger: 0.05, ease: 'power2.out' }, '<0.1')
         .fromTo($('.founder-argument'), { y: 16, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.44 }, '<0.12')
@@ -322,7 +335,7 @@ export function PitchStage() {
         .fromTo($('.empty-building-copy'), { y: 16, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.44 }, '<0.08')
         .set($('.scene-founders'), { autoAlpha: 0 }, '>')
         .addLabel('empty-building')
-        .to($('.community-premise'), { y: isPortrait ? -26 : -18, autoAlpha: 0.16, duration: 0.52 })
+        .to($('.community-premise'), { ...communityPremiseExitMotion(geometry.mode), duration: 0.52 })
         .to($('.community-empty-shell'), { scale: 0.84, autoAlpha: 0, duration: 0.54 }, '<')
         .fromTo($('.community-link'), { scaleX: 0, autoAlpha: 0 }, { scaleX: 1, autoAlpha: 1, duration: 0.42, stagger: 0.04, transformOrigin: 'left center' }, '<0.08')
         .fromTo($('.community-node'), { scale: 0.62, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.48, stagger: 0.055, ease: 'back.out(1.3)' }, '<0.08')
@@ -386,7 +399,7 @@ export function PitchStage() {
         .to($('.business-premise'), { y: isPortrait ? -24 : -14, autoAlpha: 0.14, duration: 0.46 })
         .to($('.rent-token'), { x: isPortrait ? -248 : -444, y: isPortrait ? 260 : 182, scale: 0.42, autoAlpha: 0.48, duration: 0.56 }, '<')
         .to($('.business-desk-leg'), { scaleY: 0, autoAlpha: 0, duration: 0.38 }, '<')
-        .to($('.business-desk-top'), { scaleX: isPortrait ? 3.2 : 5.25, y: isPortrait ? 260 : 182, duration: 0.62, ease: 'power3.inOut' }, '<')
+        .to($('.business-desk-top'), { scaleX: isPortrait ? 3.2 : 5.25, y: businessRail.deskY, duration: 0.62, ease: 'power3.inOut' }, '<')
         .to($('.rent-caption'), { autoAlpha: 0, duration: 0.32 }, '<')
         .fromTo($('.revenue-stream'), { scaleY: 0 }, { scaleY: 1, duration: 0.54, stagger: 0.055, transformOrigin: 'bottom center', ease: 'power2.out' }, '<0.16')
         .fromTo($('.revenue-engine-copy'), { y: 20, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.46, stagger: 0.055, ease: 'power2.out' }, '<0.08')
@@ -616,7 +629,7 @@ export function PitchStage() {
       shell.removeEventListener('scroll', onScroll);
       context.revert();
     };
-  }, [geometry.mode]);
+  }, [businessRail.deskY, geometry.mode]);
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -677,7 +690,7 @@ export function PitchStage() {
             </div>
             <span className="escape-line" aria-hidden="true"><i /></span>
             <div className="companies-lockup display-heading display-heading--medium">
-              <span className="mask-line companies-line"><span className="line-inner">IT KEEPS LOSING</span></span>
+              <span className="mask-line companies-line"><span className="line-inner">BUT IT KEEPS LOSING</span></span>
               <span className="mask-line companies-line"><span className="line-inner">THE COMPANIES.</span></span>
             </div>
             <div className="stay-line display-heading display-heading--medium">
@@ -714,7 +727,7 @@ export function PitchStage() {
                 <span className={`robot-link robot-link--${index + 1}`} aria-hidden="true" key={`link-${technology}`} />
               ))}
               <div className="robot-core">
-                <strong>01</strong>
+                <strong>1</strong>
                 <span>ROBOT</span>
               </div>
               {ROBOT_TECHNOLOGIES.map((technology, index) => (
@@ -743,7 +756,7 @@ export function PitchStage() {
                 <span className="therapy-cell therapy-cell--large" />
                 <span className="therapy-cell therapy-cell--medium" />
                 <span className="therapy-cell therapy-cell--small" />
-                <strong>01</strong>
+                <strong>1</strong>
                 <span className="therapy-core__label">THERAPY</span>
               </div>
               {THERAPY_NODE_LAYOUT.map(({ label, width, rotation, landscape, portrait }) => {
@@ -903,12 +916,12 @@ export function PitchStage() {
               {COMMUNITY_GROUPS.map((group, index) => (
                 <span className={`community-node community-node--${index + 1}`} key={group}>{group}</span>
               ))}
-              <span className="community-home-line community-home-line--roof-left" aria-hidden="true" />
-              <span className="community-home-line community-home-line--roof-right" aria-hidden="true" />
-              <span className="community-home-line community-home-line--wall-left" aria-hidden="true" />
-              <span className="community-home-line community-home-line--wall-right" aria-hidden="true" />
-              <span className="community-home-line community-home-line--floor" aria-hidden="true" />
-              <i className="community-home-label">PHYSICAL HOME</i>
+              <span className="community-home-line community-home-line--roof-left" style={communityFrame.roofLeft} aria-hidden="true" />
+              <span className="community-home-line community-home-line--roof-right" style={communityFrame.roofRight} aria-hidden="true" />
+              <span className="community-home-line community-home-line--wall-left" style={communityFrame.wallLeft} aria-hidden="true" />
+              <span className="community-home-line community-home-line--wall-right" style={communityFrame.wallRight} aria-hidden="true" />
+              <span className="community-home-line community-home-line--floor" style={communityFrame.floor} aria-hidden="true" />
+              <i className="community-home-label" style={communityFrame.label}>PHYSICAL HOME</i>
             </div>
 
             <p className="community-final display-heading display-heading--medium">
@@ -924,14 +937,14 @@ export function PitchStage() {
               <span className="mask-line"><span className="line-inner">THE <em>HOME.</em></span></span>
             </h2>
 
-            <div className="home-seed-field" aria-label="One square metre becoming a physical footprint">
+            <div className="home-seed-field" aria-label="Ten thousand square metres becoming a physical footprint">
               <span className="home-crosshair home-crosshair--horizontal" aria-hidden="true" />
               <span className="home-crosshair home-crosshair--vertical" aria-hidden="true" />
-              <div className="home-seed"><strong>1</strong><span>M²</span></div>
+              <div className="home-seed"><strong>10.000</strong><span>M²</span></div>
               <p className="home-location"><strong>THE STACK</strong><span>AMSTERDAM OOST · FIRST PHYSICAL FOOTPRINT</span></p>
             </div>
 
-            <p className="home-number" aria-label="Ten thousand square metres"><strong>10,000</strong><span>M²</span></p>
+            <p className="home-number" aria-label="Ten thousand square metres"><strong>10.000</strong><span>M²</span></p>
 
             <div className="home-blueprint" aria-label="PONT physical layers inside The Stack">
               {Array.from({ length: 7 }, (_, index) => (
@@ -1009,7 +1022,7 @@ export function PitchStage() {
                   <div className="revenue-engine-copy"><i>0{index + 1}</i><h3>{name}</h3><p>{detail}</p></div>
                 </article>
               ))}
-              <span className="business-value-current"><i>VALUE CREATED BY THE ECOSYSTEM →</i></span>
+              <span className="business-value-current" style={{ bottom: businessRail.valueBottom }}><i>VALUE CREATED BY THE ECOSYSTEM →</i></span>
             </div>
 
             <p className="business-final display-heading display-heading--medium">
@@ -1222,7 +1235,8 @@ export function PitchStage() {
           <section className="scene scene-vision" aria-label={SCENES[18].eyebrow}>
             <h2 className="vision-heading display-heading display-heading--medium">
               <span className="mask-line"><span className="line-inner">THE PHYSICAL HOME OF</span></span>
-              <span className="mask-line"><span className="line-inner">EUROPE&apos;S NEXT <em>TECHNOLOGICAL ERA.</em></span></span>
+              <span className="mask-line"><span className="line-inner">EUROPE&apos;S NEXT</span></span>
+              <span className="mask-line"><span className="line-inner"><em>TECHNOLOGICAL ERA.</em></span></span>
             </h2>
 
             <div className="vision-field" aria-label="PONT turns European capability into physical outcomes">
@@ -1234,7 +1248,7 @@ export function PitchStage() {
                 ))}
               </div>
               <span className="vision-spine" aria-hidden="true" />
-              <div className="vision-core"><Image className="vision-core-mark" src="/pont-logo.svg" alt="PONT." width={740} height={193} unoptimized /><span>ONE TECHNOLOGICAL ECOSYSTEM</span></div>
+              <div className="vision-core"><PontMark className="vision-core-mark" /><span>ONE TECHNOLOGICAL ECOSYSTEM</span></div>
             </div>
             <p className="scene-argument vision-argument">{SCENES[18].argument}</p>
 

@@ -147,6 +147,117 @@ test('the one-square-metre seed clears before the full blueprint appears', async
   });
 });
 
+test('the worlds convergence orb grows away without leaving a visible remnant', async () => {
+  const experience = await import('../src/lib/experience.mjs');
+
+  assert.deepEqual(experience.worldsConvergenceExitMotion?.('portrait'), {
+    scale: 7.8,
+    autoAlpha: 0,
+  });
+  assert.deepEqual(experience.worldsConvergenceExitMotion?.('landscape'), {
+    scale: 6.4,
+    autoAlpha: 0,
+  });
+});
+
+test('the square-metre card fully clears before the ecosystem state settles', async () => {
+  const experience = await import('../src/lib/experience.mjs');
+
+  assert.deepEqual(experience.spaceCardExitMotion?.('portrait'), {
+    scale: 0.7,
+    x: -150,
+    y: 60,
+    autoAlpha: 0,
+  });
+  assert.deepEqual(experience.spaceCardExitMotion?.('landscape'), {
+    scale: 0.64,
+    x: -80,
+    y: 32,
+    autoAlpha: 0,
+  });
+});
+
+test('the founder roof is hidden until its dedicated reveal beat', async () => {
+  const experience = await import('../src/lib/experience.mjs');
+
+  assert.deepEqual(experience.founderRoofVisibility?.(false), { autoAlpha: 0 });
+  assert.deepEqual(experience.founderRoofVisibility?.(true), { autoAlpha: 1 });
+});
+
+test('the community premise clears before the connected-community layout appears', async () => {
+  const experience = await import('../src/lib/experience.mjs');
+
+  assert.deepEqual(experience.communityPremiseExitMotion?.('portrait'), {
+    y: -8,
+    autoAlpha: 0,
+  });
+  assert.deepEqual(experience.communityPremiseExitMotion?.('landscape'), {
+    y: -12,
+    autoAlpha: 0,
+  });
+});
+
+test('the community home frame terminates inside its nodes and keeps its label on the floor edge', async () => {
+  const experience = await import('../src/lib/experience.mjs');
+  const frame = experience.communityHomeFrameGeometry?.();
+
+  assert.deepEqual(frame.anchors, {
+    apex: { x: 240, y: 64 },
+    leftEave: { x: 34, y: 128 },
+    rightEave: { x: 446, y: 128 },
+    leftFloor: { x: 34, y: 423 },
+    rightFloor: { x: 446, y: 423 },
+  });
+  assert.equal(frame.label.right, 34);
+  assert.equal(frame.floor.left + frame.floor.width, frame.anchors.rightFloor.x);
+});
+
+test('the ecosystem value rail stays below the white desk baseline in every viewport profile', async () => {
+  const experience = await import('../src/lib/experience.mjs');
+  const layouts = [
+    { profile: 'landscape', deskTop: 330, fieldTop: 210, fieldHeight: 300 },
+    { profile: 'compact-landscape', deskTop: 330, fieldTop: 196, fieldHeight: 292 },
+    { profile: 'portrait', deskTop: 332, fieldTop: 230, fieldHeight: 360 },
+    { profile: 'compact-portrait', deskTop: 332, fieldTop: 230, fieldHeight: 360 },
+  ];
+
+  for (const layout of layouts) {
+    const motion = experience.businessRailMotion?.(layout.profile);
+    const whiteBottom = layout.deskTop + motion.deskY + 6;
+    const orangeTop = layout.fieldTop + layout.fieldHeight - motion.valueBottom - 3;
+
+    assert.ok(orangeTop > whiteBottom, `${layout.profile}: orange rail must sit below white rail`);
+  }
+});
+
+test('the two domains converge without colliding in landscape', async () => {
+  const experience = await import('../src/lib/experience.mjs');
+
+  assert.deepEqual(experience.worldsDomainConvergenceMotion?.('landscape'), {
+    left: { x: 140, y: 0 },
+    right: { x: -140, y: 0 },
+    titles: { scale: 1 },
+    axis: { y: 0 },
+    orb: { y: 0 },
+  });
+  assert.deepEqual(experience.worldsDomainConvergenceMotion?.('portrait'), {
+    left: { x: 0, y: 185 },
+    right: { x: 0, y: -185 },
+    titles: { scale: 0.84 },
+    axis: { y: 55 },
+    orb: { y: 55 },
+  });
+});
+
+test('the worlds divider follows the convergence orb center', async () => {
+  const experience = await import('../src/lib/experience.mjs');
+
+  for (const mode of ['landscape', 'portrait']) {
+    const motion = experience.worldsDomainConvergenceMotion(mode);
+    assert.equal(motion.axis?.y, motion.orb.y, `${mode}: divider and orb must share one center line`);
+  }
+});
+
 test('capital converges on one horizontal axis in both orientations', () => {
   assert.deepEqual(capitalInsideMotion('landscape'), {
     heading: { y: -12, autoAlpha: 0 },

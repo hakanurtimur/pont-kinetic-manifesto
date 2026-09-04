@@ -7,6 +7,7 @@
   --muted: #8992a7;
   --coral: #ff5a42;
   --logo-coral: #ff835f;
+  --brand-logo-coral: #c43a2b;
   --logo-contrast: #f4f4ef;
   --hairline: rgba(244, 244, 239, 0.18);
   --ghost: rgba(244, 244, 239, 0.13);
@@ -218,7 +219,7 @@ button {
 .pont-mark__contrast {
   position: absolute;
   inset: 0;
-  background: var(--logo-coral);
+  background: var(--brand-logo-coral);
   mask: url('/pont-logo.svg') center / 100% 100% no-repeat;
   -webkit-mask: url('/pont-logo.svg') center / 100% 100% no-repeat;
   transition: background-color 280ms ease;
@@ -399,14 +400,20 @@ button {
 
 .stay-line {
   position: absolute;
-  bottom: 77px;
+  bottom: 112px;
   left: 80px;
   font-size: 73px;
 }
 
+.scene-worlds {
+  --world-axis-y: 390px;
+  --convergence-orb-size: 142px;
+  --convergence-orb-radius: 71px;
+}
+
 .world-axis {
   position: absolute;
-  top: 390px;
+  top: var(--world-axis-y);
   right: 150px;
   left: 150px;
   height: 1px;
@@ -433,19 +440,22 @@ button {
   font-weight: 800;
   line-height: 0.82;
   letter-spacing: -0.065em;
+  will-change: transform;
 }
 
+.domain--left .domain-title { transform-origin: left top; }
 .domain--right .domain-title { color: var(--coral); }
+.domain--right .domain-title { transform-origin: right top; }
 
 .convergence-orb {
   position: absolute;
   z-index: -1;
-  top: 319px;
-  left: calc(50% - 71px);
+  top: calc(var(--world-axis-y) - var(--convergence-orb-radius));
+  left: calc(50% - var(--convergence-orb-radius));
   display: grid;
   place-items: center;
-  width: 142px;
-  height: 142px;
+  width: var(--convergence-orb-size);
+  height: var(--convergence-orb-size);
   border: 2px solid var(--fg);
   border-radius: 50%;
   background: linear-gradient(to bottom, var(--bg) 0 49%, var(--coral) 50% 100%);
@@ -728,7 +738,6 @@ button {
 .therapy-core__label {
   position: relative;
   z-index: 1;
-  background: var(--bg);
 }
 
 .therapy-core strong {
@@ -1187,6 +1196,8 @@ button {
   left: 55px;
   width: auto;
   height: 105px;
+  visibility: hidden;
+  opacity: 0;
 }
 
 .founder-roof-line {
@@ -1247,7 +1258,7 @@ button {
   height: 305px;
   overflow: hidden;
   border: 2px solid var(--fg);
-  background: linear-gradient(135deg, transparent 49.8%, var(--ghost) 50%, transparent 50.2%);
+  background: transparent;
   will-change: transform, opacity;
 }
 
@@ -1274,7 +1285,7 @@ button {
 .empty-grid-line--v2,
 .empty-grid-line--v3 { top: 0; width: 1px; height: 100%; }
 .empty-grid-line--v1 { left: 16.666%; }
-.empty-grid-line--v2 { left: 50%; background: var(--coral); opacity: 0.72; }
+.empty-grid-line--v2 { left: 50%; }
 .empty-grid-line--v3 { right: 16.666%; }
 .empty-grid-line--h1,
 .empty-grid-line--h2 { left: 0; width: 100%; height: 1px; }
@@ -1335,12 +1346,12 @@ button {
 .community-core {
   position: absolute;
   z-index: 3;
-  top: 168px;
-  left: 184px;
+  top: 158px;
+  left: 174px;
   display: grid;
   place-content: center;
-  width: 112px;
-  height: 112px;
+  width: 132px;
+  height: 132px;
   border: 2px solid var(--coral);
   border-radius: 50%;
   background: var(--bg);
@@ -1348,8 +1359,8 @@ button {
   will-change: transform, opacity;
 }
 
-.community-core strong { font-size: 15px; letter-spacing: -0.045em; }
-.community-core span { margin-top: 4px; color: var(--muted); font-size: 8px; font-weight: 800; letter-spacing: 0.08em; }
+.community-core strong { font-size: 15px; letter-spacing: -0.035em; }
+.community-core span { margin-top: 5px; color: var(--muted); font-size: 8px; font-weight: 800; letter-spacing: 0.06em; }
 
 .community-node {
   position: absolute;
@@ -1371,11 +1382,11 @@ button {
 }
 
 .community-node--1 { top: 43px; left: 169px; border-color: var(--coral); color: var(--coral); }
-.community-node--2 { top: 119px; right: 2px; }
-.community-node--3 { right: 8px; bottom: 103px; }
+.community-node--2 { top: 108px; right: 2px; }
+.community-node--3 { right: 8px; bottom: 92px; }
 .community-node--4 { bottom: 38px; left: 169px; }
-.community-node--5 { bottom: 103px; left: 8px; }
-.community-node--6 { top: 119px; left: 2px; }
+.community-node--5 { bottom: 92px; left: 8px; }
+.community-node--6 { top: 108px; left: 2px; }
 
 .community-home-line {
   position: absolute;
@@ -1385,17 +1396,12 @@ button {
   will-change: transform;
 }
 
-.community-home-line--roof-left { top: 36px; left: 31px; width: 232px; rotate: -24deg; transform-origin: right center; }
-.community-home-line--roof-right { top: 36px; right: 31px; width: 232px; rotate: 24deg; transform-origin: left center; }
-.community-home-line--wall-left { top: 230px; left: -115px; width: 300px; rotate: 90deg; }
-.community-home-line--wall-right { top: 230px; right: -115px; width: 300px; rotate: 90deg; }
-.community-home-line--floor { bottom: 7px; left: 34px; width: 412px; }
+.community-home-line--roof-left { transform-origin: right center; }
+.community-home-line--roof-right { transform-origin: left center; }
 
 .community-home-label {
   position: absolute;
   z-index: 3;
-  right: 0;
-  bottom: -18px;
   color: var(--coral);
   font-size: 10px;
   font-style: normal;
@@ -1454,13 +1460,13 @@ button {
 .home-seed {
   position: absolute;
   z-index: 2;
-  top: 282px;
-  left: 486px;
+  top: 277px;
+  left: 436px;
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  width: 160px;
-  height: 160px;
+  width: 260px;
+  height: 170px;
   padding-bottom: 24px;
   border: 2px solid var(--coral);
   background: color-mix(in srgb, var(--coral) 8%, var(--bg));
@@ -1470,9 +1476,10 @@ button {
 
 .home-seed strong {
   color: var(--fg);
-  font-size: 88px;
+  font-size: 58px;
   line-height: 0.75;
-  letter-spacing: -0.08em;
+  letter-spacing: -0.06em;
+  white-space: nowrap;
 }
 
 .home-seed span { margin: 0 0 3px 7px; color: var(--coral); font-size: 19px; font-weight: 800; }
@@ -1489,8 +1496,8 @@ button {
   will-change: transform, opacity;
 }
 
-.home-location strong { color: var(--fg); font-size: 22px; letter-spacing: 0.08em; }
-.home-location span { color: var(--muted); font-size: 11px; font-weight: 800; letter-spacing: 0.1em; }
+.home-location strong { color: var(--fg); font-size: 28px; letter-spacing: 0.08em; }
+.home-location span { color: var(--muted); font-size: 14px; font-weight: 800; letter-spacing: 0.1em; }
 
 .home-number {
   position: absolute;
@@ -1924,7 +1931,6 @@ button {
 .business-value-current {
   position: absolute;
   right: 0;
-  bottom: -2px;
   left: 0;
   height: 3px;
   background: var(--coral);
@@ -1933,8 +1939,9 @@ button {
 
 .business-value-current i {
   position: absolute;
+  top: 22px;
   right: 0;
-  bottom: 10px;
+  bottom: auto;
   color: var(--coral);
   font-size: 9px;
   font-style: normal;
@@ -3133,7 +3140,8 @@ button {
   width: 210px;
   height: 156px;
   border: 2px solid var(--coral);
-  background: #f4f4ef;
+  background: var(--bg);
+  transition: background-color 280ms ease, border-color 280ms ease;
   will-change: transform, opacity;
 }
 
@@ -3151,9 +3159,8 @@ button {
   display: block;
   width: 165px;
   height: auto;
-  object-fit: contain;
 }
-.vision-core span { margin-top: 13px; color: #101629; font-size: 8px; font-weight: 800; letter-spacing: 0.1em; }
+.vision-core span { margin-top: 13px; color: var(--fg); font-size: 8px; font-weight: 800; letter-spacing: 0.1em; transition: color 280ms ease; }
 .vision-argument { right: 105px; bottom: 24px; left: 55px; width: 870px; font-size: 11px; }
 
 .vision-final-state { position: absolute; inset: 0; will-change: opacity; }
@@ -3507,13 +3514,17 @@ button {
   .stay-line { bottom: 210px; left: 72px; font-size: 57px; }
   .europe-argument { bottom: 70px; left: 72px; width: 580px; font-size: 18px; }
 
-  .world-axis { top: 537px; right: 74px; left: 74px; }
+  .scene-worlds {
+    --world-axis-y: 537px;
+    --convergence-orb-size: 160px;
+    --convergence-orb-radius: 80px;
+  }
+  .world-axis { right: 74px; left: 74px; }
   .domain { width: 596px; min-height: 250px; }
   .domain--left { top: 160px; left: 74px; }
   .domain--right { top: 530px; right: 74px; }
   .domain-title { margin-top: 38px; font-size: 68px; }
 
-  .convergence-orb { top: 495px; left: calc(50% - 80px); width: 160px; height: 160px; }
   .display-heading--future { top: 427px; right: 42px; left: 42px; font-size: 57px; line-height: 0.9; }
   .worlds-argument { top: 610px; left: 72px; width: 600px; font-size: 20px; }
 
@@ -3569,7 +3580,7 @@ button {
   .space-heading { width: 600px; font-size: 62px; }
   .square-metre { top: 320px; left: 197px; width: 350px; height: 350px; }
   .space-argument { top: 720px; bottom: auto; left: 72px; width: 590px; font-size: 18px; }
-  .ecosystem-map { top: 270px; right: auto; left: 72px; width: 600px; height: 560px; }
+  .ecosystem-map { top: 215px; right: auto; left: 72px; width: 600px; height: 560px; }
   .ecosystem-map::before { inset: 54px 54px 34px; }
   .ecosystem-map::after { inset: 145px 145px 125px; }
   .ecosystem-core { top: 220px; left: 240px; }
@@ -3610,7 +3621,7 @@ button {
   .home-heading { top: 116px; left: 42px; width: 620px; font-size: 90px; }
   .home-crosshair--horizontal { top: 450px; right: 88px; left: 88px; }
   .home-crosshair--vertical { top: 256px; bottom: 250px; left: 372px; }
-  .home-seed { top: 370px; left: 292px; }
+  .home-seed { top: 365px; left: 242px; width: 260px; height: 170px; }
   .home-location { top: 590px; left: 72px; width: 600px; }
   .home-number { top: 106px; left: 42px; }
   .home-number strong { font-size: 116px; }
@@ -3745,7 +3756,7 @@ button {
   .founder-first-company { right: auto; bottom: 0; text-align: right; }
   .founder-first-direction-line { top: 150px; left: 299px; width: 2px; height: 280px; }
   .founder-first-direction-line::before { top: 0; left: -4px; rotate: 135deg; }
-  .founder-first-startup-token { top: 57px; left: 20px; }
+  .founder-first-startup-token { top: 57px; left: calc(50% - 54px); }
   .founder-first-modes { top: 0; left: 0; flex-direction: row; width: 600px; height: 96px; }
   .founder-first-mode { padding: 12px 18px; }
   .founder-first-mode--digital { flex: 9; }
@@ -3876,9 +3887,11 @@ button {
   .era-argument { top: 472px; }
 
   .stay-line { bottom: 180px; }
-  .europe-argument { bottom: 118px; width: 395px; }
+  .europe-argument { bottom: 64px; width: 395px; }
 
   .worlds-argument { top: 430px; }
+
+  .scene-worlds { --world-axis-y: 430px; }
 
   .robot-network,
   .therapy-network { top: 70px; }
@@ -3919,7 +3932,7 @@ button {
   .stack-proof { right: auto; bottom: 35px; width: 395px; }
 
   .revenue-field { top: 196px; height: 292px; }
-  .business-final { top: 478px; font-size: 46px; }
+  .business-final { top: 528px; font-size: 46px; }
   .business-argument { right: auto; bottom: 36px; width: 395px; }
 
   .flywheel-machine { top: 178px; }
