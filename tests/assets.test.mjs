@@ -30,6 +30,19 @@ test('the university scene has an orientation-aware inversion field', () => {
   assert.match(css, /@media \(orientation:\s*portrait\)[\s\S]*\.university-field\s*{[^}]*width:\s*600px;[^}]*height:\s*520px;/s);
 });
 
+test('the university uses a single SVG network and the founder-first diagram has no strike-through', () => {
+  const source = readFileSync(new URL('../app/components/PitchStage.tsx', import.meta.url), 'utf8');
+
+  assert.match(source, /className="university-network"/);
+  assert.doesNotMatch(source, /founder-first-wrong/);
+});
+
+test('the vision core renders the supplied vector logo asset directly', () => {
+  const source = readFileSync(new URL('../app/components/PitchStage.tsx', import.meta.url), 'utf8');
+
+  assert.match(source, /<Image\s+className="vision-core-mark"\s+src="\/pont-logo\.svg"/);
+});
+
 test('the founder-first system has a portrait-specific operating field', () => {
   const css = readFileSync(new URL('../app/globals.css', import.meta.url), 'utf8');
 
@@ -49,4 +62,14 @@ test('the final vision has an orientation-aware transformation field', () => {
 
   assert.match(css, /\.vision-field\s*{[^}]*width:\s*860px;[^}]*height:\s*320px;/s);
   assert.match(css, /@media \(orientation:\s*portrait\)[\s\S]*\.vision-field\s*{[^}]*width:\s*600px;[^}]*height:\s*600px;/s);
+});
+
+test('the founder connector fan converges all three ecosystems into PONT', () => {
+  const css = readFileSync(new URL('../app/globals.css', import.meta.url), 'utf8');
+
+  assert.match(css, /\.founder-roof\s*{[^}]*right:\s*104px;[^}]*left:\s*55px;[^}]*width:\s*auto;/s);
+  assert.match(css, /\.founder-roof-line\s*{[^}]*width:\s*34\.5%;/s);
+  assert.match(css, /\.founder-roof-line--left\s*{[^}]*left:\s*16\.3%;[^}]*rotate:\s*5deg;[^}]*transform-origin:\s*left center;/s);
+  assert.match(css, /\.founder-roof-line--right\s*{[^}]*right:\s*16\.3%;[^}]*rotate:\s*-5deg;[^}]*transform-origin:\s*right center;/s);
+  assert.match(css, /\.founder-trace--1,\s*\.founder-trace--3\s*{[^}]*display:\s*none;/s);
 });

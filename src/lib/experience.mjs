@@ -62,6 +62,90 @@ export function stageGeometryForViewport(width, height) {
   };
 }
 
+export function scienceLockupRecedeMotion(mode) {
+  return {
+    x: 0,
+    y: mode === 'portrait' ? -34 : -26,
+    scale: 0.92,
+    autoAlpha: 0.28,
+  };
+}
+
+export function homeBlueprintGeometry(mode) {
+  if (mode === 'portrait') {
+    return {
+      viewBox: '0 0 650 430',
+      route: 'M0 343 H88 V253 H214 V101 H274 V191 H382 V61 H570 V301 H325 V430',
+    };
+  }
+
+  return {
+    viewBox: '0 0 980 300',
+    route: 'M20 242 H170 V190 H328 V78 H492 V142 H646 V54 H806 V243 H960',
+  };
+}
+
+export function homeHeadingBlueprintMotion(mode) {
+  return {
+    y: mode === 'portrait' ? -24 : -16,
+    autoAlpha: 0,
+  };
+}
+
+export function homeSeedBlueprintMotion(mode) {
+  return {
+    scale: 0.16,
+    x: mode === 'portrait' ? -270 : -430,
+    y: mode === 'portrait' ? -56 : 2,
+    autoAlpha: 0,
+  };
+}
+
+export function capitalInsideMotion(mode) {
+  return {
+    heading: {
+      y: mode === 'portrait' ? -22 : -12,
+      autoAlpha: 0,
+    },
+    founder: {
+      x: mode === 'portrait' ? 86 : 130,
+      y: 0,
+    },
+    investor: {
+      x: mode === 'portrait' ? -120 : -309,
+      y: 0,
+    },
+  };
+}
+
+export function universityNetworkGeometry(mode) {
+  if (mode === 'portrait') {
+    return {
+      viewBox: '0 0 600 520',
+      routes: [
+        'M192 81 L226 235',
+        'M192 260 H226',
+        'M192 439 L226 285',
+        'M408 81 L374 235',
+        'M408 260 H374',
+        'M408 439 L374 285',
+      ],
+    };
+  }
+
+  return {
+    viewBox: '0 0 860 300',
+    routes: [
+      'M210 25 L350 125',
+      'M210 150 H350',
+      'M210 275 L350 175',
+      'M650 25 L510 125',
+      'M650 150 H510',
+      'M650 275 L510 175',
+    ],
+  };
+}
+
 export function resolveTheme(savedTheme, prefersDark) {
   if (savedTheme === 'light' || savedTheme === 'dark') return savedTheme;
   return prefersDark ? 'dark' : 'light';

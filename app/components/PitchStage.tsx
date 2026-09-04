@@ -2,13 +2,20 @@
 
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from 'react';
 import { gsap } from 'gsap';
+import Image from 'next/image';
 
 import { BEATS } from '@/src/lib/progress.mjs';
 import {
+  capitalInsideMotion,
+  homeBlueprintGeometry,
+  homeHeadingBlueprintMotion,
+  homeSeedBlueprintMotion,
   pageIndexForProgress,
   resolveTheme,
+  scienceLockupRecedeMotion,
   stageGeometryForViewport,
   timelineValueForProgress,
+  universityNetworkGeometry,
 } from '@/src/lib/experience.mjs';
 import {
   appearanceTokensFor,
@@ -143,6 +150,8 @@ export function PitchStage() {
   const [activeBeat, setActiveBeat] = useState(0);
   const [paletteOpen, setPaletteOpen] = useState(false);
   const geometry = useStageGeometry();
+  const homeBlueprint = homeBlueprintGeometry(geometry.mode);
+  const universityNetwork = universityNetworkGeometry(geometry.mode);
   const { theme, palette, toggleTheme, selectPalette } = useAppearance();
 
   const goToBeat = useCallback((index: number) => {
@@ -204,7 +213,11 @@ export function PitchStage() {
         .fromTo($('.science-line .line-inner'), { yPercent: 115 }, { yPercent: 0, duration: 0.56, stagger: 0.05, ease: 'power2.out' }, '<0.08')
         .set($('.scene-era'), { autoAlpha: 0 }, '>')
         .addLabel('science')
-        .to($('.science-lockup'), { x: isPortrait ? -54 : -110, autoAlpha: 0.16, duration: 0.56 })
+        .to($('.science-lockup'), {
+          ...scienceLockupRecedeMotion(isPortrait ? 'portrait' : 'landscape'),
+          duration: 0.56,
+          transformOrigin: 'left top',
+        })
         .fromTo($('.escape-line'), { scaleX: 0 }, { scaleX: 1, duration: 0.56 }, '<')
         .fromTo($('.companies-line .line-inner'), { xPercent: 110 }, { xPercent: 0, duration: 0.58, stagger: 0.05, ease: 'power2.out' }, '<0.08')
         .addLabel('companies')
@@ -324,8 +337,8 @@ export function PitchStage() {
         .fromTo($('.home-location'), { y: 16, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.44 }, '<0.12')
         .set($('.scene-community'), { autoAlpha: 0 }, '>')
         .addLabel('one-square-metre')
-        .to($('.home-heading'), { y: isPortrait ? -24 : -16, autoAlpha: 0.14, duration: 0.5 })
-        .to($('.home-seed'), { scale: 0.16, x: isPortrait ? -270 : -430, y: isPortrait ? -56 : 2, autoAlpha: 0.72, duration: 0.58 }, '<')
+        .to($('.home-heading'), { ...homeHeadingBlueprintMotion(isPortrait ? 'portrait' : 'landscape'), duration: 0.5 })
+        .to($('.home-seed'), { ...homeSeedBlueprintMotion(isPortrait ? 'portrait' : 'landscape'), duration: 0.58 }, '<')
         .to($('.home-crosshair'), { scale: 1.4, autoAlpha: 0, duration: 0.48 }, '<')
         .to($('.home-location'), { autoAlpha: 0, duration: 0.38 }, '<')
         .fromTo($('.home-blueprint'), { scale: 0.16, transformOrigin: 'left center', autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.72, ease: 'power3.out' }, '<0.04')
@@ -406,12 +419,12 @@ export function PitchStage() {
         .fromTo($('.capital-exit-line'), { scaleX: 0 }, { scaleX: 1, duration: 0.52, transformOrigin: 'left center' }, '<0.08')
         .set($('.scene-flywheel'), { autoAlpha: 0 }, '>')
         .addLabel('capital-outside')
-        .to($('.capital-heading'), { y: isPortrait ? -22 : -12, autoAlpha: 0.14, duration: 0.44 })
-        .to($('.capital-exit-line'), { scaleX: 0, autoAlpha: 0, duration: 0.4, transformOrigin: 'right center' }, '<')
+        .to($('.capital-heading'), { ...capitalInsideMotion(geometry.mode).heading, duration: 0.44 })
+        .to($('.capital-exit-line'), { scaleX: 0, autoAlpha: 0, duration: 0.4, transformOrigin: 'left center' }, '<')
         .fromTo($('.capital-partner'), { y: -72, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.44, stagger: 0.055, ease: 'power2.out' }, '<0.08')
         .fromTo($('.capital-car'), { y: isPortrait ? -290 : -218, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.72, ease: 'power3.out' }, '<0.04')
-        .to($('.capital-founder'), { x: isPortrait ? 86 : 130, duration: 0.58, ease: 'power2.inOut' }, '<0.2')
-        .to($('.capital-investor'), { x: isPortrait ? -120 : -309, y: isPortrait ? -194 : 0, duration: 0.58, ease: 'power2.inOut' }, '<')
+        .to($('.capital-founder'), { ...capitalInsideMotion(geometry.mode).founder, duration: 0.58, ease: 'power2.inOut' }, '<0.2')
+        .to($('.capital-investor'), { ...capitalInsideMotion(geometry.mode).investor, duration: 0.58, ease: 'power2.inOut' }, '<')
         .fromTo($('.capital-connection'), { scaleX: 0 }, { scaleX: 1, duration: 0.5, transformOrigin: 'center center' }, '<0.08')
         .fromTo($('.capital-old-relation'), { y: 14, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.4 }, '<0.06')
         .fromTo($('.capital-strike'), { scaleX: 0 }, { scaleX: 1, duration: 0.42, transformOrigin: 'left center' }, '<0.12')
@@ -466,7 +479,7 @@ export function PitchStage() {
         .to($('.university-campus-shell'), { scale: isPortrait ? 0.28 : 0.23, rotate: 90, autoAlpha: 0.28, transformOrigin: 'center center', duration: 0.68, ease: 'power3.inOut' }, '<')
         .to($('.university-campus-label, .university-isolated-core, .university-distance'), { scale: 0.45, autoAlpha: 0, duration: 0.42 }, '<')
         .fromTo($('.university-engine'), { scale: 0.18, rotate: -45, autoAlpha: 0 }, { scale: 1, rotate: 0, autoAlpha: 1, duration: 0.68, ease: 'back.out(1.18)' }, '<0.16')
-        .fromTo($('.university-spoke'), { scaleX: isPortrait ? 1 : 0, scaleY: isPortrait ? 0 : 1 }, { scaleX: 1, scaleY: 1, autoAlpha: 1, duration: 0.48, stagger: 0.05, transformOrigin: isPortrait ? 'center center' : 'left center' }, '<0.08')
+        .fromTo($('.university-spoke'), { strokeDashoffset: 1, autoAlpha: 0 }, { strokeDashoffset: 0, autoAlpha: 1, duration: 0.52, stagger: 0.045, ease: 'power2.inOut' }, '<0.08')
         .fromTo($('.university-layer'), { scale: 0.7, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.4, stagger: 0.055, ease: 'back.out(1.25)' }, '<0.06')
         .set($('.university-final'), { autoAlpha: 1 }, '<0.08')
         .fromTo($('.university-final .line-inner'), { yPercent: 120 }, { yPercent: 0, duration: 0.58, stagger: 0.05, ease: 'power2.out' }, '<0.04')
@@ -480,7 +493,6 @@ export function PitchStage() {
         .fromTo($('.founder-first-campus, .founder-first-company'), { scale: 0.72, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.5, stagger: 0.08, ease: 'power3.out' }, '<0.06')
         .fromTo($('.founder-first-direction-line'), { scaleX: isPortrait ? 1 : 0, scaleY: isPortrait ? 0 : 1 }, { scaleX: 1, scaleY: 1, duration: 0.58, transformOrigin: isPortrait ? 'center bottom' : 'right center' }, '<0.05')
         .fromTo($('.founder-first-startup-token'), { x: 0, y: 0, autoAlpha: 0 }, { x: isPortrait ? 0 : -420, y: isPortrait ? -245 : 0, autoAlpha: 1, duration: 0.72, ease: 'power3.inOut' }, '<0.1')
-        .fromTo($('.founder-first-wrong'), { scaleX: 0 }, { scaleX: 1, duration: 0.42, transformOrigin: 'left center' }, '<0.28')
         .set($('.scene-university'), { autoAlpha: 0 }, '>')
         .addLabel('university-shifts')
         .to($('.founder-first-heading'), { y: isPortrait ? -22 : -12, autoAlpha: 0.12, duration: 0.44 })
@@ -921,8 +933,8 @@ export function PitchStage() {
               {Array.from({ length: 4 }, (_, index) => (
                 <span className="home-grid-line home-grid-line--horizontal" style={{ top: `${(index + 1) * 20}%` }} key={`home-h-${index}`} aria-hidden="true" />
               ))}
-              <svg className="home-circuit" aria-hidden="true" viewBox="0 0 980 300" preserveAspectRatio="none">
-                <path className="home-route" pathLength="1" d="M20 242 H170 V190 H328 V78 H492 V142 H646 V54 H806 V212 H960" />
+              <svg className="home-circuit" aria-hidden="true" viewBox={homeBlueprint.viewBox} preserveAspectRatio="none">
+                <path className="home-route" pathLength="1" d={homeBlueprint.route} />
               </svg>
               {HOME_LAYERS.map((layer, index) => (
                 <span className={`home-program home-program--${index + 1}`} key={layer}><i>0{index + 1}</i>{layer}</span>
@@ -1112,9 +1124,13 @@ export function PitchStage() {
               </div>
 
               <div className="university-engine"><strong>UNIVERSITY</strong><span>INSIDE PONT</span></div>
+              <svg className="university-network" viewBox={universityNetwork.viewBox} preserveAspectRatio="none" aria-hidden="true">
+                {universityNetwork.routes.map((route, index) => (
+                  <path className="university-spoke" d={route} pathLength="1" key={`university-route-${index}`} />
+                ))}
+              </svg>
               {UNIVERSITY_LAYERS.map((layer, index) => (
                 <div className={`university-system university-system--${index + 1}`} key={layer}>
-                  <span className="university-spoke" aria-hidden="true" />
                   <p className="university-layer"><i>0{index + 1}</i>{layer}</p>
                 </div>
               ))}
@@ -1139,7 +1155,6 @@ export function PitchStage() {
                 <div className="founder-first-campus"><i>OLD MODEL</i><strong>UNIVERSITY</strong><span>THEORY FIRST</span></div>
                 <span className="founder-first-direction-line" aria-hidden="true" />
                 <div className="founder-first-company"><i>REAL ECONOMY</i><strong>COMPANIES</strong><span>BUILD · FINANCE · SOLVE</span><b className="founder-first-startup-token">STARTUPS</b></div>
-                <span className="founder-first-wrong" aria-hidden="true" />
               </div>
 
               <div className="founder-first-operating" aria-label="Founder-first university operating system">
@@ -1212,7 +1227,7 @@ export function PitchStage() {
                 ))}
               </div>
               <span className="vision-spine" aria-hidden="true" />
-              <div className="vision-core"><PontMark className="vision-core-mark" /><span>ONE TECHNOLOGICAL ECOSYSTEM</span></div>
+              <div className="vision-core"><Image className="vision-core-mark" src="/pont-logo.svg" width={740} height={193} alt="PONT." /><span>ONE TECHNOLOGICAL ECOSYSTEM</span></div>
             </div>
             <p className="scene-argument vision-argument">{SCENES[18].argument}</p>
 

@@ -1138,7 +1138,7 @@ button {
   position: absolute;
   top: 196px;
   width: 1px;
-  height: 72px;
+  height: 30px;
   background: var(--hairline);
   will-change: transform;
 }
@@ -1147,30 +1147,34 @@ button {
 .founder-trace--2 { left: 50%; background: var(--coral); }
 .founder-trace--3 { right: 16.3%; }
 
+.founder-trace--1,
+.founder-trace--3 { display: none; }
+
 .founder-roof {
   position: absolute;
   z-index: 3;
   top: 500px;
-  left: calc(50% - 155px);
-  width: 310px;
+  right: 104px;
+  left: 55px;
+  width: auto;
   height: 105px;
 }
 
 .founder-roof-line {
   position: absolute;
   top: 18px;
-  width: 176px;
+  width: 34.5%;
   height: 2px;
   background: var(--coral);
   will-change: transform;
 }
 
-.founder-roof-line--left { left: 7px; rotate: -24deg; transform-origin: right center; }
-.founder-roof-line--right { right: 7px; rotate: 24deg; transform-origin: left center; }
+.founder-roof-line--left { left: 16.3%; rotate: 5deg; transform-origin: left center; }
+.founder-roof-line--right { right: 16.3%; rotate: -5deg; transform-origin: right center; }
 
 .founder-roof i {
   position: absolute;
-  top: 42px;
+  top: 50px;
   left: 0;
   width: 100%;
   color: var(--fg);
@@ -2631,21 +2635,26 @@ button {
 .university-system--5 .university-layer,
 .university-system--6 .university-layer { right: 0; justify-content: flex-end; text-align: right; }
 
-.university-spoke {
+.university-network {
   position: absolute;
-  top: 24px;
-  width: 140px;
-  height: 1px;
-  background: var(--coral);
-  will-change: transform, opacity;
+  z-index: 5;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
 }
 
-.university-system--1 .university-spoke,
-.university-system--2 .university-spoke,
-.university-system--3 .university-spoke { left: 210px; transform-origin: left center; }
-.university-system--4 .university-spoke,
-.university-system--5 .university-spoke,
-.university-system--6 .university-spoke { left: 0; transform-origin: right center; }
+.university-spoke {
+  fill: none;
+  stroke: var(--coral);
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+  stroke-linecap: square;
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+  will-change: stroke-dashoffset, opacity;
+}
 
 .university-final {
   position: absolute;
@@ -2750,18 +2759,6 @@ button {
   font-size: 9px;
   letter-spacing: 0.05em;
   will-change: transform, opacity;
-}
-
-.founder-first-wrong {
-  position: absolute;
-  z-index: 8;
-  top: 157px;
-  left: 116px;
-  width: 628px;
-  height: 2px;
-  background: var(--fg);
-  rotate: -17deg;
-  will-change: transform;
 }
 
 .founder-first-modes {
@@ -3121,7 +3118,11 @@ button {
   background: var(--coral);
 }
 
-.vision-core-mark { width: 165px; }
+.vision-core-mark {
+  display: block;
+  width: 165px;
+  height: auto;
+}
 .vision-core span { margin-top: 13px; color: var(--muted); font-size: 8px; font-weight: 800; letter-spacing: 0.1em; }
 .vision-argument { right: 105px; bottom: 24px; left: 55px; width: 870px; font-size: 11px; }
 
@@ -3510,8 +3511,8 @@ button {
   .founder-card { padding: 17px 12px 13px; }
   .founder-card h3 { margin-top: 54px; font-size: 24px; }
   .founder-card p { margin-top: 20px; font-size: 10px; line-height: 1.28; }
-  .founder-trace { top: 256px; height: 110px; }
-  .founder-roof { top: 704px; }
+  .founder-trace { top: 256px; height: 37px; }
+  .founder-roof { top: 621px; right: 72px; left: 42px; }
   .founder-final { top: 818px; right: 60px; left: 42px; font-size: 45px; text-align: left; }
   .founder-argument { right: 80px; bottom: 49px; left: 42px; text-align: left; font-size: 17px; }
 
@@ -3588,11 +3589,11 @@ button {
   .capital-shaft { left: calc(50% - 55px); width: 110px; }
   .capital-car { top: 148px; left: calc(50% - 46px); width: 92px; }
   .capital-founder { top: 156px; left: 34px; }
-  .capital-investor { top: 350px; right: 0; }
-  .capital-exit-line { top: 183px; left: 140px; width: 450px; rotate: 26deg; transform-origin: left center; }
-  .capital-exit-line i { left: 48%; rotate: -26deg; }
+  .capital-investor { top: 156px; right: 0; }
+  .capital-exit-line { top: 183px; left: 140px; width: 450px; transform-origin: left center; }
+  .capital-exit-line i { left: 48%; }
   .capital-connection { top: 183px; left: 150px; width: 320px; }
-  .capital-partners { top: 292px; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  .capital-partners { top: 280px; grid-template-columns: repeat(3, 1fr); gap: 6px; }
   .capital-partner { min-height: 27px; }
   .capital-old-relation { top: 744px; font-size: 20px; }
   .capital-final { top: 785px; font-size: 52px; }
@@ -3648,10 +3649,6 @@ button {
   .university-system--5,
   .university-system--6 { right: 0; }
   .university-layer { width: 192px; font-size: 10px; }
-  .university-spoke { width: 68px; }
-  .university-system--1 .university-spoke,
-  .university-system--2 .university-spoke,
-  .university-system--3 .university-spoke { left: 192px; }
   .university-final { top: 810px; left: 42px; width: 650px; font-size: 48px; }
   .university-subline { top: 914px; left: 42px; font-size: 18px; }
   .university-argument { top: 967px; right: auto; bottom: auto; left: 42px; width: 620px; font-size: 13px; }
@@ -3666,7 +3663,6 @@ button {
   .founder-first-direction-line { top: 150px; left: 299px; width: 2px; height: 280px; }
   .founder-first-direction-line::before { top: 0; left: -4px; rotate: 135deg; }
   .founder-first-startup-token { top: 57px; left: 20px; }
-  .founder-first-wrong { top: 288px; left: 87px; width: 425px; rotate: -50deg; }
   .founder-first-modes { top: 0; left: 0; flex-direction: row; width: 600px; height: 96px; }
   .founder-first-mode { padding: 12px 18px; }
   .founder-first-mode--digital { flex: 9; }
@@ -3813,7 +3809,9 @@ button {
   .founder-card h3 { margin-top: 30px; }
   .founder-trace { top: 172px; height: 60px; }
   .founder-roof { top: 445px; }
-  .founder-final { top: 522px; font-size: 44px; }
+  .founder-trace { height: 30px; }
+  .founder-roof i { top: 52px; }
+  .founder-final { top: 540px; font-size: 44px; }
   .founder-argument { right: auto; bottom: 40px; left: 55px; width: 395px; text-align: left; }
 
   .community-home { top: 132px; }
