@@ -3133,7 +3133,7 @@ button {
   width: 210px;
   height: 156px;
   border: 2px solid var(--coral);
-  background: var(--bg);
+  background: #f4f4ef;
   will-change: transform, opacity;
 }
 
@@ -3151,8 +3151,9 @@ button {
   display: block;
   width: 165px;
   height: auto;
+  object-fit: contain;
 }
-.vision-core span { margin-top: 13px; color: var(--muted); font-size: 8px; font-weight: 800; letter-spacing: 0.1em; }
+.vision-core span { margin-top: 13px; color: #101629; font-size: 8px; font-weight: 800; letter-spacing: 0.1em; }
 .vision-argument { right: 105px; bottom: 24px; left: 55px; width: 870px; font-size: 11px; }
 
 .vision-final-state { position: absolute; inset: 0; will-change: opacity; }
@@ -3503,8 +3504,8 @@ button {
   .science-lockup { top: 175px; left: 72px; }
   .escape-line { top: 455px; right: 70px; left: 72px; }
   .companies-lockup { top: 505px; left: 72px; }
-  .stay-line { bottom: 170px; left: 72px; font-size: 57px; }
-  .europe-argument { bottom: 94px; left: 72px; width: 580px; font-size: 18px; }
+  .stay-line { bottom: 210px; left: 72px; font-size: 57px; }
+  .europe-argument { bottom: 70px; left: 72px; width: 580px; font-size: 18px; }
 
   .world-axis { top: 537px; right: 74px; left: 74px; }
   .domain { width: 596px; min-height: 250px; }

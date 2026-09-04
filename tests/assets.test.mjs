@@ -47,11 +47,24 @@ test('the university uses a single SVG network and the founder-first diagram has
   assert.doesNotMatch(source, /founder-first-wrong/);
 });
 
-test('the vision core renders the theme-aware vector PONT mark', () => {
+test('the vision core renders the supplied two-color PONT logo without recoloring it', () => {
   const source = readFileSync(new URL('../app/components/PitchStage.tsx', import.meta.url), 'utf8');
+  const svg = readFileSync(new URL('../public/pont-logo.svg', import.meta.url), 'utf8');
 
-  assert.match(source, /<PontMark\s+className="vision-core-mark"\s*\/>/);
-  assert.doesNotMatch(source, /<Image\s+className="vision-core-mark"/);
+  assert.match(source, /<Image\s+className="vision-core-mark"\s+src="\/pont-logo\.svg"\s+alt="PONT\."\s+width=\{740\}\s+height=\{193\}\s+unoptimized\s*\/>/);
+  assert.doesNotMatch(source, /<PontMark\s+className="vision-core-mark"/);
+  assert.match(svg, /#fe6d4d/i);
+  assert.match(svg, /#01004a/i);
+  assert.doesNotMatch(svg, /#fefdfd/i);
+});
+
+test('the Europe finale settles its heading before revealing separated portrait copy', () => {
+  const source = readFileSync(new URL('../app/components/PitchStage.tsx', import.meta.url), 'utf8');
+  const css = readFileSync(new URL('../app/globals.css', import.meta.url), 'utf8');
+
+  assert.match(source, /\.fromTo\(\$\('\.europe-argument'\)[\s\S]*?\},\s*'>'\)/);
+  assert.match(css, /@media \(orientation:\s*portrait\)[\s\S]*?\.stay-line\s*{[^}]*bottom:\s*210px;/s);
+  assert.match(css, /@media \(orientation:\s*portrait\)[\s\S]*?\.europe-argument\s*{[^}]*bottom:\s*70px;/s);
 });
 
 test('the founder-first system has a portrait-specific operating field', () => {

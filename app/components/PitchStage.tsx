@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from 'react';
 import { gsap } from 'gsap';
 
@@ -227,7 +228,7 @@ export function PitchStage() {
         .to($('.companies-lockup'), { y: isPortrait ? -72 : -96, scale: isPortrait ? 0.82 : 0.74, transformOrigin: 'left top', duration: 0.58 })
         .to($('.escape-line'), { scaleX: 0, autoAlpha: 0, transformOrigin: 'right center', duration: 0.38 }, '<')
         .fromTo($('.stay-line .line-inner'), { yPercent: 120 }, { yPercent: 0, duration: 0.62, stagger: 0.06, ease: 'power2.out' }, '<0.12')
-        .fromTo($('.europe-argument'), { y: 16, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.44 }, '<0.12')
+        .fromTo($('.europe-argument'), { y: 16, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.44 }, '>')
         .addLabel('stay')
         .to($('.scene-europe'), { yPercent: -12, autoAlpha: 0, duration: 0.58 })
         .set($('.scene-worlds'), { autoAlpha: 1 }, '<0.16')
@@ -1233,7 +1234,7 @@ export function PitchStage() {
                 ))}
               </div>
               <span className="vision-spine" aria-hidden="true" />
-              <div className="vision-core"><PontMark className="vision-core-mark" /><span>ONE TECHNOLOGICAL ECOSYSTEM</span></div>
+              <div className="vision-core"><Image className="vision-core-mark" src="/pont-logo.svg" alt="PONT." width={740} height={193} unoptimized /><span>ONE TECHNOLOGICAL ECOSYSTEM</span></div>
             </div>
             <p className="scene-argument vision-argument">{SCENES[18].argument}</p>
 
