@@ -3714,7 +3714,47 @@ button {
   .vision-pillars { bottom: 135px; left: 42px; width: 620px; font-size: 15px; line-height: 1.4; }
 }
 
-@media (orientation: landscape) and (max-width: 1100px) and (max-height: 560px) {
+@media (orientation: landscape) {
+  .experience-controls {
+    right: 8px;
+    bottom: 4px;
+    gap: 2px;
+    min-height: 52px;
+    padding: 3px;
+    border-radius: 10px;
+  }
+
+  .theme-toggle,
+  .palette-toggle,
+  .stage-controls button {
+    width: 44px;
+    height: 44px;
+  }
+
+  .theme-toggle svg,
+  .stage-controls svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .chapter-progress {
+    grid-template-columns: 40px 60px;
+    gap: 4px;
+    height: 44px;
+    padding: 0 4px;
+  }
+
+  .chapter-progress__count strong { font-size: 12px; }
+  .chapter-progress__count span { font-size: 8px; }
+  .chapter-progress__meter { width: 60px; }
+}
+
+@media (orientation: landscape) and (max-height: 560px) {
+  .pitch-stage {
+    width: var(--compact-stage-width, 1133px);
+    margin-left: var(--compact-stage-margin-left, -566.5px);
+  }
+
   .cover-content {
     width: min(1010px, calc(100% - 80px));
     gap: 22px;
@@ -3744,6 +3784,145 @@ button {
     bottom: 204px;
     left: 50px;
   }
+
+  /* Every compact landscape scene keeps its final statement above the
+     persistent controls instead of letting the navigation cover the story. */
+  .physical-statement { bottom: 176px; }
+  .era-argument { top: 472px; }
+
+  .stay-line { bottom: 180px; }
+  .europe-argument { bottom: 118px; width: 395px; }
+
+  .worlds-argument { top: 430px; }
+
+  .robot-network,
+  .therapy-network { top: 70px; }
+  .therapy-network { transform: scale(0.92); transform-origin: center top; }
+  .robot-principle,
+  .therapy-principle { top: 500px; }
+
+  .hard-anywhere { top: 500px; }
+  .hard-verdict { bottom: 170px; }
+  .hard-argument { right: auto; bottom: 112px; width: 395px; }
+
+  .ecosystem-map { top: 86px; }
+  .ecosystem-verdict { top: 462px; }
+  .ecosystem-principle { bottom: 112px; width: 395px; }
+
+  .founder-streams { top: 294px; height: 190px; }
+  .founder-card h3 { margin-top: 30px; }
+  .founder-trace { top: 172px; height: 60px; }
+  .founder-roof { top: 445px; }
+  .founder-final { top: 522px; font-size: 44px; }
+  .founder-argument { right: auto; bottom: 40px; left: 55px; width: 395px; text-align: left; }
+
+  .community-home { top: 132px; }
+  .community-final { top: 345px; }
+  .community-principle { top: 478px; }
+  .community-argument { bottom: 104px; width: 395px; }
+
+  .home-final { top: 492px; font-size: 43px; }
+  .home-final-sub { margin-top: 9px; font-size: 16px; }
+  .home-argument { bottom: 104px; width: 395px; }
+
+  .stack-intelligence { top: 228px; }
+  .stack-impact-line { top: 395px; }
+  .stack-transitions { top: 425px; }
+  .stack-final { top: 500px; font-size: 43px; }
+  .stack-proof { right: auto; bottom: 35px; width: 395px; }
+
+  .revenue-field { top: 196px; height: 292px; }
+  .business-final { top: 478px; font-size: 46px; }
+  .business-argument { right: auto; bottom: 36px; width: 395px; }
+
+  .flywheel-machine { top: 178px; }
+  .flywheel-entry { top: 370px; }
+  .flywheel-final {
+    top: 448px;
+    width: 470px;
+    font-size: 39px;
+  }
+  .flywheel-values {
+    top: 540px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 470px;
+  }
+  .flywheel-value {
+    grid-template-columns: 26px 1fr;
+    min-height: 27px;
+    padding-right: 8px;
+    font-size: 10px;
+  }
+
+  .capital-heading { top: 58px; }
+  .capital-building { top: 188px; height: 286px; }
+  .capital-old-relation { top: 470px; }
+  .capital-final { top: 500px; font-size: 45px; }
+  .capital-outcome { top: 555px; }
+  .capital-argument { right: auto; bottom: 38px; width: 395px; }
+
+  .bridge-heading,
+  .university-heading,
+  .founder-first-heading,
+  .model-heading,
+  .vision-heading { top: 48px; }
+
+  .bridge-field { top: 200px; }
+  .bridge-final { top: 485px; font-size: 46px; }
+  .bridge-network { top: 568px; width: 490px; }
+  .bridge-argument { right: auto; bottom: 30px; width: 395px; }
+
+  .university-field { top: 194px; }
+  .university-final { top: 500px; font-size: 43px; }
+  .university-subline { top: 580px; }
+  .university-argument { right: auto; bottom: 28px; width: 395px; }
+
+  .founder-first-field {
+    top: 192px;
+    transform: scale(0.88);
+    transform-origin: left top;
+  }
+  .founder-first-final { top: 492px; font-size: 44px; }
+  .founder-first-argument { right: auto; bottom: 30px; width: 395px; }
+
+  .model-field { top: 192px; }
+  .model-final { top: 508px; font-size: 43px; }
+  .model-argument { right: auto; bottom: 30px; width: 395px; }
+
+  .vision-field { top: 190px; }
+  .vision-argument { right: auto; bottom: 34px; width: 395px; }
+  .vision-final-mark { top: 70px; }
+  .vision-final-rule { top: 215px; }
+  .vision-closing { top: 255px; font-size: 44px; }
+  .vision-pillars { right: auto; bottom: 34px; width: 395px; }
+
+  .founder-argument,
+  .business-argument,
+  .capital-argument,
+  .bridge-argument,
+  .university-argument,
+  .founder-first-argument,
+  .model-argument,
+  .vision-argument { font-size: 14px; line-height: 1.12; }
+}
+
+@media (orientation: landscape) and (min-height: 561px) {
+  .europe-argument { width: 560px; }
+  .hard-argument { right: 520px; }
+  .ecosystem-principle { width: 560px; }
+  .founder-argument { right: 520px; }
+  .home-argument { width: 560px; }
+  .stack-proof { right: 520px; }
+  .business-argument { right: 520px; }
+  .capital-argument { right: 520px; }
+  .bridge-network { top: 630px; width: 560px; }
+  .bridge-argument { right: 520px; }
+  .university-argument { right: 520px; }
+  .founder-first-argument { right: 520px; }
+  .model-argument { right: 520px; }
+  .vision-argument { right: 520px; }
+
+  .founder-final { top: 600px; }
 }
 
 @media (orientation: portrait) and (max-width: 520px) {
@@ -3789,6 +3968,41 @@ button {
     width: 100%;
     min-width: 0;
   }
+}
+
+@media (orientation: portrait) and (max-width: 430px) and (max-height: 700px) {
+  .experience-controls {
+    right: 8px;
+    bottom: 4px;
+    left: 8px;
+    gap: 2px;
+    min-height: 52px;
+    padding: 3px;
+    border-radius: 10px;
+  }
+
+  .theme-toggle,
+  .palette-toggle,
+  .stage-controls button {
+    width: 44px;
+    height: 44px;
+  }
+
+  .theme-toggle svg,
+  .stage-controls svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .chapter-progress {
+    grid-template-columns: 40px minmax(40px, 1fr);
+    gap: 4px;
+    height: 44px;
+    padding: 0 4px;
+  }
+
+  .chapter-progress__count strong { font-size: 12px; }
+  .chapter-progress__count span { font-size: 8px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

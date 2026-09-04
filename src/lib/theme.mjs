@@ -147,7 +147,10 @@ export const APPEARANCE_BOOTSTRAP_SCRIPT = `(() => {
   const width = viewport ? viewport.width : globalThis.innerWidth;
   const height = viewport ? viewport.height : globalThis.innerHeight;
   const portrait = height > width;
-  const stageWidth = portrait ? 744 : 1133;
+  const compactLandscape = !portrait && height <= 560;
+  const stageWidth = compactLandscape ? 744 * (width / height) : (portrait ? 744 : 1133);
   const stageHeight = portrait ? 1133 : 744;
   root.style.setProperty('--stage-scale', String(Math.min(width / stageWidth, height / stageHeight)));
+  root.style.setProperty('--compact-stage-width', stageWidth + 'px');
+  root.style.setProperty('--compact-stage-margin-left', (stageWidth / -2) + 'px');
 })();`;

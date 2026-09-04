@@ -129,3 +129,28 @@ test('appearance bootstrap applies saved colors and fitted stage scale before hy
   assert.equal(properties.get('--coral'), '#6D3AB2');
   assert.equal(Number(properties.get('--stage-scale')).toFixed(6), '0.903795');
 });
+
+test('appearance bootstrap makes compact landscape stages edge-to-edge before hydration', async () => {
+  const { APPEARANCE_BOOTSTRAP_SCRIPT } = await loadThemes();
+  const properties = new Map();
+  const root = {
+    dataset: {},
+    style: {
+      setProperty(name, value) {
+        properties.set(name, value);
+      },
+    },
+  };
+
+  vm.runInNewContext(APPEARANCE_BOOTSTRAP_SCRIPT, {
+    document: { documentElement: root },
+    innerWidth: 844,
+    innerHeight: 390,
+    localStorage: { getItem: () => null },
+    matchMedia: () => ({ matches: false }),
+  });
+
+  assert.equal(Number(properties.get('--stage-scale')).toFixed(6), '0.524194');
+  assert.equal(Number.parseFloat(properties.get('--compact-stage-width')).toFixed(3), '1610.092');
+  assert.equal(Number.parseFloat(properties.get('--compact-stage-margin-left')).toFixed(3), '-805.046');
+});

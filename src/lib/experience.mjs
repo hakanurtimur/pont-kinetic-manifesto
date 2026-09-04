@@ -26,6 +26,42 @@ export function viewportMode(width, height) {
   return height > width ? 'portrait' : 'landscape';
 }
 
+export function viewportProfile(width, height) {
+  if (height > width) {
+    return height <= 700 && width <= 430 ? 'compact-portrait' : 'portrait';
+  }
+  if (height <= 560) return 'compact-landscape';
+  return 'landscape';
+}
+
+export function stageGeometryForViewport(width, height) {
+  const mode = viewportMode(width, height);
+  const profile = viewportProfile(width, height);
+  const base = mode === 'portrait'
+    ? { width: 744, height: 1133 }
+    : { width: 1133, height: 744 };
+
+  if (profile !== 'compact-landscape') {
+    return {
+      ...base,
+      scale: Math.min(width / base.width, height / base.height),
+      mode,
+      profile,
+    };
+  }
+
+  const stageHeight = base.height;
+  const stageWidth = stageHeight * (width / height);
+
+  return {
+    width: stageWidth,
+    height: stageHeight,
+    scale: height / stageHeight,
+    mode,
+    profile,
+  };
+}
+
 export function resolveTheme(savedTheme, prefersDark) {
   if (savedTheme === 'light' || savedTheme === 'dark') return savedTheme;
   return prefersDark ? 'dark' : 'light';

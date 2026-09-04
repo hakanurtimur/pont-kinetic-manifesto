@@ -7,8 +7,8 @@ import { BEATS } from '@/src/lib/progress.mjs';
 import {
   pageIndexForProgress,
   resolveTheme,
+  stageGeometryForViewport,
   timelineValueForProgress,
-  viewportMode,
 } from '@/src/lib/experience.mjs';
 import {
   appearanceTokensFor,
@@ -39,14 +39,13 @@ import {
 import { THERAPY_NODE_LAYOUT } from '@/src/content/therapy-layout.mjs';
 import { PontMark } from './PontMark';
 
-const LANDSCAPE_STAGE = { width: 1133, height: 744 };
-const PORTRAIT_STAGE = { width: 744, height: 1133 };
 const SCROLL_SCRUB_DURATION = 1.1;
 const SCROLL_SCRUB_EASE = 'power3.out';
 
 type Theme = 'light' | 'dark';
 type Palette = 'pont' | 'green' | 'cobalt' | 'violet';
 type Orientation = 'landscape' | 'portrait';
+type ViewportProfile = 'landscape' | 'compact-landscape' | 'compact-portrait' | 'portrait';
 
 function applyAppearanceTokens(theme: Theme, palette: Palette) {
   const root = document.documentElement;
@@ -59,7 +58,11 @@ function applyAppearanceTokens(theme: Theme, palette: Palette) {
 }
 
 function useStageGeometry() {
-  const [geometry, setGeometry] = useState({ scale: 1, mode: 'landscape' as Orientation });
+  const [geometry, setGeometry] = useState({
+    scale: 1,
+    mode: 'landscape' as Orientation,
+    profile: 'landscape' as ViewportProfile,
+  });
 
   useLayoutEffect(() => {
     let frame = 0;
@@ -69,11 +72,14 @@ function useStageGeometry() {
         const visual = window.visualViewport;
         const width = visual?.width ?? window.innerWidth;
         const height = visual?.height ?? window.innerHeight;
-        const mode = viewportMode(width, height) as Orientation;
-        const stage = mode === 'portrait' ? PORTRAIT_STAGE : LANDSCAPE_STAGE;
-        const scale = Math.min(width / stage.width, height / stage.height);
+        const stage = stageGeometryForViewport(width, height);
+        const mode = stage.mode as Orientation;
+        const profile = stage.profile as ViewportProfile;
+        const scale = stage.scale;
         document.documentElement.style.setProperty('--stage-scale', String(scale));
-        setGeometry({ scale, mode });
+        document.documentElement.style.setProperty('--compact-stage-width', `${stage.width}px`);
+        document.documentElement.style.setProperty('--compact-stage-margin-left', `${stage.width / -2}px`);
+        setGeometry({ scale, mode, profile });
       });
     };
 
@@ -616,6 +622,7 @@ export function PitchStage() {
         <div
           className="pitch-stage"
           data-orientation={geometry.mode}
+          data-viewport-profile={geometry.profile}
           ref={stageRef}
         >
           <section className="scene scene-cover" aria-label="PONT introduction">
