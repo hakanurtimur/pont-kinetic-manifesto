@@ -1,3 +1,5 @@
+export const COMPACT_CONTROL_RESERVED_HEIGHT = 64;
+
 export function pageIndexForProgress(progress, pageCount) {
   const count = Math.max(1, Math.floor(pageCount));
   const normalized = Number.isFinite(progress)
@@ -46,19 +48,23 @@ export function stageGeometryForViewport(width, height) {
       ...base,
       scale: Math.min(width / base.width, height / base.height),
       sceneOffsetX: 0,
+      centerY: height / 2,
       mode,
       profile,
     };
   }
 
   const stageHeight = base.height;
-  const stageWidth = stageHeight * (width / height);
+  const availableHeight = Math.max(1, height - COMPACT_CONTROL_RESERVED_HEIGHT);
+  const scale = availableHeight / stageHeight;
+  const stageWidth = width / scale;
 
   return {
     width: stageWidth,
     height: stageHeight,
-    scale: height / stageHeight,
+    scale,
     sceneOffsetX: (stageWidth - base.width) / 2,
+    centerY: availableHeight / 2,
     mode,
     profile,
   };

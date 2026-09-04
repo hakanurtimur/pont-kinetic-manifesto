@@ -156,7 +156,7 @@ button {
 
 .pitch-stage {
   position: absolute;
-  top: 50%;
+  top: var(--stage-center-y, 50%);
   left: 50%;
   width: 1133px;
   height: 744px;

@@ -1,3 +1,5 @@
+import { COMPACT_CONTROL_RESERVED_HEIGHT } from './experience.mjs';
+
 const DARK_TOKENS = Object.freeze({
   '--bg': '#101629',
   '--fg': '#F4F4EF',
@@ -148,9 +150,11 @@ export const APPEARANCE_BOOTSTRAP_SCRIPT = `(() => {
   const height = viewport ? viewport.height : globalThis.innerHeight;
   const portrait = height > width;
   const compactLandscape = !portrait && height <= 560;
-  const stageWidth = compactLandscape ? 744 * (width / height) : (portrait ? 744 : 1133);
+  const availableHeight = compactLandscape ? Math.max(1, height - ${COMPACT_CONTROL_RESERVED_HEIGHT}) : height;
+  const stageWidth = compactLandscape ? 744 * (width / availableHeight) : (portrait ? 744 : 1133);
   const stageHeight = portrait ? 1133 : 744;
-  root.style.setProperty('--stage-scale', String(Math.min(width / stageWidth, height / stageHeight)));
+  root.style.setProperty('--stage-scale', String(Math.min(width / stageWidth, availableHeight / stageHeight)));
+  root.style.setProperty('--stage-center-y', (compactLandscape ? availableHeight / 2 : height / 2) + 'px');
   root.style.setProperty('--compact-stage-width', stageWidth + 'px');
   root.style.setProperty('--compact-stage-margin-left', (stageWidth / -2) + 'px');
   root.style.setProperty('--compact-scene-offset-x', (compactLandscape ? (stageWidth - 1133) / 2 : 0) + 'px');

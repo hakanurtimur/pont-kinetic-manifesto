@@ -35,13 +35,15 @@ test('viewportProfile reserves a compact layout for short landscape screens', ()
   assert.equal(viewportProfile(390, 844), 'portrait');
 });
 
-test('compact landscape stage fills wide phones without side letterboxing', () => {
+test('compact landscape stage fills the width and reserves a control dock', () => {
   const geometry = stageGeometryForViewport(844, 390);
 
   assert.equal(geometry.profile, 'compact-landscape');
   assert.equal(geometry.height, 744);
   assert.ok(Math.abs(geometry.width * geometry.scale - 844) < 0.001);
-  assert.ok(Math.abs(geometry.height * geometry.scale - 390) < 0.001);
+  assert.ok(Math.abs(geometry.height * geometry.scale - 326) < 0.001);
+  assert.equal(geometry.centerY, 163);
+  assert.equal(390 - geometry.height * geometry.scale, 64);
 });
 
 test('compact landscape centers the fixed scene grid inside the edge-to-edge canvas', () => {
@@ -49,10 +51,13 @@ test('compact landscape centers the fixed scene grid inside the edge-to-edge can
     const geometry = stageGeometryForViewport(width, height);
     const leftGutter = geometry.sceneOffsetX * geometry.scale;
     const rightGutter = width - ((geometry.sceneOffsetX + 1133) * geometry.scale);
+    const controlTop = height - 56;
+    const sceneBottom = geometry.centerY + ((geometry.height * geometry.scale) / 2);
 
     assert.ok(Math.abs(geometry.sceneOffsetX - ((geometry.width - 1133) / 2)) < 0.001);
     assert.ok(leftGutter >= 0);
     assert.ok(Math.abs(leftGutter - rightGutter) < 0.001);
+    assert.ok(sceneBottom <= controlTop - 8);
   }
 });
 
